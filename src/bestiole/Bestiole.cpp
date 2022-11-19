@@ -1,6 +1,6 @@
 #include "Bestiole.h"
 
-#include "Milieu.h"
+#include "../environment/Milieu.h"
 
 #include <cstdlib>
 #include <cmath>

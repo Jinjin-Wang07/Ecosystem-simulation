@@ -2,8 +2,8 @@
 #define _MILIEU_H_
 
 
-#include "UImg.h"
-#include "Bestiole.h"
+#include "../../include/HMI/UImg.h"
+#include "../bestiole/Bestiole.h"
 
 #include <iostream>
 #include <vector>

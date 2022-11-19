@@ -1,9 +1,8 @@
 #ifndef _AQUARIUM_H_
 #define _AQUARIUM_H_
 
-
 #include <iostream>
-#include <CImg.h>
+#include "../../include/HMI/CImg.h"
 
 using namespace std;
 using namespace cimg_library;

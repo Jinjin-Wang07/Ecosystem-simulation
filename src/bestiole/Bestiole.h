@@ -2,7 +2,7 @@
 #define _BESTIOLES_H_
 
 
-#include "UImg.h"
+#include "../../include/HMI/UImg.h"
 
 #include <iostream>
 
@@ -24,8 +24,8 @@ private :
 
 private :
    int               identite;
-   int               x, y;
-   double            cumulX, cumulY;
+   int               x, y;            // position pixel
+   double            cumulX, cumulY; // c'est pour affichage
    double            orientation;
    double            vitesse;
 

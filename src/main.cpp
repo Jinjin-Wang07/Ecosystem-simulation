@@ -1,6 +1,6 @@
-#include "Aquarium.h"
-#include "Milieu.h"
-#include "Bestiole.h"
+#include "./environment/Aquarium.h"
+#include "./environment/Milieu.h"
+#include "./bestiole/Bestiole.h"
 
 #include <iostream>
 
