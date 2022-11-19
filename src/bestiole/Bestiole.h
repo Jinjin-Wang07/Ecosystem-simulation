@@ -3,6 +3,8 @@
 
 
 #include "../../include/HMI/UImg.h"
+#include "accessoire/IAccessoire.h"
+#include "capteur/ICapteur.h"
 
 #include <iostream>
 
@@ -45,6 +47,17 @@ public :                                           // Forme canonique :
    bool jeTeVois( const Bestiole & b ) const;
 
    void initCoords( int xLim, int yLim );
+
+   /*
+      add accessoire
+   */
+   bool add_accessoire(IAccessoire acc);
+
+   /*
+      add capteur
+   */
+   bool add_capteur(ICapteur capteur);
+
 
    friend bool operator==( const Bestiole & b1, const Bestiole & b2 );
 

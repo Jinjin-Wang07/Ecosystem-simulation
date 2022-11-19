@@ -2,6 +2,8 @@
 #define _AQUARIUM_H_
 
 #include <iostream>
+#include <string.h>
+#include <map>
 #include "../../include/HMI/CImg.h"
 
 using namespace std;
@@ -23,9 +25,22 @@ public :
    Aquarium( int width, int height, int _delay );
    ~Aquarium( void );
 
+   void run( void );
+
    Milieu & getMilieu( void ) { return *flotte; }
 
-   void run( void );
+   /*
+    * Summary : show statistic informations
+    * Return : statistic informations
+   */
+   void showInfo();
+
+   /*
+    * Summary : return statistic informations
+    * Parameter: Reference of a map to store information
+    * Return : success
+   */
+   bool getInfo(map<string, float> &info);
 
 };
 
