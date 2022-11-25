@@ -70,8 +70,6 @@ Bestiole::Bestiole(const Bestiole & b)
    this->age_limit=b.age_limit;
    this->fragility=b.fragility;
    
-   double cumulX, cumulY; 
-  
 
    //affichage
    // AFF_SIZE=10;
