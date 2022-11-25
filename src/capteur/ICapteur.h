@@ -8,7 +8,7 @@ class ICapteur
 {
 private:
     /* coef */
-    float capacite_detection;
+    double capacite_detection;
     
 public:
     virtual ~ICapteur();

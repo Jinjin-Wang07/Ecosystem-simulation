@@ -4,13 +4,12 @@
 class Yeux
 {
 private:
-    float champ_vision;
+    double distance_max;
+    double distance_min;
+    double champ_vision;
 public:
-    Yeux(float, float, float);
+    Yeux(double dist_min, double dist_max, double champ_vision);
     ~Yeux();
-
-    float set_champ_vision(float);
-    float get_champ_vision();
 };
 
 #endif // _TEUX_H_
