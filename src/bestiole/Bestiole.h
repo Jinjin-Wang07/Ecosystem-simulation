@@ -20,19 +20,20 @@ class Bestiole
 
 private :
    static int next_id;
-   const int identite;
+   int identite;
    
    // position variables
    int x;
    int y;
    double vitesse;
    double orientation;
-   double max_vitesse_with_acc;
+   double max_vitesse;
    
    // other variables
    int age;
-   const int age_limit;
+   int age_limit;
    double fragility;
+   double camouflage_coef;
 
    //affichage
    static const double AFF_SIZE;
@@ -46,7 +47,7 @@ private :
    void bouge( int xLim, int yLim );
 
 public :// Forme canonique :
-   Bestiole(int x,int y,double max_vitesse,int age_limit,double fragility);                               // Constructeur par defaut
+   Bestiole(int x,int y,double max_vitesse,int age_limit,double fragility,double camouflage_coef);                               // Constructeur par defaut
    Bestiole( const Bestiole & b );                 // Constructeur de copies
    ~Bestiole( void );                              // Destructeur                              // Operateur d'affectation binaire par defaut
    
@@ -55,7 +56,7 @@ public :// Forme canonique :
 
    void action( Milieu & monMilieu );
 
-   bool jeTePercoit( const Bestiole & b );
+   bool jeTePercoit( const Bestiole & b ) const;
    void changeState();
    void draw( UImg & support );
 
