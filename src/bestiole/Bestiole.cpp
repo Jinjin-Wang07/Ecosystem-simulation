@@ -1,30 +1,46 @@
 #include "Bestiole.h"
 
-#include "Milieu.h"
+#include "../environment/Milieu.h"
 
 #include <cstdlib>
 #include <cmath>
 
 
-const double      Bestiole::AFF_SIZE = 8.;
-const double      Bestiole::MAX_VITESSE = 10.;
-const double      Bestiole::LIMITE_VUE = 30.;
 
-int               Bestiole::next = 0;
+int               Bestiole::next_id = 0;
 
 
-Bestiole::Bestiole( void )
+Bestiole::Bestiole(int x,int y,double max_vitesse,int age_limit,double fragility)
 {
+   identite = ++next_id;
+   // position variables
+   x =x;
+   y=y;
 
-   identite = ++next;
-
-   cout << "const Bestiole (" << identite << ") par defaut" << endl;
-
-   x = y = 0;
-   cumulX = cumulY = 0.;
    orientation = static_cast<double>( rand() )/RAND_MAX*2.*M_PI;
    vitesse = static_cast<double>( rand() )/RAND_MAX*MAX_VITESSE;
+   
 
+   max_vitesse_with_acc=max_vitesse;
+   
+   // other variables
+   age=0;
+   age_limit=age_limit;
+   fragility=fragility;
+
+   //affichage
+   AFF_SIZE=10
+   double            cumulX, cumulY; 
+ 
+   std::vector<IAccessoire> list_accessoire;
+   std::vector<ICapteur> list_capteurs;
+   identite = ++next;
+
+   cout << "const PreviousBestiole (" << identite << ") par defaut" << endl;
+
+
+   cumulX = cumulY = 0.;
+   
    couleur = new T[ 3 ];
    couleur[ 0 ] = static_cast<int>( static_cast<double>( rand() )/RAND_MAX*230. );
    couleur[ 1 ] = static_cast<int>( static_cast<double>( rand() )/RAND_MAX*230. );
@@ -33,12 +49,12 @@ Bestiole::Bestiole( void )
 }
 
 
-Bestiole::Bestiole( const Bestiole & b )
+Bestiole::Bestiole(const Bestiole & b)
 {
-
+   //TODO : update
    identite = ++next;
 
-   cout << "const Bestiole (" << identite << ") par copie" << endl;
+   cout << "const PreviousBestiole (" << identite << ") par copie" << endl;
 
    x = b.x;
    y = b.y;
@@ -55,24 +71,24 @@ Bestiole::~Bestiole( void )
 {
 
    delete[] couleur;
-
-   cout << "dest Bestiole" << endl;
-
-}
-
-
-void Bestiole::initCoords( int xLim, int yLim )
-{
-
-   x = rand() % xLim;
-   y = rand() % yLim;
+   cout << "dest PreviousBestiole" << endl;
 
 }
+
+
+// void Bestiole::initCoords( int xLim, int yLim )
+// {
+
+//    x = rand() % xLim;
+//    y = rand() % yLim;
+
+// }
 
 
 void Bestiole::bouge( int xLim, int yLim )
 {
-
+   orientation = static_cast<double>( rand() )/RAND_MAX*2.*M_PI;
+   vitesse = static_cast<double>( rand() )/RAND_MAX*MAX_VITESSE;
    double         nx, ny;
    double         dx = cos( orientation )*vitesse;
    double         dy = -sin( orientation )*vitesse;
@@ -114,7 +130,7 @@ void Bestiole::action( Milieu & monMilieu )
 }
 
 
-void Bestiole::draw( UImg & support )
+void Besiole::draw( UImg & support )
 {
 
    double         xt = x + cos( orientation )*AFF_SIZE/2.1;
@@ -135,12 +151,9 @@ bool operator==( const Bestiole & b1, const Bestiole & b2 )
 }
 
 
-bool Bestiole::jeTeVois( const Bestiole & b ) const
+bool Bestiole::jeTePercoit( const Bestiole & b )
 {
-
    double         dist;
-
-
    dist = std::sqrt( (x-b.x)*(x-b.x) + (y-b.y)*(y-b.y) );
    return ( dist <= LIMITE_VUE );
 
