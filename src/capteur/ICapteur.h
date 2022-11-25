@@ -1,6 +1,7 @@
+
 #ifndef _ICAPTEUR_H_
 #define _ICAPTEUR_H_
-
+#include "../bestiole/Bestiole.h"
 using namespace std;
 
 

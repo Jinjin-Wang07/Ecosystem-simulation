@@ -1,4 +1,4 @@
-#include "Oreilles.h"
+#include "Yeux.h"
 
 Yeux::Yeux(double distance_min,double distance_max,double champ_vision,float capacite){
     distance_min=distance_min;
@@ -20,9 +20,10 @@ bool Oreilles::JeTePercoit(int x,int y,double orientation,const Bestiole& b) con
     //           -135                -45
     //
     //                     -90
-   double angle = std::atan2(p1.y - p2.y, p1.x - p2.x);
-   double dangle=angle-direction;
+    
+    double angle = std::atan2(p1.y - p2.y, p1.x - p2.x);
+    double dangle=angle-direction;
 
-   dist = std::sqrt( ()*(x-b.x) + (y-b.y)*(y-b.y) );
-   return ((dangle<champ_vision)& (dist <= dmax) & (dist >= dmin) );
+    dist = std::sqrt( ()*(x-b.x) + (y-b.y)*(y-b.y) );
+    return ((dangle<champ_vision) & (dist <= dmax) & (dist >= dmin) & (this->capacite_detection > b.camouflage_coef));
 }
