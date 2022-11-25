@@ -12,6 +12,9 @@ public:
     Negeoire(float coef_vitesse);
     ~Negeoire();
 
+    /*
+    * Getters and Setters
+    */
     float get_coef_vitesse();
     void set_coef_vitesse(float coef_vitesse);
 };

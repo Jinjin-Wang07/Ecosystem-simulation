@@ -3,8 +3,8 @@
 
 
 #include "../../include/HMI/UImg.h"
-#include "accessoire/IAccessoire.h"
-#include "capteur/ICapteur.h"
+#include "../accessoire/IAccessoire.h"
+#include "../capteur/ICapteur.h"
 
 #include <iostream>
 
