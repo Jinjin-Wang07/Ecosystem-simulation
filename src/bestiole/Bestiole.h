@@ -59,6 +59,8 @@ public :// Forme canonique :
    void changeState();
    void draw( UImg & support );
 
+   double getOrientation();
+   void setOrientation(double o);
 
    friend bool operator==( const Bestiole & b1, const Bestiole & b2 );
 

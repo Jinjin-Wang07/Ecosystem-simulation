@@ -19,7 +19,7 @@ public:
 
 private:
 
-    std::pair<float, float> calculateAverageDirection (vector<Bestiole> seen_neighbors);
+    double calculateAverageDirection (vector<Bestiole> seen_neighbors);
 
 };
 #endif //ECOSYSTEM_SIMULATION_GRAGAIRE_H

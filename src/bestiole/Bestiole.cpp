@@ -158,3 +158,11 @@ bool Bestiole::jeTePercoit( const Bestiole & b )
    return ( dist <= LIMITE_VUE );
 
 }
+
+double Bestiole::getOrientation() {
+   return this.orientation;
+}
+
+void Bestiole::setOrientation(double o) {
+   this.orientation = o;
+}

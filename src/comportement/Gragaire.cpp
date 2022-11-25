@@ -3,11 +3,28 @@
 //
 
 #include "Gragaire.h"
+#include <vector>
+#include <iostream>
+using namespace std;
+Gragaire::Gragaire() {
+    cout << "create a gregaire behavior" << endl;
+}
 
-Gragaire::Gragaire() {}
+Gragaire::~Gragaire() {
+    cout << "destroying a gregaire behavior" << endl;
+}
 
-Gragaire::~Gragaire() {}
+void Gragaire::move(Bestiole& b, vector<Bestiole> const& seen_neighbors) {
+    auto averageDirection = calculateAverageDirection(seen_neighbors);
+    b.setOrientation(averageDirection);
+}
 
-void Gragaire::move(const int &b, int seen_neighbors) {}
-
-int Gragaire::calculateAverageDirection(vector<Bestiole> seen_neighbors) {}
+double Gragaire::calculateAverageDirection(vector<Bestiole> const& seen_neighbors) {
+    double averageDirection = 0.0;
+    for (auto const& neighbor : seen_neighbors) {
+        auto orientation = neighbor->getOrientation();
+        averageDirection += orientation;
+    }
+    averageDirection /= seen_neighbors.size();
+    return averageDirection;
+}

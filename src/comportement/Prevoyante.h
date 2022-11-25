@@ -2,7 +2,7 @@
 #include <vector>
 using namespace std;
 typedef vector<float> Path;
-class Prevoyante {
+class Prevoyante : public IComportement{
 private:
 vector<Path> getNeighborPaths(vector<Bestiole> const& neighbors);
 public:
