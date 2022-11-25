@@ -6,7 +6,7 @@
 #define ECOSYSTEM_SIMULATION_GRAGAIRE_H
 
 #include "IComportement.h"
-#include "betiole"
+#include "bestiole/Bestiole.h"
 
 class Gragaire :  public IComportement{
 

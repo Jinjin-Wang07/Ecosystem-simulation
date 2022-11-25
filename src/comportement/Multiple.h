@@ -1,7 +1,9 @@
-#include "Comportement.h"
+#ifndef MULTIPLE
+#define MULTIPLE
+#include "IComportement.h"
 #include "Kamikaze.h"
 #include "Prevoyante.h"
-#include "Gregaire.h"
+#include "Gragaire.h"
 #include "Peureuse.h"
 #include <vector>
 using namespace std;
@@ -13,3 +15,4 @@ public:
     ~Multiple();
     void move();
 };
+#endif

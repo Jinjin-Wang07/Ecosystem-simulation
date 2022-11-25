@@ -166,3 +166,7 @@ double Bestiole::getOrientation() {
 void Bestiole::setOrientation(double o) {
    this.orientation = o;
 }
+
+pair<double, double> Bestiole::getCoordinates() {
+   return {x, y};
+}

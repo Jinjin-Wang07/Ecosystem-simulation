@@ -1,4 +1,6 @@
-#include "Comportement.h"
+#ifndef PREVOYANTE
+#define PREVOYANTE
+#include "IComportement.h"
 #include <vector>
 using namespace std;
 typedef vector<float> Path;
@@ -10,3 +12,4 @@ Prevoyante();
 ~Prevoyante();
 void move();
 };
+#endif

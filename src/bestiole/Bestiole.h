@@ -61,7 +61,7 @@ public :// Forme canonique :
 
    double getOrientation();
    void setOrientation(double o);
-
+   pair<double, double> getCoordinates();
    friend bool operator==( const Bestiole & b1, const Bestiole & b2 );
 
 };
