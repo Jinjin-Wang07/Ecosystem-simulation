@@ -11,7 +11,11 @@ Kamikaze::~Kamikaze() {
 }
 void move(const Bestiole & b, vector<Bestiole*>const& seen_neighbors) {
     auto attractedNeighbor = getAttractedNeighbor(b, seen_neighbors);
-    
+    auto directionX = attractedNeighbor->getCoordinates().first - b.getCoordinates().first;
+    auto directionY = attractedNeighbor->getCoordinates().second - b.getCoordinates().second;
+    auto distance = sqrt(directionX * directionX + directionY * directionY);
+    auto newDirection = acos(directionX / distance)* 180.0 / M_PI;
+    b.setOrientation(newDirection);
 }
 Bestiole* getAttractedNeighbor(const Bestiole & b, vector<Bestiole*>const& seen_neighbors) {
     vector<double> distances;
