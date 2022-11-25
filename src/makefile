@@ -1,8 +1,10 @@
 # compile macro
 CC		= g++
 CFLAGS	= -Wall -std=c++11
+INCX11 = /opt/homebrew/include
+LIBX11 = /opt/homebrew/lib
 # LDFLAGS	= -lm
-INCLUDES= -I ../include/HMI -lX11 -lpthread
+INCLUDES= -I ../include/HMI -lX11 -lpthread . -I $(INCX11) -L $(LIBX11)
 
 # user modify: subdir, target and objects
 VPATH 	= ./bestiole ./environment
