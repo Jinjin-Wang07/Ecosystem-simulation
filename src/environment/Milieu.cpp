@@ -48,7 +48,7 @@ int Milieu::nbVoisins( const Bestiole & b )
 
 
    for ( std::vector<Bestiole>::iterator it = listeBestioles.begin() ; it != listeBestioles.end() ; ++it )
-      if ( !(b == *it) && b.jeTeVois(*it) )
+      if ( !(b == *it) && b.jeTePercoit(*it) )
          ++nb;
 
    return nb;
