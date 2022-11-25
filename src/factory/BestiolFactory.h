@@ -6,6 +6,8 @@
 #include <map>
 
 #include "../bestiole/Bestiole.h"
+#include "../environment/Milieu.h"
+
 
 using namespace std;
 
@@ -30,6 +32,9 @@ class BestiolFactory
         float camouflage_coef_max;
 
         int max_age;
+        double max_vitesse; 
+
+        int width, height;  // size of the aquarium
 
         float birth_rate;
         float clone_probability;
@@ -40,7 +45,7 @@ class BestiolFactory
         /*
         * Create a bestiolFactory with all default value
         */
-        BestiolFactory();
+        BestiolFactory(Milieu milieu);
         ~BestiolFactory();
 
 
@@ -53,6 +58,8 @@ class BestiolFactory
         *   Reset the factory variables to default
         */
         void reset_factory();
+
+        void initCoords(int&, int&);
 };
 
 #endif // _BESTIOL_FACTORY_H_
