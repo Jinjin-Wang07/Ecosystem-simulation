@@ -20,18 +20,18 @@ class Bestiole
 
 private :
    static int next_id;
-   const int identite;
+   int identite;
    
    // position variables
    int x;
    int y;
    double vitesse;
    double orientation;
-   double max_vitesse_with_acc;
+   double max_vitesse;
    
    // other variables
    int age;
-   const int age_limit;
+   int age_limit;
    double fragility;
 
    //affichage
@@ -55,7 +55,7 @@ public :// Forme canonique :
 
    void action( Milieu & monMilieu );
 
-   bool jeTePercoit( const Bestiole & b );
+   bool jeTePercoit( const Bestiole & b ) const;
    void changeState();
    void draw( UImg & support );
 

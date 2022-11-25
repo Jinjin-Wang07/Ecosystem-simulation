@@ -4,16 +4,17 @@ CFLAGS	= -Wall -std=c++11
 INCX11 = /opt/homebrew/include
 LIBX11 = /opt/homebrew/lib
 # LDFLAGS	= -lm
-INCLUDES= -I ../include/HMI -lX11 -lpthread . -I $(INCX11) -L $(LIBX11)
+INCLUDES= -I ../include/HMI  -I $(INCX11) 
+LIBS = -L $(LIBX11) -lX11 -lpthread
 
 # user modify: subdir, target and objects
-VPATH 	= ./bestiole ./environment
+VPATH 	= ./bestiole ./environment ./factory
 EXENAME = main
-OBJECTS	= Aquarium.o Milieu.o Bestiole.o main.o
+OBJECTS	= Aquarium.o Milieu.o Bestiole.o main.o BestiolFactory.o
 
 # make target
 all:${OBJECTS}
-	${CC} ${CFLAGS} -o ${EXENAME} ${OBJECTS} ${INCLUDES}
+	${CC} ${CFLAGS} -o ${EXENAME} ${OBJECTS} ${INCLUDES} ${LIBS}
 	
 # make clean
 clean:
@@ -21,5 +22,5 @@ clean:
 
 # dependence	
 %.o : %.cpp
-	${CC} ${CFLAGS} ${INCLUDES} -c $< -o $@
+	${CC} ${CFLAGS} ${INCLUDES} -c $<
 

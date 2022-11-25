@@ -5,9 +5,11 @@
 #include <cstdlib>
 #include <cmath>
 
+const double      Bestiole::AFF_SIZE = 8.;
+// const double      Bestiole::MAX_VITESSE = 10.;
+// const double      Bestiole::LIMITE_VUE = 30.;
 
-
-int               Bestiole::next_id = 0;
+int Bestiole::next_id = 0;
 
 
 Bestiole::Bestiole(int x,int y,double max_vitesse,int age_limit,double fragility)
@@ -18,10 +20,10 @@ Bestiole::Bestiole(int x,int y,double max_vitesse,int age_limit,double fragility
    y=y;
 
    orientation = static_cast<double>( rand() )/RAND_MAX*2.*M_PI;
-   vitesse = static_cast<double>( rand() )/RAND_MAX*MAX_VITESSE;
+   vitesse = static_cast<double>( rand() )/RAND_MAX*max_vitesse;
    
 
-   max_vitesse_with_acc=max_vitesse;
+   this->max_vitesse=max_vitesse;
    
    // other variables
    age=0;
@@ -29,12 +31,12 @@ Bestiole::Bestiole(int x,int y,double max_vitesse,int age_limit,double fragility
    fragility=fragility;
 
    //affichage
-   AFF_SIZE=10
+   // AFF_SIZE=10;
    double            cumulX, cumulY; 
  
    std::vector<IAccessoire> list_accessoire;
    std::vector<ICapteur> list_capteurs;
-   identite = ++next;
+ 
 
    cout << "const PreviousBestiole (" << identite << ") par defaut" << endl;
 
@@ -52,7 +54,7 @@ Bestiole::Bestiole(int x,int y,double max_vitesse,int age_limit,double fragility
 Bestiole::Bestiole(const Bestiole & b)
 {
    //TODO : update
-   identite = ++next;
+   identite = ++next_id;
 
    cout << "const PreviousBestiole (" << identite << ") par copie" << endl;
 
@@ -88,7 +90,7 @@ Bestiole::~Bestiole( void )
 void Bestiole::bouge( int xLim, int yLim )
 {
    orientation = static_cast<double>( rand() )/RAND_MAX*2.*M_PI;
-   vitesse = static_cast<double>( rand() )/RAND_MAX*MAX_VITESSE;
+   vitesse = static_cast<double>( rand() )/RAND_MAX*max_vitesse;
    double         nx, ny;
    double         dx = cos( orientation )*vitesse;
    double         dy = -sin( orientation )*vitesse;
@@ -130,7 +132,7 @@ void Bestiole::action( Milieu & monMilieu )
 }
 
 
-void Besiole::draw( UImg & support )
+void Bestiole::draw( UImg & support )
 {
 
    double         xt = x + cos( orientation )*AFF_SIZE/2.1;
@@ -151,10 +153,10 @@ bool operator==( const Bestiole & b1, const Bestiole & b2 )
 }
 
 
-bool Bestiole::jeTePercoit( const Bestiole & b )
+bool Bestiole::jeTePercoit( const Bestiole & b ) const
 {
    double         dist;
    dist = std::sqrt( (x-b.x)*(x-b.x) + (y-b.y)*(y-b.y) );
-   return ( dist <= LIMITE_VUE );
+   return ( dist <= 10 );
 
 }
