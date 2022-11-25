@@ -3,16 +3,18 @@
 
 using namespace std;
 
+class Milieu; // ??? why not aquarium...
 
 class ICapteur
 {
 private:
     /* coef */
-    double capacite_detection;
+    float distance;
+    float capacite_detection;
     
 public:
     virtual ~ICapteur();
-    virtual bool jeTePercoit(int x,int y ,double orientation,const Bestiole&);
+
     /*
     * Return the distance coefficient
     */
