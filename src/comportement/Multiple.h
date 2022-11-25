@@ -11,5 +11,5 @@ private:
 public:
     Multiple();
     ~Multiple();
-    void move();
+    void move(const Bestiole &b, vector<Bestiole> const& seen_neighbors);
 };
