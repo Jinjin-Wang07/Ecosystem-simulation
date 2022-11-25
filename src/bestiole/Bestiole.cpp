@@ -176,3 +176,7 @@ bool Bestiole::jeTePercoit( const Bestiole & b ) const
    return ( dist <= 10 );
 
 }
+
+double Bestiole::get_camouflage_coef(){
+   return this->camouflage_coef;
+}
