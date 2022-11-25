@@ -27,11 +27,12 @@ BestiolFactory::~BestiolFactory()
 Bestiole BestiolFactory::create_bestiole(){
     int x, y;
     initCoords(x, y);
+    std::cout<<"===========================  initial x y "<<x<<"     "<<y<<std::endl;
 
     double fragility = (rand()%100)/100;
 
     printf("==========: %d, %d=========================", x, y);
-    Bestiole new_bestiole = Bestiole(x, y, max_vitesse, max_age, fragility);
+    Bestiole new_bestiole(x, y, max_vitesse, max_age, fragility);
 
     return new_bestiole;
 // void addMember( const Bestiole & b ) { listeBestioles.push_back(b); listeBestioles.back().initCoords(width, height); }

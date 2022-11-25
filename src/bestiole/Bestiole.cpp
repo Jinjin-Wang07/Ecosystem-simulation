@@ -14,10 +14,11 @@ int Bestiole::next_id = 0;
 
 Bestiole::Bestiole(int x,int y,double max_vitesse,int age_limit,double fragility)
 {
+   
    identite = ++next_id;
    // position variables
-   x =x;
-   y=y;
+   this->x = x;
+   this->y = y;
 
    orientation = static_cast<double>( rand() )/RAND_MAX*2.*M_PI;
    vitesse = static_cast<double>( rand() )/RAND_MAX*max_vitesse;
@@ -50,11 +51,12 @@ Bestiole::Bestiole(int x,int y,double max_vitesse,int age_limit,double fragility
 
 }
 
+// TODO move construteur 
 
 Bestiole::Bestiole(const Bestiole & b)
 {
    //TODO : update
-   identite = ++next_id;
+   // identite = ++next_id;
 
    cout << "const PreviousBestiole (" << identite << ") par copie" << endl;
 
@@ -65,7 +67,6 @@ Bestiole::Bestiole(const Bestiole & b)
    vitesse = b.vitesse;
    couleur = new T[ 3 ];
    memcpy( couleur, b.couleur, 3*sizeof(T) );
-
 }
 
 
@@ -89,8 +90,8 @@ Bestiole::~Bestiole( void )
 
 void Bestiole::bouge( int xLim, int yLim )
 {
-   orientation = static_cast<double>( rand() )/RAND_MAX*2.*M_PI;
-   vitesse = static_cast<double>( rand() )/RAND_MAX*max_vitesse;
+   // orientation = static_cast<double>( rand() )/RAND_MAX*2.*M_PI;
+   // vitesse = static_cast<double>( rand() )/RAND_MAX*max_vitesse;
    double         nx, ny;
    double         dx = cos( orientation )*vitesse;
    double         dy = -sin( orientation )*vitesse;
