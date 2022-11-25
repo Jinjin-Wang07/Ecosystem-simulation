@@ -14,6 +14,7 @@ class BestiolFactory
     private:
 
     public:
+        map<string,double> total_num_bestiole;
         map<string,double> curr_num_bestiole; // {specie_name : number}
         tuple<float, float> eye_champ_angulaire_limit;
         tuple<float, float> eye_distance_limit;
