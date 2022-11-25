@@ -17,46 +17,47 @@ class Milieu;
 class Bestiole
 {
 
-private :
-   static const double     AFF_SIZE;
-   static const double     MAX_VITESSE;
-   static const double     LIMITE_VUE;
-
-   static int              next;
 
 private :
-   int               identite;
-   int               x, y;            // position pixel
-   double            cumulX, cumulY; // c'est pour affichage
-   double            orientation;
-   double            vitesse;
+   static int next_id;
+   const int identite;
+   
+   // position variables
+   int x;
+   int y;
+   double vitesse;
+   double orientation;
+   double max_vitesse_with_acc;
+   
+   // other variables
+   int age;
+   const int age_limit;
+   double fragility;
 
-   T               * couleur;
+   //affichage
+   static const double AFF_SIZE;
+   double            cumulX, cumulY; 
+   T* couleur;
+   IAccessoire* list_accessoire;
+   ICapteur* list_capteurs;
+
 
 private :
    void bouge( int xLim, int yLim );
 
-public :                                           // Forme canonique :
-   Bestiole( void );                               // Constructeur par defaut
+public :// Forme canonique :
+   Bestiole(int x,int y,double max_vitesse,int age_limit,double fragility);                               // Constructeur par defaut
    Bestiole( const Bestiole & b );                 // Constructeur de copies
-   ~Bestiole( void );                              // Destructeur
-                                                   // Operateur d'affectation binaire par defaut
+   ~Bestiole( void );                              // Destructeur                              // Operateur d'affectation binaire par defaut
+   
+   void addAccessoire(IAccessoire acc);
+   void addCapteur(ICapteur capteur);
+
    void action( Milieu & monMilieu );
+
+   bool jeTePercoit( const Bestiole & b );
+   void changeState();
    void draw( UImg & support );
-
-   bool jeTeVois( const Bestiole & b ) const;
-
-   void initCoords( int xLim, int yLim );
-
-   /*
-      add accessoire
-   */
-   bool add_accessoire(IAccessoire acc);
-
-   /*
-      add capteur
-   */
-   bool add_capteur(ICapteur capteur);
 
 
    friend bool operator==( const Bestiole & b1, const Bestiole & b2 );
