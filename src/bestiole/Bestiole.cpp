@@ -166,3 +166,7 @@ double Bestiole::getOrientation() {
 void Bestiole::setOrientation(double o) {
    this.orientation = o;
 }
+
+void Bestiole::setVitesse(double o) {
+    this->vitesse = o;
+}

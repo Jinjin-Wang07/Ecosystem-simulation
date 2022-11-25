@@ -8,6 +8,10 @@
 #include "IComportement.h"
 #include "betiole"
 
+#define MAX_NEIGHBOR;
+
+#define ESCAPE_VITESSE;
+
 class Peureuse : public IComportement{
 
 public:
