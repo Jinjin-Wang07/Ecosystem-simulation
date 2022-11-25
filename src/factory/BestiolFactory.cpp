@@ -32,7 +32,8 @@ Bestiole BestiolFactory::create_bestiole(){
     double fragility = (rand()%100)/100;
 
     printf("==========: %d, %d=========================", x, y);
-    Bestiole new_bestiole(x, y, max_vitesse, max_age, fragility);
+    double camouflage_coef=1;
+    Bestiole new_bestiole(x, y, max_vitesse, max_age, fragility,camouflage_coef);
 
     return new_bestiole;
 // void addMember( const Bestiole & b ) { listeBestioles.push_back(b); listeBestioles.back().initCoords(width, height); }

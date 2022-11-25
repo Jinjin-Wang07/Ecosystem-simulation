@@ -5,44 +5,26 @@
 #include <cstdlib>
 #include <cmath>
 
+
 const double      Bestiole::AFF_SIZE = 8.;
-// const double      Bestiole::MAX_VITESSE = 10.;
-// const double      Bestiole::LIMITE_VUE = 30.;
+const double      Bestiole::MAX_VITESSE = 10.;
+const double      Bestiole::LIMITE_VUE = 30.;
 
-int Bestiole::next_id = 0;
+int               Bestiole::next = 0;
 
 
-Bestiole::Bestiole(int x,int y,double max_vitesse,int age_limit,double fragility,double camouflage_coef)
+Bestiole::Bestiole( void )
 {
-   
-   identite = ++next_id;
-   // position variables
-   this->x = x;
-   this->y = y;
 
-   orientation = static_cast<double>( rand() )/RAND_MAX*2.*M_PI;
-   vitesse = static_cast<double>( rand() )/RAND_MAX*max_vitesse;
-   camouflage_coef=1;
+   identite = ++next;
 
-   this->max_vitesse=max_vitesse;
-   
-   // other variables
-   age=0;
-   this->age_limit=age_limit;
-   this->fragility=fragility;
+   cout << "const Bestiole (" << identite << ") par defaut" << endl;
 
-   //affichage
-   // AFF_SIZE=10;
- 
-   std::vector<IAccessoire> list_accessoire;
-   std::vector<ICapteur> list_capteurs;
- 
-
-   cout << "const PreviousBestiole (" << identite << ") par defaut" << endl;
-
-
+   x = y = 0;
    cumulX = cumulY = 0.;
-   
+   orientation = static_cast<double>( rand() )/RAND_MAX*2.*M_PI;
+   vitesse = static_cast<double>( rand() )/RAND_MAX*MAX_VITESSE;
+
    couleur = new T[ 3 ];
    couleur[ 0 ] = static_cast<int>( static_cast<double>( rand() )/RAND_MAX*230. );
    couleur[ 1 ] = static_cast<int>( static_cast<double>( rand() )/RAND_MAX*230. );
@@ -50,40 +32,22 @@ Bestiole::Bestiole(int x,int y,double max_vitesse,int age_limit,double fragility
 
 }
 
-// TODO move construteur 
 
-Bestiole::Bestiole(const Bestiole & b)
+Bestiole::Bestiole( const Bestiole & b )
 {
-   //TODO : update
-   // identite = ++next_id;
 
-   cout << "const PreviousBestiole (" << identite << ") par copie" << endl;
+   identite = ++next;
+
+   cout << "const Bestiole (" << identite << ") par copie" << endl;
 
    x = b.x;
    y = b.y;
    cumulX = cumulY = 0.;
-
-   this->max_vitesse=b.max_vitesse;
-   
-   // other variables
-   this->age=b.age;
-   this->age_limit=b.age_limit;
-   this->fragility=b.fragility;
-   
-   double cumulX, cumulY; 
-  
-
-   //affichage
-   // AFF_SIZE=10;
-   
-
-   list_accessoire=b.list_accessoire;
-   list_capteurs=b.list_capteurs;
-
    orientation = b.orientation;
    vitesse = b.vitesse;
    couleur = new T[ 3 ];
    memcpy( couleur, b.couleur, 3*sizeof(T) );
+
 }
 
 
@@ -91,24 +55,24 @@ Bestiole::~Bestiole( void )
 {
 
    delete[] couleur;
-   cout << "dest PreviousBestiole" << endl;
+
+   cout << "dest Bestiole" << endl;
 
 }
 
 
-// void Bestiole::initCoords( int xLim, int yLim )
-// {
+void Bestiole::initCoords( int xLim, int yLim )
+{
 
-//    x = rand() % xLim;
-//    y = rand() % yLim;
+   x = rand() % xLim;
+   y = rand() % yLim;
 
-// }
+}
 
 
 void Bestiole::bouge( int xLim, int yLim )
 {
-   // orientation = static_cast<double>( rand() )/RAND_MAX*2.*M_PI;
-   // vitesse = static_cast<double>( rand() )/RAND_MAX*max_vitesse;
+
    double         nx, ny;
    double         dx = cos( orientation )*vitesse;
    double         dy = -sin( orientation )*vitesse;
@@ -156,7 +120,6 @@ void Bestiole::draw( UImg & support )
    double         xt = x + cos( orientation )*AFF_SIZE/2.1;
    double         yt = y - sin( orientation )*AFF_SIZE/2.1;
 
-
    support.draw_ellipse( x, y, AFF_SIZE, AFF_SIZE/5., -orientation/M_PI*180., couleur );
    support.draw_circle( xt, yt, AFF_SIZE/2., couleur );
 
@@ -171,10 +134,13 @@ bool operator==( const Bestiole & b1, const Bestiole & b2 )
 }
 
 
-bool Bestiole::jeTePercoit( const Bestiole & b ) const
+bool Bestiole::jeTeVois( const Bestiole & b ) const
 {
+
    double         dist;
+
+
    dist = std::sqrt( (x-b.x)*(x-b.x) + (y-b.y)*(y-b.y) );
-   return ( dist <= 10 );
+   return ( dist <= LIMITE_VUE );
 
 }

@@ -33,6 +33,7 @@ private :
    int age;
    int age_limit;
    double fragility;
+   double camouflage_coef;
 
    //affichage
    static const double AFF_SIZE;
@@ -46,7 +47,7 @@ private :
    void bouge( int xLim, int yLim );
 
 public :// Forme canonique :
-   Bestiole(int x,int y,double max_vitesse,int age_limit,double fragility);                               // Constructeur par defaut
+   Bestiole(int x,int y,double max_vitesse,int age_limit,double fragility,double camouflage_coef);                               // Constructeur par defaut
    Bestiole( const Bestiole & b );                 // Constructeur de copies
    ~Bestiole( void );                              // Destructeur                              // Operateur d'affectation binaire par defaut
    
