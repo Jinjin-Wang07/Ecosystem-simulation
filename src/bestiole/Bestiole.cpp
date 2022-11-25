@@ -170,3 +170,7 @@ void Bestiole::setOrientation(double o) {
 pair<double, double> Bestiole::getCoordinates() {
    return {x, y};
 }
+void Bestiole::setVitesse(double o) {
+    this->vitesse = o;
+
+}

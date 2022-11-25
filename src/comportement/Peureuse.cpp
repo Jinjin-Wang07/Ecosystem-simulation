@@ -3,9 +3,28 @@
 //
 
 #include "Peureuse.h"
+#include <iostream>
 
-Peureuse::Peureuse() {}
+using namespace std;
 
-Peureuse::~Peureuse() {}
 
-void Peureuse::move(const int &b, int seen_neighbors) {}
+Peureuse::Peureuse() {
+    cout << "Create peureuse behavior" << endl;
+}
+
+Peureuse::~Peureuse() {
+    cout << "Destroy peureuse behavior" << endl;
+}
+
+void Peureuse::move(const Bestiole &b, vector<Bestiole> const& seen_neighbors) {
+    int neighbor_number = seen_neighbors.size();
+    if (neighbor_number > MAX_NEIGHBOR) {
+        double new_direction = b.getOrientation() * -1;
+        double new_vitesse = ESCAPE_VITESSE;
+        b.setOrientation(new_direction);
+        b.setVitesse(new_vitesse);
+    } else {
+        new_vitesse = static_cast<double>( rand() )/RAND_MAX*MAX_VITESSE;
+        b.setVitesse(new_vitesse);
+    }
+}
