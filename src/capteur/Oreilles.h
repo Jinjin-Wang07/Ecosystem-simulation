@@ -1,9 +1,10 @@
 #if !defined(_OREILLES_H_)
 #define _OREILLES_H_
 
-class Oreilles
-{
+class Oreilles: public ICapteur{
 private:
+    float distance_max;
+    float distance_min;
     
 public:
     Oreilles(float, float);
