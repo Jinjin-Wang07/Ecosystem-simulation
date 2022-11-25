@@ -23,17 +23,16 @@ private :
    int identite;
    
    // position variables
-   int x;
-   int y;
+   
    double vitesse;
-   double orientation;
+   
    double max_vitesse;
    
    // other variables
    int age;
    int age_limit;
    double fragility;
-   double camouflage_coef;
+   
 
    //affichage
    static const double AFF_SIZE;
@@ -47,9 +46,13 @@ private :
    void bouge( int xLim, int yLim );
 
 public :// Forme canonique :
-   Bestiole(int x,int y,double max_vitesse,int age_limit,double fragility,double camouflage_coef);                               // Constructeur par defaut
+   Bestiole(int x,int y,double max_vitesse,int age_limit,double fragility,double camouflage_coef);
    Bestiole( const Bestiole & b );                 // Constructeur de copies
-   ~Bestiole( void );                              // Destructeur                              // Operateur d'affectation binaire par defaut
+   ~Bestiole( void );         
+   int x;
+   int y;
+   double orientation;  
+   double camouflage_coef;                                       
    
    void addAccessoire(IAccessoire acc);
    void addCapteur(ICapteur capteur);
@@ -59,8 +62,7 @@ public :// Forme canonique :
    bool jeTePercoit( const Bestiole & b ) const;
    void changeState();
    void draw( UImg & support );
-
-
+   double get_camouflage_coef();
    friend bool operator==( const Bestiole & b1, const Bestiole & b2 );
 
 };
