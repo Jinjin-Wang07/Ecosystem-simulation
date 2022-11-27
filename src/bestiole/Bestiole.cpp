@@ -178,11 +178,11 @@ bool Bestiole::jeTePercoit( const Bestiole & b ) const
 }
 
 double Bestiole::getOrientation() {
-   return this.orientation;
+   return this->orientation;
 }
 
 void Bestiole::setOrientation(double o) {
-   this.orientation = o;
+   this->orientation = o;
 }
 
 pair<double, double> Bestiole::getCoordinates() {

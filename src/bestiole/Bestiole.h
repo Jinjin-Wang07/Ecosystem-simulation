@@ -65,7 +65,7 @@ public :// Forme canonique :
 
    pair<double, double> getCoordinates();
 
-   void setVitesse(double 0);
+   void setVitesse(double o);
 
    friend bool operator==( const Bestiole & b1, const Bestiole & b2 );
 
