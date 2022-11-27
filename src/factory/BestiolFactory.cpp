@@ -1,7 +1,12 @@
 #include "BestiolFactory.h"
 
+#include "../comportement/Gragaire.h"
+
 #include <cstdlib>
 #include <cmath>
+#include <memory>
+
+using namespace std;
 
 /*
 *   Default constructeur
@@ -34,6 +39,10 @@ Bestiole BestiolFactory::create_bestiole(){
     printf("==========: %d, %d=========================", x, y);
     double camouflage_coef=1;
     Bestiole new_bestiole(x, y, max_vitesse, max_age, fragility,camouflage_coef);
+
+    if (true) {
+        new_bestiole.setComportement(std::unique_ptr<Gragaire>(new Gragaire()));
+    }
 
     return new_bestiole;
 // void addMember( const Bestiole & b ) { listeBestioles.push_back(b); listeBestioles.back().initCoords(width, height); }

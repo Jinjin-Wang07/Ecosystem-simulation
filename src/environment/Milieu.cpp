@@ -2,6 +2,9 @@
 
 #include <cstdlib>
 #include <ctime>
+#include <vector>
+
+using namespace std;
 
 
 const T    Milieu::white[] = { (T)255, (T)255, (T)255 };
@@ -41,16 +44,29 @@ void Milieu::step( void )
 }
 
 
-int Milieu::nbVoisins(const Bestiole & b )
+int Milieu::nbVoisins(const Bestiole & b ) const
 {
 
    int         nb = 0;
 
 
-   for ( std::vector<Bestiole>::iterator it = listeBestioles.begin() ; it != listeBestioles.end() ; ++it )
+   for ( auto it = listeBestioles.cbegin() ; it != listeBestioles.cend() ; ++it )
       if ( !(b == *it) && b.jeTePercoit(*it) )
          ++nb;
 
    return nb;
 
+}
+
+vector<Bestiole const*> Milieu::getVoisins(const Bestiole & b ) const
+{
+   std::vector<Bestiole const*> voisins;
+
+   for (auto const& autre_bestiole:listeBestioles) {
+      if ( b != autre_bestiole && b.jeTePercoit(autre_bestiole) ) {
+         voisins.push_back(&autre_bestiole);
+      }
+   }
+
+   return voisins;
 }

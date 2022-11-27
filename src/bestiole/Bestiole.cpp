@@ -1,6 +1,7 @@
 #include "Bestiole.h"
 
 #include "../environment/Milieu.h"
+#include "../comportement/IComportement.h"
 
 #include <cstdlib>
 #include <cmath>
@@ -55,7 +56,7 @@ Bestiole::Bestiole(int x,int y,double max_vitesse,int age_limit,double fragility
 Bestiole::Bestiole(const Bestiole & b)
 {
    //TODO : update
-   // identite = ++next_id;
+   identite = b.identite;
 
    cout << "const PreviousBestiole (" << identite << ") par copie" << endl;
 
@@ -77,6 +78,10 @@ Bestiole::Bestiole(const Bestiole & b)
 
    list_accessoire=b.list_accessoire;
    list_capteurs=b.list_capteurs;
+
+   if (b.comportement) {
+      comportement =  b.comportement->clone();
+   }
 
    orientation = b.orientation;
    vitesse = b.vitesse;
@@ -107,6 +112,7 @@ void Bestiole::bouge( int xLim, int yLim )
 {
    // orientation = static_cast<double>( rand() )/RAND_MAX*2.*M_PI;
    // vitesse = static_cast<double>( rand() )/RAND_MAX*max_vitesse;
+
    double         nx, ny;
    double         dx = cos( orientation )*vitesse;
    double         dy = -sin( orientation )*vitesse;
@@ -136,13 +142,20 @@ void Bestiole::bouge( int xLim, int yLim )
       y = static_cast<int>( ny );
       cumulY += ny - y;
    }
-
 }
 
+ void Bestiole::setComportement(unique_ptr<IComportement> comportement) {
+   this->comportement = move(comportement);
+ }
 
 void Bestiole::action( Milieu & monMilieu )
 {
+   const auto seen_neighbors = monMilieu.getVoisins(*this);
 
+   if (comportement) {
+      comportement->move(*this, seen_neighbors);
+   }
+   
    bouge( monMilieu.getWidth(), monMilieu.getHeight() );
 
 }
@@ -169,15 +182,20 @@ bool operator==( const Bestiole & b1, const Bestiole & b2 )
 }
 
 
+bool operator!=( const Bestiole & b1, const Bestiole & b2) {
+   return !(b1 == b2);
+}
+
+
 bool Bestiole::jeTePercoit( const Bestiole & b ) const
 {
    double         dist;
    dist = std::sqrt( (x-b.x)*(x-b.x) + (y-b.y)*(y-b.y) );
-   return ( dist <= 10 );
+   return ( dist <= 30 );
 
 }
 
-double Bestiole::getOrientation() {
+double Bestiole::getOrientation() const {
    return this->orientation;
 }
 

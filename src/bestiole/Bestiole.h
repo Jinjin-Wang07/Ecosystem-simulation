@@ -7,10 +7,11 @@
 #include "../capteur/ICapteur.h"
 
 #include <iostream>
+#include <memory>
 
 using namespace std;
 
-
+class IComportement;
 class Milieu;
 
 
@@ -42,6 +43,8 @@ private :
    IAccessoire* list_accessoire;
    ICapteur* list_capteurs;
 
+   unique_ptr<IComportement> comportement;
+
 
 private :
    void bouge( int xLim, int yLim );
@@ -53,6 +56,7 @@ public :// Forme canonique :
    
    void addAccessoire(IAccessoire acc);
    void addCapteur(ICapteur capteur);
+   void setComportement(unique_ptr<IComportement> comportement);
 
    void action( Milieu & monMilieu );
 
@@ -60,7 +64,7 @@ public :// Forme canonique :
    void changeState();
    void draw( UImg & support );
 
-   double getOrientation();
+   double getOrientation() const;
    void setOrientation(double o);
 
    pair<double, double> getCoordinates();
@@ -71,5 +75,6 @@ public :// Forme canonique :
 
 };
 
+bool operator!=( const Bestiole & b1, const Bestiole & b2);
 
 #endif

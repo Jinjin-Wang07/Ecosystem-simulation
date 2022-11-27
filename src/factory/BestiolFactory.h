@@ -1,4 +1,4 @@
-#if !defined(_BESTIOL_FACTORY_H_)
+#ifndef _BESTIOL_FACTORY_H_
 #define _BESTIOL_FACTORY_H_
 
 #include <iostream>
@@ -9,7 +9,6 @@
 #include "../environment/Milieu.h"
 
 
-using namespace std;
 
 class BestiolFactory
 {
