@@ -1,28 +1,23 @@
+
 #ifndef _ICAPTEUR_H_
 #define _ICAPTEUR_H_
 
 using namespace std;
 
-class Milieu; // ??? why not aquarium...
-
+class Bestiole;
 class ICapteur {
-private:
-  /* coef */
-  float distance;
-  float capacite_detection;
 
 public:
-  virtual ~ICapteur();
+  // float distance;
+  float capacite_detection;
+  virtual ~ICapteur() = default;
+  virtual bool JeTePercoit(int x, int y, double orientation,
+                           const Bestiole &b) const = 0;
 
   /*
    * Return the distance coefficient
    */
-  virtual float get_distance();
-
-  /*
-   * Return the distance coefficient
-   */
-  virtual float get_capacite_detection();
+  float get_capacite_detection() { return capacite_detection; }
 };
 
 #endif

@@ -17,7 +17,8 @@ public:
   void move(Bestiole &b,
             std::vector<Bestiole const *> const &seen_neighbors) override;
   std::unique_ptr<IComportement> clone() const override;
+
 private:
-    bool fleeing = false;
+  bool fleeing = false;
 };
 #endif // ECOSYSTEM_SIMULATION_PEUREUSE_H

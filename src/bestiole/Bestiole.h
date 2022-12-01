@@ -33,7 +33,7 @@ private:
   double camouflage_coef;
 
   // affichage
-  //static const double AFF_SIZE;
+  // static const double AFF_SIZE;
   double cumulX, cumulY;
   T *couleur;
   IAccessoire *list_accessoire;
@@ -60,6 +60,7 @@ public: // Forme canonique :
   bool jeTePercoit(const Bestiole &b) const;
   void changeState();
   void draw(UImg &support);
+  double get_camouflage_coef() const;
 
   double getOrientation() const;
   void setOrientation(double o);

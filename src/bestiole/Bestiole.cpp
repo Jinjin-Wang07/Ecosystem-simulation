@@ -1,15 +1,15 @@
 #include "Bestiole.h"
 
 #include "../comportement/IComportement.h"
-#include "../environment/Milieu.h"
 #include "../constants.h"
+#include "../environment/Milieu.h"
 
 #include <cmath>
 #include <cstdlib>
 
-//const double Bestiole::AFF_SIZE = 8.;
-// const double      Bestiole::MAX_VITESSE = 10.;
-// const double      Bestiole::LIMITE_VUE = 30.;
+// const double Bestiole::AFF_SIZE = 8.;
+//  const double      Bestiole::MAX_VITESSE = 10.;
+//  const double      Bestiole::LIMITE_VUE = 30.;
 
 int Bestiole::next_id = 0;
 
@@ -174,3 +174,4 @@ void Bestiole::setOrientation(double o) { this->orientation = o; }
 
 pair<double, double> Bestiole::getCoordinates() const { return {x, y}; }
 void Bestiole::setVitesse(double o) { this->vitesse = max(o, MAX_VITESSE); }
+double Bestiole::get_camouflage_coef() const { return this->camouflage_coef; }
