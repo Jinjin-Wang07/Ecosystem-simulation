@@ -6,21 +6,18 @@
 #define ECOSYSTEM_SIMULATION_PEUREUSE_H
 
 #include "IComportement.h"
-#include "bestiole/Bestiole.h"
 
-#define MAX_NEIGHBOR;
-
-#define ESCAPE_VITESSE;
-
-class Peureuse : public IComportement{
+class Peureuse : public IComportement {
 
 public:
-    Peureuse();
+  Peureuse();
 
-    ~Peureuse();
+  ~Peureuse() override;
 
-    void move(const Bestiole & b, vector<Bestiole> seen_neighbors);
-
-
+  void move(Bestiole &b,
+            std::vector<Bestiole const *> const &seen_neighbors) override;
+  std::unique_ptr<IComportement> clone() const override;
+private:
+    bool fleeing = false;
 };
-#endif //ECOSYSTEM_SIMULATION_PEUREUSE_H
+#endif // ECOSYSTEM_SIMULATION_PEUREUSE_H

@@ -5,17 +5,16 @@ using namespace std;
 
 class Milieu; // ??? why not aquarium...
 
-class IAccessoire
-{
+class IAccessoire {
 private:
-    /* coef */
+  /* coef */
 public:
-    virtual ~IAccessoire();
+  virtual ~IAccessoire();
 
-    /*
-    * TODO : Accessoires don't have same coefficient
-    */
-    float get();
+  /*
+   * TODO : Accessoires don't have same coefficient
+   */
+  float get();
 };
 
 #endif

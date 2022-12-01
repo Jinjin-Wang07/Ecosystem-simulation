@@ -1,15 +1,16 @@
 #include "Comportement.h"
-#include "Kamikaze.h"
-#include "Prevoyante.h"
 #include "Gregaire.h"
+#include "Kamikaze.h"
 #include "Peureuse.h"
+#include "Prevoyante.h"
 #include <vector>
 using namespace std;
-class Multiple : public IComportement{
+class Multiple : public IComportement {
 private:
-    vector<IComportement> comportements;
+  vector<IComportement> comportements;
+
 public:
-    Multiple();
-    ~Multiple();
-    void move();
+  Multiple();
+  ~Multiple();
+  void move();
 };

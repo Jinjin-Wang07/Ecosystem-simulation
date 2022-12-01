@@ -1,11 +1,11 @@
 #include "Comportement.h"
 
-class Kamikaze : public IComportement{
+class Kamikaze : public IComportement {
 private:
-&Bestiole getAttractedNeighbor();
+  &Bestiole getAttractedNeighbor();
 
 public:
-Kamikaze();
-~Kamikaze();
-void move();
+  Kamikaze();
+  ~Kamikaze();
+  void move();
 };

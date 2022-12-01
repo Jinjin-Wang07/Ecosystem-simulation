@@ -1,57 +1,55 @@
 #include "BestiolFactory.h"
 
 #include "../comportement/Gragaire.h"
+#include "../comportement/Kamikaze.h"
+#include "../comportement/Peureuse.h"
 
-#include <cstdlib>
 #include <cmath>
+#include <cstdlib>
 #include <memory>
 
 using namespace std;
 
 /*
-*   Default constructeur
-*/
-BestiolFactory::BestiolFactory(Milieu milieu)
-{
+ *   Default constructeur
+ */
+BestiolFactory::BestiolFactory(Milieu milieu) {
 
-    total_num_bestiole["Basic_Bestiole"] = 20;
-    curr_num_bestiole["Basic_Bestiole"] = 0;
+  total_num_bestiole["Basic_Bestiole"] = 20;
+  curr_num_bestiole["Basic_Bestiole"] = 0;
 
-    this->width = milieu.getWidth();
-    this->height = milieu.getHeight();
+  this->width = milieu.getWidth();
+  this->height = milieu.getHeight();
 
-    this->max_age = 100;
-    this->max_vitesse = 10.0;
-    // eye_champ_angulaire_limit = 
+  this->max_age = 100;
+  this->max_vitesse = 10.0;
+  // eye_champ_angulaire_limit =
 }
 
-BestiolFactory::~BestiolFactory()
-{
+BestiolFactory::~BestiolFactory() {}
+
+Bestiole BestiolFactory::create_bestiole() {
+  int x, y;
+  initCoords(x, y);
+  std::cout << "===========================  initial x y " << x << "     " << y
+            << std::endl;
+
+  double fragility = (rand() % 100) / 100;
+
+  printf("==========: %d, %d=========================", x, y);
+  double camouflage_coef = 1;
+  Bestiole new_bestiole(x, y, max_vitesse, max_age, fragility, camouflage_coef);
+
+  if (true) {
+    new_bestiole.setComportement(std::unique_ptr<Peureuse>(new Peureuse()));
+  }
+
+  return new_bestiole;
+  // void addMember( const Bestiole & b ) { listeBestioles.push_back(b);
+  // listeBestioles.back().initCoords(width, height); }
 }
 
-Bestiole BestiolFactory::create_bestiole(){
-    int x, y;
-    initCoords(x, y);
-    std::cout<<"===========================  initial x y "<<x<<"     "<<y<<std::endl;
-
-    double fragility = (rand()%100)/100;
-
-    printf("==========: %d, %d=========================", x, y);
-    double camouflage_coef=1;
-    Bestiole new_bestiole(x, y, max_vitesse, max_age, fragility,camouflage_coef);
-
-    if (true) {
-        new_bestiole.setComportement(std::unique_ptr<Gragaire>(new Gragaire()));
-    }
-
-    return new_bestiole;
-// void addMember( const Bestiole & b ) { listeBestioles.push_back(b); listeBestioles.back().initCoords(width, height); }
-
-}
-
-
-void BestiolFactory::initCoords(int& x, int& y)
-{
-    x = rand() % width;
-    y = rand() % height;
+void BestiolFactory::initCoords(int &x, int &y) {
+  x = rand() % width;
+  y = rand() % height;
 }

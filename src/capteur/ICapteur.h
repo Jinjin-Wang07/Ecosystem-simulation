@@ -5,26 +5,24 @@ using namespace std;
 
 class Milieu; // ??? why not aquarium...
 
-class ICapteur
-{
+class ICapteur {
 private:
-    /* coef */
-    float distance;
-    float capacite_detection;
-    
+  /* coef */
+  float distance;
+  float capacite_detection;
+
 public:
-    virtual ~ICapteur();
+  virtual ~ICapteur();
 
-    /*
-    * Return the distance coefficient
-    */
-    virtual float get_distance();
+  /*
+   * Return the distance coefficient
+   */
+  virtual float get_distance();
 
-    /*
-    * Return the distance coefficient
-    */
-    virtual float get_capacite_detection();
-
+  /*
+   * Return the distance coefficient
+   */
+  virtual float get_capacite_detection();
 };
 
 #endif
