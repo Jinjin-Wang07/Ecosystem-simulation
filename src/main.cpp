@@ -8,7 +8,7 @@
 using namespace std;
 
 int main() {
-  int total_num_bestiole = 50;
+  int total_num_bestiole = 20;
 
   Aquarium ecosysteme(640, 480, 30);
   BestiolFactory bestiole_factory(ecosysteme.getMilieu());
