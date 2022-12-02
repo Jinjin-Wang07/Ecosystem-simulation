@@ -102,34 +102,29 @@ IComportement* BestiolFactory::get_random_comportement(){
  */
 void BestiolFactory::add_capteur_yeux(Bestiole &b){
     // eye_distance_limit
+    double distance = get_ramdom_value(eye_distance_limit.first, eye_distance_limit.second);
 
-    double min_dis = get<0>(eye_distance_limit);
-    double max_dis = get<1>(eye_distance_limit);
+    double champ_vision = get_ramdom_value(eye_champ_angulaire_limit.first , eye_champ_angulaire_limit.second);
 
-    std::uniform_real_distribution<double> unif_dis(min_dis, max_dis);
-    std::default_random_engine seed;
-    double distance = unif_dis(seed);
+    double capacite = get_ramdom_value(eye_capacite_detection_limit.first , eye_capacite_detection_limit.second);
 
-
-    std::uniform_real_distribution<double> unif_ang(eye_champ_angulaire_limit.first , eye_champ_angulaire_limit.second);
-    double champ_vision = unif_ang(seed);
-
-    std::uniform_real_distribution<double> unif_cap(eye_capacite_detection_limit.first , eye_capacite_detection_limit.second);
-    // champ_vision = 0;
-    double capacite = unif_cap(seed);
-
-
-    Yeux* yeux = new Yeux(0, distance, champ_vision, capacite);
-    b.addCapteur(yeux);
+    //Yeux* yeux = new Yeux(0, distance, champ_vision, capacite);
+    //b.addCapteur(yeux);
 }
 
 void BestiolFactory::add_capteur_oreille(Bestiole &b){
     double distance_min = 0;
     double distance_max = 2;
     double capacite_detection = 3;
+    
+    double distance = get_ramdom_value(ear_distance_limit.first, ear_distance_limit.second);
 
-    Oreilles* oreilles = new Oreilles(distance_min, distance_max, capacite_detection);
-    b.addCapteur(oreilles);
+    double capacite_detection = get_ramdom_value(ear_capacite_detection_limit.first,
+                                                ear_capacite_detection_limit.second);
+
+    unique_ptr<ICapteur> oreille=unique_ptr<ICapteur>(new Oreilles(distance_min, distance_max, capacite_detection));
+    //Oreilles* oreilles = new Oreilles(distance_min, distance_max, capacite_detection);
+    b.move_capteur(oreille);
 }
 
 
@@ -155,4 +150,9 @@ void BestiolFactory::add_accessoire_negeoire(Bestiole &b){
     // b.setVitesse(new_vitesse);
 }
 
-
+// fonction genere valeure ramdom uniform distribuate between [min, max]
+double BestiolFactory::get_ramdom_value(double min, double max){
+    std::uniform_real_distribution<double> unif(min, max);
+    std::default_random_engine seed;
+    return unif(seed);
+}

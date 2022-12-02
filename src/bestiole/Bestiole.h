@@ -8,7 +8,6 @@
 #include <iostream>
 #include <memory>
 #include <vector>
-
 using namespace std;
 
 class IComportement;
@@ -38,10 +37,8 @@ private:
   // static const double AFF_SIZE;
   double cumulX, cumulY;
   T *couleur;
-
-  //unique_ptr<IAccessoire>* list_accessoire;
-  std::vector<std::unique_ptr<ICapteur>> list_capteurs;
-
+  // IAccessoire *list_accessoire;
+  std::vector<unique_ptr<ICapteur>> list_capteurs;
 
   unique_ptr<IComportement> comportement;
 
@@ -52,23 +49,22 @@ public: // Forme canonique :
   Bestiole(int x, int y, double max_vitesse, int age_limit, double fragility,
            double camouflage_coef); // Constructeur par defaut
   Bestiole(const Bestiole &b);      // Constructeur de copies
-  Bestiole(Bestiole &&b);           // Move constructeur
+  // Bestiole(Bestiole &&b);           // Move constructeur
 
   ~Bestiole(void); // Destructeur                              // Operateur
                    // d'affectation binaire par defaut
 
-
-  //void addAccessoire(IAccessoire acc);
-  void addCapteur(ICapteur capteur);
-
+  void addAccessoire(IAccessoire acc);
+  void addCapteur(ICapteur* capteur);
   void setComportement(unique_ptr<IComportement> comportement);
+
   void action(Milieu &monMilieu);
 
   bool jeTePercoit(const Bestiole &b) const;
   void changeState();
   void draw(UImg &support);
   double get_camouflage_coef() const;
-  void set_camouflage_coef(double);
+  void set_camouflage_coef(double){this->camouflage_coef = camouflage_coef;};
 
   double getOrientation() const;
   void setOrientation(double o);
@@ -81,6 +77,7 @@ public: // Forme canonique :
   friend bool operator==(const Bestiole &b1, const Bestiole &b2);
 
   void addAccessoire(double speed_multiplier,double fragility_multiplier,double camouflage_mutliplier);
+  void move_capteur(unique_ptr<ICapteur>&& cap);
 };
 
 bool operator!=(const Bestiole &b1, const Bestiole &b2);
