@@ -18,8 +18,7 @@ all:
 	cd ./src && make;
 
 
-debug:
-	cd ./src && make debug;
+
 
 run:
 	cd ./src && make && ./main;

@@ -13,7 +13,7 @@ public:
        float capacite);
   ~Yeux() override = default;
   //move already 
-
+  void draw(UImg &support, double xt,double yt,double orientation) override;
   bool JeTePercoit(int x, int y, double orientation,
                    const Bestiole &b) const override;
 

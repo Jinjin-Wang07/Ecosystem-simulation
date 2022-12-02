@@ -17,17 +17,37 @@ using namespace std;
  */
 BestiolFactory::BestiolFactory(Milieu milieu) {
 
-  total_num_bestiole["Basic_Bestiole"] = 50;
-  curr_num_bestiole["Basic_Bestiole"] = 0;
+    total_num_bestiole["Basic_Bestiole"] = 50;
+    curr_num_bestiole["Basic_Bestiole"] = 0;
 
-  this->width = milieu.getWidth();
-  this->height = milieu.getHeight();
+    this->width = milieu.getWidth();
+    this->height = milieu.getHeight();
 
-  this->max_age = 100;
-  this->max_vitesse = 10.0;
-  // eye_champ_angulaire_limit =
-  curr_bestiole_comportment_num = {
-    {"Gragaire",0}, {"Kamikaze",0}, {"Peureuse",0}, {"Prevoyante", 0}, {"Multiple", 0}
+    // eye_champ_angulaire_limit =
+
+
+
+    eye_champ_angulaire_limit = make_pair(0, 2*M_PI);
+    eye_distance_limit = make_pair(20, 30);
+    eye_capacite_detection_limit = make_pair(0, 1);
+
+    ear_distance_limit = make_pair(20, 30);
+    ear_capacite_detection_limit = make_pair(0, 1);
+
+    nageoire_speed_coef_max = 10;
+    carapace_resistance_coef_max = 10;
+    carapace_speed_coef_max = 10;
+
+    camouflage_coef_max = make_pair(0.1, 0.9);
+
+    this->max_age = 100;
+    this->max_vitesse = 10.0;
+
+    birth_rate = 0.1; // 10 step 1 birth
+    clone_probability = 0.5;
+    
+    curr_bestiole_comportment_num = {
+        {"Gragaire",0}, {"Kamikaze",0}, {"Peureuse",0}, {"Prevoyante", 0}, {"Multiple", 0}
     };
 }
 
@@ -143,7 +163,7 @@ void BestiolFactory::add_capteur_oreille(Bestiole &b){
  * Camouflage_coef = 1 signifie il ne peut pas etre detecter
  */
 void BestiolFactory::add_accessoire_camouflage(Bestiole &b){
-    double coef = get_ramdom_value(0, camouflage_coef_max);
+    double coef = get_ramdom_value(camouflage_coef_max.first, camouflage_coef_max.second);
     b.set_camouflage_coef(coef);
 }
 
@@ -198,5 +218,7 @@ void BestiolFactory::set_random_accessoire(Bestiole &b){
 double BestiolFactory::get_ramdom_value(double min, double max){
     std::uniform_real_distribution<double> unif(min, max);
     std::default_random_engine seed;
-    return unif(seed);
+    double v = unif(seed);
+    cout << v << "=====================" << endl;
+    return v;
 }

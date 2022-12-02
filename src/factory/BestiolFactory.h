@@ -33,22 +33,22 @@ public:
     pair<double, double> ear_distance_limit;
     pair<double, double> ear_capacite_detection_limit;
 
-    float nageoire_speed_coef_max;
-    float carapace_resistance_coef_max;
-    float carapace_speed_coef_max;
+    double nageoire_speed_coef_max;
+    double carapace_resistance_coef_max;
+    double carapace_speed_coef_max;
 
-    float camouflage_coef_max; // should be smaller than 1
+    pair<double, double> camouflage_coef_max; // should be smaller than 1
 
     int max_age;
     double max_vitesse;
 
     int width, height; // size of the aquarium
 
-    float birth_rate;
-    float clone_probability;
+    double birth_rate;
+    double clone_probability;
 
     map<string, int> curr_bestiole_comportment_num;
-    float bestioles_comportement_distribution[5];
+    double bestioles_comportement_distribution[5];
 
 private:
     double get_ramdom_value(double, double);
