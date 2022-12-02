@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include <memory>
-
+#include <vector>
 using namespace std;
 
 class IComportement;
@@ -38,7 +38,7 @@ private:
   double cumulX, cumulY;
   T *couleur;
   // IAccessoire *list_accessoire;
-  ICapteur *list_capteurs;
+  std::vector<unique_ptr<ICapteur>> list_capteurs;
 
   unique_ptr<IComportement> comportement;
 
@@ -49,7 +49,7 @@ public: // Forme canonique :
   Bestiole(int x, int y, double max_vitesse, int age_limit, double fragility,
            double camouflage_coef); // Constructeur par defaut
   Bestiole(const Bestiole &b);      // Constructeur de copies
-  Bestiole(Bestiole &&b);           // Move constructeur
+  // Bestiole(Bestiole &&b);           // Move constructeur
 
   ~Bestiole(void); // Destructeur                              // Operateur
                    // d'affectation binaire par defaut
@@ -77,7 +77,7 @@ public: // Forme canonique :
   friend bool operator==(const Bestiole &b1, const Bestiole &b2);
 
   void addAccessoire(double speed_multiplier,double fragility_multiplier,double camouflage_mutliplier);
-  // void add_capteur(ICapteur* cap);
+  void move_capteur(unique_ptr<ICapteur>&& cap);
 };
 
 bool operator!=(const Bestiole &b1, const Bestiole &b2);

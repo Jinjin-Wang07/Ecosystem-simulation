@@ -124,7 +124,7 @@ void BestiolFactory::add_capteur_oreille(Bestiole &b){
 
     unique_ptr<ICapteur> oreille=unique_ptr<ICapteur>(new Oreilles(distance_min, distance_max, capacite_detection));
     //Oreilles* oreilles = new Oreilles(distance_min, distance_max, capacite_detection);
-    b.move_capteur(move(oreille));
+    b.move_capteur(oreille);
 }
 
 
