@@ -7,6 +7,9 @@
 #include <cmath>
 #include <iostream>
 #include <vector>
+
+
+
 using namespace std;
 
 Gragaire::Gragaire() { cout << "create a gregaire behavior" << endl; }

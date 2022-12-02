@@ -6,6 +6,13 @@
 
 #include <cmath>
 #include <cstdlib>
+#include <vector>
+#include <iostream>
+
+
+
+using namespace std;
+
 
 // const double Bestiole::AFF_SIZE = 8.;
 //  const double      Bestiole::MAX_VITESSE = 10.;
@@ -35,8 +42,8 @@ Bestiole::Bestiole(int x, int y, double max_vitesse, int age_limit,
   // affichage
   //  AFF_SIZE=10;
 
-  std::vector<IAccessoire> list_accessoire;
-  std::vector<ICapteur> list_capteurs;
+  std::vector<std::unique_ptr<IAccessoire>> list_accessoire;
+  std::vector<std::unique_ptr<ICapteur>> list_capteurs;
 
   cout << "const PreviousBestiole (" << identite << ") par defaut" << endl;
 
@@ -69,13 +76,17 @@ Bestiole::Bestiole(const Bestiole &b) {
 
   // affichage
   //  AFF_SIZE=10;
-
-  list_accessoire = b.list_accessoire;
-  list_capteurs = b.list_capteurs;
+   //TODO : copy list_accesoire
+   //list_accessoire = b.list_accessoire;
+   
+   vector<std::unique_ptr<ICapteur>> new_capteurs;
+   for (auto const& capteur : list_capteurs) {
+      new_capteurs.push_back(move(capteur->clone()));
+   }//clone all the capteurs
 
   if (b.comportement) {
     comportement = b.comportement->clone();
-  }
+  }//clone the comportement
 
   orientation = b.orientation;
   vitesse = b.vitesse;
@@ -156,16 +167,23 @@ void Bestiole::draw(UImg &support) {
 }
 
 bool operator==(const Bestiole &b1, const Bestiole &b2) {
-
   return (b1.identite == b2.identite);
 }
 
 bool operator!=(const Bestiole &b1, const Bestiole &b2) { return !(b1 == b2); }
 
 bool Bestiole::jeTePercoit(const Bestiole &b) const {
-  double dist;
-  dist = std::sqrt((x - b.x) * (x - b.x) + (y - b.y) * (y - b.y));
-  return (dist <= LIMITE_VUE);
+   for (auto const& capteur : list_capteurs) {
+      if (capteur->JeTePercoit(
+         this->x,
+         this->y,
+         this->orientation,
+         b
+      )){
+         return true;
+      }
+   }  
+   return false;
 }
 
 double Bestiole::getOrientation() const { return this->orientation; }

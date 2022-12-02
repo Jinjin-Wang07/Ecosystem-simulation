@@ -10,8 +10,11 @@ private:
 public:
   Oreilles(double distance_min, double distance_max, double capacite_detection);
   ~Oreilles() override = default;
+  //move already defined
+
   bool JeTePercoit(int x, int y, double orientation,
                    const Bestiole &b) const override;
+  std::unique_ptr<ICapteur> clone() const override;
 };
 
 #endif // _OREILLES_H_
