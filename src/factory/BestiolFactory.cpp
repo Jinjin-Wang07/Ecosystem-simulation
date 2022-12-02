@@ -17,18 +17,20 @@ using namespace std;
  */
 BestiolFactory::BestiolFactory(Milieu milieu) {
 
-  total_num_bestiole["Basic_Bestiole"] = 50;
-  curr_num_bestiole["Basic_Bestiole"] = 0;
+    total_num_bestiole["Basic_Bestiole"] = 50;
+    curr_num_bestiole["Basic_Bestiole"] = 0;
 
-  this->width = milieu.getWidth();
-  this->height = milieu.getHeight();
+    this->width = milieu.getWidth();
+    this->height = milieu.getHeight();
 
-  this->max_age = 100;
-  this->max_vitesse = 10.0;
-  // eye_champ_angulaire_limit =
-  curr_bestiole_comportment_num = {
-    {"Gragaire",0}, {"Kamikaze",0}, {"Peureuse",0}, {"Prevoyante", 0}, {"Multiple", 0}
+    this->max_age = 100;
+    this->max_vitesse = 10.0;
+    // eye_champ_angulaire_limit =
+    curr_bestiole_comportment_num = {
+        {"Gragaire",0}, {"Kamikaze",0}, {"Peureuse",0}, {"Prevoyante", 0}, {"Multiple", 0}
     };
+
+    
 }
 
 BestiolFactory::~BestiolFactory() {}
