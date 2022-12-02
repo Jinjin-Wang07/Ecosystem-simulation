@@ -4,37 +4,62 @@
 #include <iostream>
 #include <map>
 #include <string.h>
+#include <cmath>
+#include <cstdlib>
+#include <memory>
+#include <random>
 
 #include "../bestiole/Bestiole.h"
 #include "../environment/Milieu.h"
+#include "../comportement/IComportement.h"
+#include "../comportement/Gragaire.h"
+#include "../comportement/Kamikaze.h"
+#include "../comportement/Peureuse.h"
+#include "../comportement/Prevoyante.h"
+#include "../comportement/Multiple.h"
 
 class BestiolFactory {
 private:
 public:
-  map<string, double> total_num_bestiole;
-  map<string, double> curr_num_bestiole; // {specie_name : number}
-  tuple<float, float> eye_champ_angulaire_limit;
-  tuple<float, float> eye_distance_limit;
-  tuple<float, float> eye_capacite_detection_limit;
+    map<string, double> total_num_bestiole;
+    map<string, double> curr_num_bestiole; // {specie_name : number}
 
-  tuple<float, float> ear_distance_limit;
-  tuple<float, float> ear_capacite_detection_limit;
+    int const num_comportement = 5;
 
-  float nageoire_speed_coef_max;
-  float carapace_resistance_coef_max;
-  float carapace_speed_coef_max;
+    pair<double, double> eye_champ_angulaire_limit;
+    pair<double, double> eye_distance_limit;
+    pair<double, double> eye_capacite_detection_limit;
 
-  float camouflage_coef_max;
+    pair<double, double> ear_distance_limit;
+    pair<double, double> ear_capacite_detection_limit;
 
-  int max_age;
-  double max_vitesse;
+    float nageoire_speed_coef_max;
+    float carapace_resistance_coef_max;
+    float carapace_speed_coef_max;
 
-  int width, height; // size of the aquarium
+    float camouflage_coef_max; // should be smaller than 1
 
-  float birth_rate;
-  float clone_probability;
+    int max_age;
+    double max_vitesse;
 
-  float bestioles_comportement_distribution[5];
+    int width, height; // size of the aquarium
+
+    float birth_rate;
+    float clone_probability;
+
+    map<string, int> curr_bestiole_comportment_num;
+    float bestioles_comportement_distribution[5];
+
+private:
+    double get_ramdom_value(double, double);
+    void initCoords(int &, int &);
+
+    // function for adding capteurs and accessoires
+    void add_capteur_yeux(Bestiole &b);
+    void add_capteur_oreille(Bestiole &b);
+    void add_accessoire_camouflage(Bestiole &b);
+    void add_accessoire_carapace(Bestiole &b);
+    void add_accessoire_negeoire(Bestiole &b);
 
 public:
   /*
@@ -53,7 +78,11 @@ public:
    */
   void reset_factory();
 
-  void initCoords(int &, int &);
+  
+  IComportement* get_random_comportement();
+
+  void set_ramdom_capteur(Bestiole &b);
+  void set_random_accessoire(Bestiole& b);
 };
 
 #endif // _BESTIOL_FACTORY_H_
