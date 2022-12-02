@@ -8,11 +8,12 @@
 using namespace std;
 
 int main() {
+  int total_num_bestiole = 50;
 
   Aquarium ecosysteme(640, 480, 30);
   BestiolFactory bestiole_factory(ecosysteme.getMilieu());
 
-  for (int i = 1; i <= 20; ++i)
+  for (int i = 1; i <= total_num_bestiole; ++i)
     ecosysteme.getMilieu().addMember(bestiole_factory.create_bestiole());
   ecosysteme.run();
 
