@@ -23,11 +23,11 @@ public:
     int const num_comportement = 5;
 
     pair<double, double> eye_champ_angulaire_limit;
-    tuple<double, double> eye_distance_limit;
+    pair<double, double> eye_distance_limit;
     pair<double, double> eye_capacite_detection_limit;
 
-    tuple<float, float> ear_distance_limit;
-    tuple<float, float> ear_capacite_detection_limit;
+    pair<double, double> ear_distance_limit;
+    pair<double, double> ear_capacite_detection_limit;
 
     float nageoire_speed_coef_max;
     float carapace_resistance_coef_max;
@@ -47,6 +47,7 @@ public:
     float bestioles_comportement_distribution[5];
 
 private:
+    double get_ramdom_value(double, double);
     void initCoords(int &, int &);
 
     // function for adding capteurs and accessoires
