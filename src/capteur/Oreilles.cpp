@@ -10,11 +10,6 @@ Oreilles::Oreilles(double distance_min, double distance_max,
 }
 
 
-
-
-
-
-
 bool Oreilles::JeTePercoit(int x, int y, double orientation,
                            const Bestiole &b) const {
   auto coordinates = b.getCoordinates();
@@ -33,3 +28,12 @@ unique_ptr<ICapteur> Oreilles::clone() const {
       ));
 
 }
+
+void Oreilles::draw(UImg &support, double xt,double yt,double orientation){
+    T* couleur = new T[3];
+    couleur[0] = 223;
+    couleur[1] = 0;
+    couleur[2] = 0;
+    support.draw_circle(xt, yt, this->distance_max / 2., couleur,0.2);
+
+  }

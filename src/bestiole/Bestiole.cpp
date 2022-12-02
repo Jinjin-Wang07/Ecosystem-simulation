@@ -161,6 +161,10 @@ void Bestiole::draw(UImg &support) {
   double xt = x + cos(orientation) * AFF_SIZE / 2.1;
   double yt = y - sin(orientation) * AFF_SIZE / 2.1;
 
+  for (auto const& capteur : list_capteurs){
+    capteur->draw(support,xt,yt,orientation);
+  }
+  
   support.draw_ellipse(x, y, AFF_SIZE, AFF_SIZE / 5.,
                        -orientation / M_PI * 180., couleur);
   support.draw_circle(xt, yt, AFF_SIZE / 2., couleur);
