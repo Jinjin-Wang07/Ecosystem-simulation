@@ -119,18 +119,23 @@ void BestiolFactory::add_capteur_yeux(Bestiole &b){
 
     double capacite = get_ramdom_value(eye_capacite_detection_limit.first , eye_capacite_detection_limit.second);
 
-    Yeux* yeux = new Yeux(0, distance, champ_vision, capacite);
-    b.addCapteur(yeux);
+    //Yeux* yeux = new Yeux(0, distance, champ_vision, capacite);
+    //b.addCapteur(yeux);
 }
 
 void BestiolFactory::add_capteur_oreille(Bestiole &b){
+    double distance_min = 0;
+    double distance_max = 2;
+    double capacite_detection = 3;
+    
     double distance = get_ramdom_value(ear_distance_limit.first, ear_distance_limit.second);
 
     double capacite_detection = get_ramdom_value(ear_capacite_detection_limit.first,
                                                 ear_capacite_detection_limit.second);
 
-    Oreilles* oreilles = new Oreilles(0, distance, capacite_detection);
-    b.addCapteur(oreilles);
+    unique_ptr<ICapteur> oreille=unique_ptr<ICapteur>(new Oreilles(distance_min, distance_max, capacite_detection));
+    //Oreilles* oreilles = new Oreilles(distance_min, distance_max, capacite_detection);
+    b.move_capteur(oreille);
 }
 
 
