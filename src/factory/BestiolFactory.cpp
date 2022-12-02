@@ -137,8 +137,8 @@ void BestiolFactory::add_capteur_yeux(Bestiole &b){
 
     double capacite = get_ramdom_value(eye_capacite_detection_limit.first , eye_capacite_detection_limit.second);
 
-    //Yeux* yeux = new Yeux(0, distance, champ_vision, capacite);
-    //b.addCapteur(yeux);
+    Yeux* yeux = new Yeux(0, distance, champ_vision, capacite);
+    b.move_capteur(move(unique_ptr<ICapteur>(yeux)));
 }
 
 void BestiolFactory::add_capteur_oreille(Bestiole &b){
@@ -216,9 +216,10 @@ void BestiolFactory::set_random_accessoire(Bestiole &b){
 
 // fonction genere valeure ramdom uniform distribuate between [min, max]
 double BestiolFactory::get_ramdom_value(double min, double max){
-    std::uniform_real_distribution<double> unif(min, max);
-    std::default_random_engine seed;
-    double v = unif(seed);
-    cout << v << "=====================" << endl;
+    std::random_device rd;  // Will be used to obtain a seed for the random number engine
+    std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
+    std::uniform_real_distribution<> dis(min, max);
+    double v = dis(gen);
+    cout << v << "===================" << endl;
     return v;
 }
