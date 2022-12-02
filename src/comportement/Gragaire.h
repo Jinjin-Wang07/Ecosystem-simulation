@@ -6,20 +6,21 @@
 #define ECOSYSTEM_SIMULATION_GRAGAIRE_H
 
 #include "IComportement.h"
-#include "betiole"
 
-class Gragaire :  public IComportement{
+class Gragaire : public IComportement {
 
 public:
-    Gragaire( void );
+  Gragaire(void);
 
-    ~Gragaire( void );
+  ~Gragaire(void) override;
 
-    void move(const Bestiole & b, vector<Bestiole> seen_neighbors);
+  void move(Bestiole &b,
+            std::vector<Bestiole const *> const &seen_neighbors) override;
+  std::unique_ptr<IComportement> clone() const override;
 
 private:
-
-    std::pair<float, float> calculateAverageDirection (vector<Bestiole> seen_neighbors);
-
+  double calculateAverageDirection(
+      double my_orientation,
+      std::vector<Bestiole const *> const &seen_neighbors);
 };
-#endif //ECOSYSTEM_SIMULATION_GRAGAIRE_H
+#endif // ECOSYSTEM_SIMULATION_GRAGAIRE_H

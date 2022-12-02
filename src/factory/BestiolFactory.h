@@ -1,65 +1,59 @@
-#if !defined(_BESTIOL_FACTORY_H_)
+#ifndef _BESTIOL_FACTORY_H_
 #define _BESTIOL_FACTORY_H_
 
 #include <iostream>
-#include <string.h>
 #include <map>
+#include <string.h>
 
 #include "../bestiole/Bestiole.h"
 #include "../environment/Milieu.h"
 
+class BestiolFactory {
+private:
+public:
+  map<string, double> total_num_bestiole;
+  map<string, double> curr_num_bestiole; // {specie_name : number}
+  tuple<float, float> eye_champ_angulaire_limit;
+  tuple<float, float> eye_distance_limit;
+  tuple<float, float> eye_capacite_detection_limit;
 
-using namespace std;
+  tuple<float, float> ear_distance_limit;
+  tuple<float, float> ear_capacite_detection_limit;
 
-class BestiolFactory
-{
-    private:
+  float nageoire_speed_coef_max;
+  float carapace_resistance_coef_max;
+  float carapace_speed_coef_max;
 
-    public:
-        map<string,double> total_num_bestiole;
-        map<string,double> curr_num_bestiole; // {specie_name : number}
-        tuple<float, float> eye_champ_angulaire_limit;
-        tuple<float, float> eye_distance_limit;
-        tuple<float, float> eye_capacite_detection_limit;
+  float camouflage_coef_max;
 
-        tuple<float, float> ear_distance_limit;
-        tuple<float, float> ear_capacite_detection_limit;
+  int max_age;
+  double max_vitesse;
 
-        float nageoire_speed_coef_max;
-        float carapace_resistance_coef_max;
-        float carapace_speed_coef_max;
+  int width, height; // size of the aquarium
 
-        float camouflage_coef_max;
+  float birth_rate;
+  float clone_probability;
 
-        int max_age;
-        double max_vitesse; 
+  float bestioles_comportement_distribution[5];
 
-        int width, height;  // size of the aquarium
+public:
+  /*
+   * Create a bestiolFactory with all default value
+   */
+  BestiolFactory(Milieu milieu);
+  ~BestiolFactory();
 
-        float birth_rate;
-        float clone_probability;
+  /*
+   *   create a default bestiole
+   */
+  Bestiole create_bestiole();
 
-        float bestioles_comportement_distribution[5];
+  /*
+   *   Reset the factory variables to default
+   */
+  void reset_factory();
 
-    public:
-        /*
-        * Create a bestiolFactory with all default value
-        */
-        BestiolFactory(Milieu milieu);
-        ~BestiolFactory();
-
-
-        /*
-        *   create a default bestiole
-        */
-        Bestiole create_bestiole();
-
-        /*
-        *   Reset the factory variables to default
-        */
-        void reset_factory();
-
-        void initCoords(int&, int&);
+  void initCoords(int &, int &);
 };
 
 #endif // _BESTIOL_FACTORY_H_

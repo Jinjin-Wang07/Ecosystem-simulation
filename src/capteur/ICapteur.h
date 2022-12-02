@@ -5,15 +5,19 @@
 using namespace std;
 
 class Bestiole;
-class ICapteur
-{
-   
-public:
-    float distance;
-    float capacite_detection;
-    //virtual ~ICapteur();
-    virtual bool JeTePercoit(int x,int y,double orientation,const Bestiole& b) const = 0 ;
+class ICapteur {
 
+public:
+  // float distance;
+  float capacite_detection;
+  virtual ~ICapteur() = default;
+  virtual bool JeTePercoit(int x, int y, double orientation,
+                           const Bestiole &b) const = 0;
+
+  /*
+   * Return the distance coefficient
+   */
+  float get_capacite_detection() { return capacite_detection; }
 };
 
 #endif

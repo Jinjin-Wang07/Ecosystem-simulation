@@ -1,38 +1,32 @@
 #ifndef _MILIEU_H_
 #define _MILIEU_H_
 
-
 #include "../../include/HMI/UImg.h"
 #include "../bestiole/Bestiole.h"
 
 #include <iostream>
 #include <vector>
 
-using namespace std;
+class Milieu : public UImg {
 
+private:
+  static const T white[];
 
-class Milieu : public UImg
-{
+  int width, height;
+  std::vector<Bestiole> listeBestioles;
 
-private :
-   static const T          white[];
+public:
+  Milieu(int _width, int _height);
+  ~Milieu(void);
 
-   int                     width, height;
-   std::vector<Bestiole>   listeBestioles;
+  int getWidth(void) const { return width; };
+  int getHeight(void) const { return height; };
 
-public :
-   Milieu( int _width, int _height );
-   ~Milieu( void );
+  void step(void);
 
-   int getWidth( void ) const { return width; };
-   int getHeight( void ) const { return height; };
-
-   void step( void );
-
-   void addMember( const Bestiole & b ) { listeBestioles.push_back(b);}
-   int nbVoisins( const Bestiole & b );
-
+  void addMember(const Bestiole &b) { listeBestioles.push_back(b); }
+  std::vector<Bestiole const *> getVoisins(const Bestiole &b) const;
+  int nbVoisins(const Bestiole &b) const;
 };
-
 
 #endif

@@ -1,98 +1,93 @@
 #include "Bestiole.h"
 
+#include "../comportement/IComportement.h"
+#include "../constants.h"
 #include "../environment/Milieu.h"
 
-#include <cstdlib>
 #include <cmath>
+#include <cstdlib>
 
-const double      Bestiole::AFF_SIZE = 8.;
-// const double      Bestiole::MAX_VITESSE = 10.;
-// const double      Bestiole::LIMITE_VUE = 30.;
+// const double Bestiole::AFF_SIZE = 8.;
+//  const double      Bestiole::MAX_VITESSE = 10.;
+//  const double      Bestiole::LIMITE_VUE = 30.;
 
 int Bestiole::next_id = 0;
 
+Bestiole::Bestiole(int x, int y, double max_vitesse, int age_limit,
+                   double fragility, double camouflage_coef) {
 
-Bestiole::Bestiole(int x,int y,double max_vitesse,int age_limit,double fragility,double camouflage_coef)
-{
-   
-   identite = ++next_id;
-   // position variables
-   this->x = x;
-   this->y = y;
+  identite = ++next_id;
+  // position variables
+  this->x = x;
+  this->y = y;
 
-   orientation = static_cast<double>( rand() )/RAND_MAX*2.*M_PI;
-   vitesse = static_cast<double>( rand() )/RAND_MAX*max_vitesse;
-   camouflage_coef=1;
+  orientation = static_cast<double>(rand()) / RAND_MAX * 2. * M_PI;
+  vitesse = static_cast<double>(rand()) / RAND_MAX * max_vitesse;
+  camouflage_coef = 1;
 
-   this->max_vitesse=max_vitesse;
-   
-   // other variables
-   age=0;
-   this->age_limit=age_limit;
-   this->fragility=fragility;
+  this->max_vitesse = max_vitesse;
 
-   //affichage
-   // AFF_SIZE=10;
- 
-   std::vector<IAccessoire> list_accessoire;
-   std::vector<ICapteur> list_capteurs;
- 
+  // other variables
+  age = 0;
+  this->age_limit = age_limit;
+  this->fragility = fragility;
 
-   cout << "const PreviousBestiole (" << identite << ") par defaut" << endl;
+  // affichage
+  //  AFF_SIZE=10;
 
+  std::vector<IAccessoire> list_accessoire;
+  std::vector<ICapteur> list_capteurs;
 
-   cumulX = cumulY = 0.;
-   
-   couleur = new T[ 3 ];
-   couleur[ 0 ] = static_cast<int>( static_cast<double>( rand() )/RAND_MAX*230. );
-   couleur[ 1 ] = static_cast<int>( static_cast<double>( rand() )/RAND_MAX*230. );
-   couleur[ 2 ] = static_cast<int>( static_cast<double>( rand() )/RAND_MAX*230. );
+  cout << "const PreviousBestiole (" << identite << ") par defaut" << endl;
 
+  cumulX = cumulY = 0.;
+
+  couleur = new T[3];
+  couleur[0] = static_cast<int>(static_cast<double>(rand()) / RAND_MAX * 230.);
+  couleur[1] = static_cast<int>(static_cast<double>(rand()) / RAND_MAX * 230.);
+  couleur[2] = static_cast<int>(static_cast<double>(rand()) / RAND_MAX * 230.);
 }
 
-// TODO move construteur 
+// TODO move construteur
 
-Bestiole::Bestiole(const Bestiole & b)
-{
-   //TODO : update
-   // identite = ++next_id;
+Bestiole::Bestiole(const Bestiole &b) {
+  // TODO : update
+  identite = b.identite;
 
-   cout << "const PreviousBestiole (" << identite << ") par copie" << endl;
+  cout << "const PreviousBestiole (" << identite << ") par copie" << endl;
 
-   x = b.x;
-   y = b.y;
-   cumulX = cumulY = 0.;
+  x = b.x;
+  y = b.y;
+  cumulX = cumulY = 0.;
 
-   this->max_vitesse=b.max_vitesse;
-   
-   // other variables
-   this->age=b.age;
-   this->age_limit=b.age_limit;
-   this->fragility=b.fragility;
-   
+  this->max_vitesse = b.max_vitesse;
 
-   //affichage
-   // AFF_SIZE=10;
-   
+  // other variables
+  this->age = b.age;
+  this->age_limit = b.age_limit;
+  this->fragility = b.fragility;
 
-   list_accessoire=b.list_accessoire;
-   list_capteurs=b.list_capteurs;
+  // affichage
+  //  AFF_SIZE=10;
 
-   orientation = b.orientation;
-   vitesse = b.vitesse;
-   couleur = new T[ 3 ];
-   memcpy( couleur, b.couleur, 3*sizeof(T) );
+  list_accessoire = b.list_accessoire;
+  list_capteurs = b.list_capteurs;
+
+  if (b.comportement) {
+    comportement = b.comportement->clone();
+  }
+
+  orientation = b.orientation;
+  vitesse = b.vitesse;
+  couleur = new T[3];
+  memcpy(couleur, b.couleur, 3 * sizeof(T));
 }
 
+Bestiole::~Bestiole(void) {
 
-Bestiole::~Bestiole( void )
-{
-
-   delete[] couleur;
-   cout << "dest PreviousBestiole" << endl;
-
+  delete[] couleur;
+  cout << "dest PreviousBestiole" << endl;
 }
-
 
 // void Bestiole::initCoords( int xLim, int yLim )
 // {
@@ -102,81 +97,81 @@ Bestiole::~Bestiole( void )
 
 // }
 
+void Bestiole::bouge(int xLim, int yLim) {
+  // orientation = static_cast<double>( rand() )/RAND_MAX*2.*M_PI;
+  // vitesse = static_cast<double>( rand() )/RAND_MAX*max_vitesse;
 
-void Bestiole::bouge( int xLim, int yLim )
-{
-   // orientation = static_cast<double>( rand() )/RAND_MAX*2.*M_PI;
-   // vitesse = static_cast<double>( rand() )/RAND_MAX*max_vitesse;
-   double         nx, ny;
-   double         dx = cos( orientation )*vitesse;
-   double         dy = -sin( orientation )*vitesse;
-   int            cx, cy;
+  double nx, ny;
+  double dx = cos(orientation) * vitesse;
+  double dy = -sin(orientation) * vitesse;
+  int cx, cy;
 
+  cx = static_cast<int>(cumulX);
+  cumulX -= cx;
+  cy = static_cast<int>(cumulY);
+  cumulY -= cy;
 
-   cx = static_cast<int>( cumulX ); cumulX -= cx;
-   cy = static_cast<int>( cumulY ); cumulY -= cy;
+  nx = x + dx + cx;
+  ny = y + dy + cy;
 
-   nx = x + dx + cx;
-   ny = y + dy + cy;
+  if ((nx < 0) || (nx > xLim - 1)) {
+    orientation = M_PI - orientation;
+    cumulX = 0.;
+  } else {
+    x = static_cast<int>(nx);
+    cumulX += nx - x;
+  }
 
-   if ( (nx < 0) || (nx > xLim - 1) ) {
-      orientation = M_PI - orientation;
-      cumulX = 0.;
-   }
-   else {
-      x = static_cast<int>( nx );
-      cumulX += nx - x;
-   }
-
-   if ( (ny < 0) || (ny > yLim - 1) ) {
-      orientation = -orientation;
-      cumulY = 0.;
-   }
-   else {
-      y = static_cast<int>( ny );
-      cumulY += ny - y;
-   }
-
+  if ((ny < 0) || (ny > yLim - 1)) {
+    orientation = -orientation;
+    cumulY = 0.;
+  } else {
+    y = static_cast<int>(ny);
+    cumulY += ny - y;
+  }
 }
 
-
-void Bestiole::action( Milieu & monMilieu )
-{
-
-   bouge( monMilieu.getWidth(), monMilieu.getHeight() );
-
+void Bestiole::setComportement(unique_ptr<IComportement> comportement) {
+  this->comportement = move(comportement);
 }
 
+void Bestiole::action(Milieu &monMilieu) {
+  const auto seen_neighbors = monMilieu.getVoisins(*this);
 
-void Bestiole::draw( UImg & support )
-{
+  if (comportement) {
+    comportement->move(*this, seen_neighbors);
+  }
 
-   double         xt = x + cos( orientation )*AFF_SIZE/2.1;
-   double         yt = y - sin( orientation )*AFF_SIZE/2.1;
-
-
-   support.draw_ellipse( x, y, AFF_SIZE, AFF_SIZE/5., -orientation/M_PI*180., couleur );
-   support.draw_circle( xt, yt, AFF_SIZE/2., couleur );
-
+  bouge(monMilieu.getWidth(), monMilieu.getHeight());
 }
 
+void Bestiole::draw(UImg &support) {
 
-bool operator==( const Bestiole & b1, const Bestiole & b2 )
-{
+  double xt = x + cos(orientation) * AFF_SIZE / 2.1;
+  double yt = y - sin(orientation) * AFF_SIZE / 2.1;
 
-   return ( b1.identite == b2.identite );
-
+  support.draw_ellipse(x, y, AFF_SIZE, AFF_SIZE / 5.,
+                       -orientation / M_PI * 180., couleur);
+  support.draw_circle(xt, yt, AFF_SIZE / 2., couleur);
 }
 
+bool operator==(const Bestiole &b1, const Bestiole &b2) {
 
-bool Bestiole::jeTePercoit( const Bestiole & b ) const
-{
-   double         dist;
-   dist = std::sqrt( (x-b.x)*(x-b.x) + (y-b.y)*(y-b.y) );
-   return ( dist <= 10 );
-
+  return (b1.identite == b2.identite);
 }
 
-double Bestiole::get_camouflage_coef(){
-   return this->camouflage_coef;
+bool operator!=(const Bestiole &b1, const Bestiole &b2) { return !(b1 == b2); }
+
+bool Bestiole::jeTePercoit(const Bestiole &b) const {
+  double dist;
+  dist = std::sqrt((x - b.x) * (x - b.x) + (y - b.y) * (y - b.y));
+  return (dist <= LIMITE_VUE);
 }
+
+double Bestiole::getOrientation() const { return this->orientation; }
+
+void Bestiole::setOrientation(double o) { this->orientation = o; }
+
+pair<double, double> Bestiole::getCoordinates() const { return {x, y}; }
+void Bestiole::setVitesse(double o) { this->vitesse = max(o, MAX_VITESSE); }
+double Bestiole::get_camouflage_coef() const { return this->camouflage_coef; }

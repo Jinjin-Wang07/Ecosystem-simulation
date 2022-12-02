@@ -2,55 +2,53 @@
 
 #include <cstdlib>
 #include <ctime>
+#include <vector>
 
+using namespace std;
 
-const T    Milieu::white[] = { (T)255, (T)255, (T)255 };
+const T Milieu::white[] = {(T)255, (T)255, (T)255};
 
+Milieu::Milieu(int _width, int _height)
+    : UImg(_width, _height, 1, 3), width(_width), height(_height) {
 
-Milieu::Milieu( int _width, int _height ) : UImg( _width, _height, 1, 3 ),
-                                            width(_width), height(_height)
-{
+  cout << "const Milieu" << endl;
 
-   cout << "const Milieu" << endl;
-
-   std::srand( time(NULL) );
-
+  std::srand(time(NULL));
 }
 
+Milieu::~Milieu(void) { cout << "dest Milieu" << endl; }
 
-Milieu::~Milieu( void )
-{
+void Milieu::step(void) {
 
-   cout << "dest Milieu" << endl;
+  cimg_forXY(*this, x, y) fillC(x, y, 0, white[0], white[1], white[2]);
+  for (std::vector<Bestiole>::iterator it = listeBestioles.begin();
+       it != listeBestioles.end(); ++it) {
 
+    it->action(*this);
+    it->draw(*this);
+
+  } // for
 }
 
+int Milieu::nbVoisins(const Bestiole &b) const {
 
-void Milieu::step( void )
-{
+  int nb = 0;
 
-   cimg_forXY( *this, x, y ) fillC( x, y, 0, white[0], white[1], white[2] );
-   for ( std::vector<Bestiole>::iterator it = listeBestioles.begin() ; it != listeBestioles.end() ; ++it )
-   {
+  for (auto it = listeBestioles.cbegin(); it != listeBestioles.cend(); ++it)
+    if (!(b == *it) && b.jeTePercoit(*it))
+      ++nb;
 
-      it->action( *this );
-      it->draw( *this );
-
-   } // for
-
+  return nb;
 }
 
+vector<Bestiole const *> Milieu::getVoisins(const Bestiole &b) const {
+  std::vector<Bestiole const *> voisins;
 
-int Milieu::nbVoisins(const Bestiole & b )
-{
+  for (auto const &autre_bestiole : listeBestioles) {
+    if (b != autre_bestiole && b.jeTePercoit(autre_bestiole)) {
+      voisins.push_back(&autre_bestiole);
+    }
+  }
 
-   int         nb = 0;
-
-
-   for ( std::vector<Bestiole>::iterator it = listeBestioles.begin() ; it != listeBestioles.end() ; ++it )
-      if ( !(b == *it) && b.jeTePercoit(*it) )
-         ++nb;
-
-   return nb;
-
+  return voisins;
 }
