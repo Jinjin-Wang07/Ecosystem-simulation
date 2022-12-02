@@ -17,6 +17,9 @@ BestiolFactory::BestiolFactory(Milieu milieu)
 
     this->max_age = 100;
     this->max_vitesse = 10.0;
+
+
+    
     // eye_champ_angulaire_limit = 
 }
 
@@ -27,11 +30,11 @@ BestiolFactory::~BestiolFactory()
 Bestiole BestiolFactory::create_bestiole(){
     int x, y;
     initCoords(x, y);
-    std::cout<<"===========================  initial x y "<<x<<"     "<<y<<std::endl;
+    // std::cout<<"===========================  initial x y "<<x<<"     "<<y<<std::endl;
 
     double fragility = (rand()%100)/100;
 
-    printf("==========: %d, %d=========================", x, y);
+    // printf("==========: %d, %d=========================", x, y);
     double camouflage_coef=1;
     Bestiole new_bestiole(x, y, max_vitesse, max_age, fragility,camouflage_coef);
 
