@@ -55,7 +55,7 @@ public: // Forme canonique :
                    // d'affectation binaire par defaut
 
   void addAccessoire(IAccessoire acc);
-  void addCapteur(ICapteur capteur);
+  void addCapteur(ICapteur* capteur);
   void setComportement(unique_ptr<IComportement> comportement);
 
   void action(Milieu &monMilieu);
@@ -77,7 +77,6 @@ public: // Forme canonique :
   friend bool operator==(const Bestiole &b1, const Bestiole &b2);
 
   void addAccessoire(double speed_multiplier,double fragility_multiplier,double camouflage_mutliplier);
-  void add_capteur(ICapteur* cap);
 };
 
 bool operator!=(const Bestiole &b1, const Bestiole &b2);

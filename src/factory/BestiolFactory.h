@@ -22,9 +22,9 @@ public:
 
     int const num_comportement = 5;
 
-    tuple<float, float> eye_champ_angulaire_limit;
-    tuple<float, float> eye_distance_limit;
-    tuple<float, float> eye_capacite_detection_limit;
+    pair<double, double> eye_champ_angulaire_limit;
+    tuple<double, double> eye_distance_limit;
+    pair<double, double> eye_capacite_detection_limit;
 
     tuple<float, float> ear_distance_limit;
     tuple<float, float> ear_capacite_detection_limit;

@@ -11,6 +11,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <memory>
+#include <random>
 
 using namespace std;
 
@@ -102,18 +103,33 @@ IComportement* BestiolFactory::get_random_comportement(){
 void BestiolFactory::add_capteur_yeux(Bestiole &b){
     // eye_distance_limit
 
-    // double distance_min = distance_max = 0.0;
+    double min_dis = get<0>(eye_distance_limit);
+    double max_dis = get<1>(eye_distance_limit);
+
+    std::uniform_real_distribution<double> unif_dis(min_dis, max_dis);
+    std::default_random_engine seed;
+    double distance = unif_dis(seed);
+
+
+    std::uniform_real_distribution<double> unif_ang(eye_champ_angulaire_limit.first , eye_champ_angulaire_limit.second);
+    double champ_vision = unif_ang(seed);
+
+    std::uniform_real_distribution<double> unif_cap(eye_capacite_detection_limit.first , eye_capacite_detection_limit.second);
     // champ_vision = 0;
-    // capacite = 0;
+    double capacite = unif_cap(seed);
 
 
-    Yeux* yeux = new Yeux(distance_min, distance_max, champ_vision, capacite);
-    b.add_capteur(yeux);
-
+    Yeux* yeux = new Yeux(0, distance, champ_vision, capacite);
+    b.addCapteur(yeux);
 }
 
 void BestiolFactory::add_capteur_oreille(Bestiole &b){
+    double distance_min = 0;
+    double distance_max = 2;
+    double capacite_detection = 3;
 
+    Oreilles* oreilles = new Oreilles(distance_min, distance_max, capacite_detection);
+    b.addCapteur(oreilles);
 }
 
 
