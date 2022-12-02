@@ -3,9 +3,12 @@
 #define _ICAPTEUR_H_
 
 using namespace std;
+#include <memory>
+
 
 class Bestiole;
 class ICapteur {
+
 
 public:
   // float distance;
@@ -13,6 +16,7 @@ public:
   virtual ~ICapteur() = default;
   virtual bool JeTePercoit(int x, int y, double orientation,
                            const Bestiole &b) const = 0;
+  virtual std::unique_ptr<ICapteur> clone() const = 0;
 
   /*
    * Return the distance coefficient

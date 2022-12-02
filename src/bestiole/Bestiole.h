@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <memory>
+#include <vector>
 
 using namespace std;
 
@@ -37,8 +38,10 @@ private:
   // static const double AFF_SIZE;
   double cumulX, cumulY;
   T *couleur;
-  // IAccessoire *list_accessoire;
-  ICapteur *list_capteurs;
+
+  //unique_ptr<IAccessoire>* list_accessoire;
+  std::vector<std::unique_ptr<ICapteur>> list_capteurs;
+
 
   unique_ptr<IComportement> comportement;
 
@@ -54,10 +57,11 @@ public: // Forme canonique :
   ~Bestiole(void); // Destructeur                              // Operateur
                    // d'affectation binaire par defaut
 
-  void addAccessoire(IAccessoire acc);
-  void addCapteur(ICapteur* capteur);
-  void setComportement(unique_ptr<IComportement> comportement);
 
+  //void addAccessoire(IAccessoire acc);
+  void addCapteur(ICapteur capteur);
+
+  void setComportement(unique_ptr<IComportement> comportement);
   void action(Milieu &monMilieu);
 
   bool jeTePercoit(const Bestiole &b) const;
