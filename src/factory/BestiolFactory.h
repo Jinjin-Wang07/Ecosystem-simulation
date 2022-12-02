@@ -4,6 +4,10 @@
 #include <iostream>
 #include <map>
 #include <string.h>
+#include <cmath>
+#include <cstdlib>
+#include <memory>
+#include <random>
 
 #include "../bestiole/Bestiole.h"
 #include "../environment/Milieu.h"
@@ -33,7 +37,7 @@ public:
     float carapace_resistance_coef_max;
     float carapace_speed_coef_max;
 
-    float camouflage_coef_max;
+    float camouflage_coef_max; // should be smaller than 1
 
     int max_age;
     double max_vitesse;
@@ -76,8 +80,9 @@ public:
 
   
   IComportement* get_random_comportement();
-//   void add_accessoire(Bestiole &b);
 
+  void set_ramdom_capteur(Bestiole &b);
+  void set_random_accessoire(Bestiole& b);
 };
 
 #endif // _BESTIOL_FACTORY_H_

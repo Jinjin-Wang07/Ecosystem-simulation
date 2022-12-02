@@ -30,7 +30,13 @@ private:
   // other variables
   int age;
   int age_limit;
+
+  /**
+   * fragility = [0, 1] (Probabilite de mort)
+   */
   double fragility;
+
+
   double camouflage_coef;
 
   // affichage
@@ -78,6 +84,12 @@ public: // Forme canonique :
 
   void addAccessoire(double speed_multiplier,double fragility_multiplier,double camouflage_mutliplier);
   // void add_capteur(ICapteur* cap);
+
+
+  void set_fragility(double f){this->fragility = f;};
+  double get_fragility(){return this->fragility;};
+
+
 };
 
 bool operator!=(const Bestiole &b1, const Bestiole &b2);

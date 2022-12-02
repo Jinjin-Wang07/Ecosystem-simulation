@@ -8,10 +8,7 @@
 #include "../capteur/Yeux.h"
 #include "../capteur/Oreilles.h"
 
-#include <cmath>
-#include <cstdlib>
-#include <memory>
-#include <random>
+
 
 using namespace std;
 
@@ -52,6 +49,12 @@ Bestiole BestiolFactory::create_bestiole() {
         new_bestiole.setComportement(std::unique_ptr<IComportement>(comportement));
     }
 
+    // Add ramdomly the yeux / oreille
+    set_ramdom_capteur(new_bestiole);
+
+    // Add ramdomly the accessoires
+    set_random_accessoire(new_bestiole);
+
     curr_num_bestiole["Basic_Bestiole"]++;
 
     return new_bestiole;
@@ -63,6 +66,12 @@ void BestiolFactory::initCoords(int &x, int &y) {
 }
 
 
+
+/**
+ * Get randomly a comportement
+ * return : Pointer of a Comportement that implemented IComportement
+ *  TODO : Prevoyante and Multiple aren't implemented
+ */ 
 IComportement* BestiolFactory::get_random_comportement(){
     
     // int index_comportement = (rand() % (num_comportement))+ 1;
@@ -129,21 +138,56 @@ void BestiolFactory::add_capteur_oreille(Bestiole &b){
  * Camouflage_coef = 1 signifie il ne peut pas etre detecter
  */
 void BestiolFactory::add_accessoire_camouflage(Bestiole &b){
-    b.set_camouflage_coef();
+    double coef = get_ramdom_value(0, camouflage_coef_max);
+    b.set_camouflage_coef(coef);
 }
 
 void BestiolFactory::add_accessoire_carapace(Bestiole &b){
-    b.set_fragility();
-    b.setVitesse();
+    double coef_fra = get_ramdom_value(0, carapace_resistance_coef_max);
+    double new_fra = b.get_fragility() / coef_fra;
+    b.set_fragility(new_fra);
+
+    double coef_v = get_ramdom_value(1, carapace_speed_coef_max);
+    double new_vitesse = b.get_vitesse() / coef_v;
+    b.setVitesse(new_vitesse);
 }
 
 /**
  *  Here we suposse that bestiol can only have one negeoire
  */
 void BestiolFactory::add_accessoire_negeoire(Bestiole &b){
-    // double new_vitesse = b.get_vitesse() * 
-    // b.setVitesse(new_vitesse);
+    double coef_v = get_ramdom_value(1, nageoire_speed_coef_max);
+    double new_vitesse = b.get_vitesse() * coef_v;
+    b.setVitesse(new_vitesse);
 }
+
+
+/** 
+ * Set randomly capteurs
+ * Probablility(get_ramdom_value(0,1)>0.5) == 50%
+ */ 
+void BestiolFactory::set_ramdom_capteur(Bestiole &b){
+    bool have_yeux = get_ramdom_value(0,1)>0.5;
+    bool have_oreille = get_ramdom_value(0,1)>0.5;
+
+    if(have_yeux) add_capteur_yeux(b);
+    if(have_oreille) add_capteur_oreille(b);
+}
+
+/** 
+ * Set randomly accessoires
+ * Probablility(get_ramdom_value(0,1)>0.5) == 50%
+ */ 
+void BestiolFactory::set_random_accessoire(Bestiole &b){
+    bool have_carapace = get_ramdom_value(0,1)>0.5;
+    bool have_camouflage = get_ramdom_value(0,1)>0.5;
+    bool have_negeoire = get_ramdom_value(0,1)>0.5;
+
+    if(have_carapace) add_accessoire_carapace(b);
+    if(have_camouflage) add_accessoire_camouflage(b);
+    if(have_negeoire) add_accessoire_negeoire(b);
+}
+
 
 // fonction genere valeure ramdom uniform distribuate between [min, max]
 double BestiolFactory::get_ramdom_value(double min, double max){
