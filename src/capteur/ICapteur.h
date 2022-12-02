@@ -1,27 +1,18 @@
+
 #ifndef _ICAPTEUR_H_
 #define _ICAPTEUR_H_
 
 using namespace std;
 
-
+class Bestiole;
 class ICapteur
 {
-private:
-    /* coef */
-    double capacite_detection;
-    
+   
 public:
-    virtual ~ICapteur();
-    virtual bool jeTePercoit(int x,int y ,double orientation,const Bestiole&);
-    /*
-    * Return the distance coefficient
-    */
-    virtual float get_distance();
-
-    /*
-    * Return the distance coefficient
-    */
-    virtual float get_capacite_detection();
+    float distance;
+    float capacite_detection;
+    //virtual ~ICapteur();
+    virtual bool JeTePercoit(int x,int y,double orientation,const Bestiole& b) const = 0 ;
 
 };
 

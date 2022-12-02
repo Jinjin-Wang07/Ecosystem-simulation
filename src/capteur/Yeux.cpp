@@ -1,28 +1,28 @@
-#include "Oreilles.h"
-
+#include "Yeux.h"
+#include "../bestiole/Bestiole.h"
 Yeux::Yeux(double distance_min,double distance_max,double champ_vision,float capacite){
-    distance_min=distance_min;
-    distance_max=distance_max;
-    champ_vision=champ_vision;
-    capacite_detection=capacite_detection;
+    this->distance_min=distance_min;
+    this->distance_max=distance_max;
+    this->champ_vision=champ_vision;
+    this->capacite_detection=capacite;
 }
 
-bool Oreilles::JeTePercoit(int x,int y,double orientation,const Bestiole& b) const{
+bool Yeux::JeTePercoit(int x,int y,double orientation,const Bestiole& b) const{
    int dx= x-b.x;
    int dy= y-b.y;
    
     // Angle returned as: (ref : https://stackoverflow.com/a/62486304/18059322)
-    //                      90
-    //            135                45
+    //                      pi/2
+    //            3*pi/4                pi/4
     //
-    //       180          Origin           0
+    //       pi          Origin           0
     //
-    //           -135                -45
+    //           -3*pi/4                -pi/4
     //
-    //                     -90
-   double angle = std::atan2(p1.y - p2.y, p1.x - p2.x);
-   double dangle=angle-direction;
-
-   dist = std::sqrt( ()*(x-b.x) + (y-b.y)*(y-b.y) );
-   return ((dangle<champ_vision)& (dist <= dmax) & (dist >= dmin) );
+    //                     -pi
+    
+    double angle = std::atan2(dy,dx);
+    double dangle=angle-b.orientation;
+    double dist = std::sqrt( (x-b.x)*(x-b.x) + (y-b.y)*(y-b.y) );
+    return ((abs(dangle)<this->champ_vision/2) & (dist <= this->distance_max) & (dist >= this->distance_min) & (this->capacite_detection > b.camouflage_coef));
 }

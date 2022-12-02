@@ -1,15 +1,19 @@
 #if !defined(_TEUX_H_)
 #define _TEUX_H_
+#include "ICapteur.h"
 
-class Yeux
+class Yeux : public ICapteur
 {
 private:
-    double distance_max;
     double distance_min;
-    double champ_vision;
+    double distance_max;
+    float champ_vision;
 public:
-    Yeux(double dist_min, double dist_max, double champ_vision);
-    ~Yeux();
+    Yeux(double distance_min,double distance_max,double champ_vision,float capacite);
+    //~Yeux();
+    bool JeTePercoit(int x,int y,double orientation,const Bestiole& b) const override;
+
+
 };
 
 #endif // _TEUX_H_
