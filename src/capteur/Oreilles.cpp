@@ -34,6 +34,7 @@ void Oreilles::draw(UImg &support, double xt,double yt,double orientation){
     couleur[0] = 223;
     couleur[1] = 0;
     couleur[2] = 0;
+    std::cout<<"oreille is drawn"<<std::endl;
     support.draw_circle(xt, yt, this->distance_max / 2., couleur,0.2);
 
   }

@@ -1,6 +1,6 @@
 # compile macro
 CC		= g++
-CFLAGS	= -Wall -std=c++11
+CFLAGS	= -std=c++11 -Wall -g
 INCX11 = /opt/homebrew/include
 LIBX11 = /opt/homebrew/lib
 # LDFLAGS	= -lm
@@ -15,10 +15,8 @@ OBJECTS	= Aquarium.o Milieu.o Bestiole.o main.o BestiolFactory.o Gragaire.o Peur
 
 # make target
 all:${OBJECTS}
-	${CC} ${CFLAGS} -o ${EXENAME} ${OBJECTS} ${INCLUDES} ${LIBS}
-debug:${OBJECTS}
-	${CC} ${CFLAGS} -o ${EXENAME} ${OBJECTS} ${INCLUDES} ${LIBS} -g 
-	
+	${CC} ${CFLAGS} -o ${EXENAME} ${OBJECTS} ${INCLUDES} ${LIBS} 
+
 # make clean
 clean:
 	rm -rf ${EXENAME} ${OBJECTS} 

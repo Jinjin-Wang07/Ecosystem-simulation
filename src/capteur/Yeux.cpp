@@ -63,7 +63,7 @@ void Yeux::draw(UImg &support, double xt,double yt,double orientation){
     double xt3=xt-champ_vision*std::cos(orientation/2);
     double yt3=yt-champ_vision*std::sin(orientation/2);
 
-
+    
     support.draw_triangle(xt, yt,xt2,yt2,xt3,yt3, couleur,0.2);
     
 
