@@ -222,6 +222,7 @@ double Bestiole::get_camouflage_coef() const { return this->camouflage_coef; }
 /**
  * Fonction for adding the capteurs
  */
-void Bestiole::add_capteur(ICapteur* cap){
+void Bestiole::move_capteur(unique_ptr<ICapteur>&& cap){
   list_capteurs.push_back(cap);
+  
 }
