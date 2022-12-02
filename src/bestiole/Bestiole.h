@@ -13,7 +13,8 @@ using namespace std;
 class IComportement;
 class Milieu;
 
-class Bestiole {
+class Bestiole
+{
 
 private:
   static int next_id;
@@ -36,7 +37,7 @@ private:
   // static const double AFF_SIZE;
   double cumulX, cumulY;
   T *couleur;
-  IAccessoire *list_accessoire;
+  // IAccessoire *list_accessoire;
   ICapteur *list_capteurs;
 
   unique_ptr<IComportement> comportement;
@@ -48,6 +49,8 @@ public: // Forme canonique :
   Bestiole(int x, int y, double max_vitesse, int age_limit, double fragility,
            double camouflage_coef); // Constructeur par defaut
   Bestiole(const Bestiole &b);      // Constructeur de copies
+  Bestiole(Bestiole &&b);           // Move constructeur
+
   ~Bestiole(void); // Destructeur                              // Operateur
                    // d'affectation binaire par defaut
 
@@ -61,6 +64,7 @@ public: // Forme canonique :
   void changeState();
   void draw(UImg &support);
   double get_camouflage_coef() const;
+  void set_camouflage_coef(double);
 
   double getOrientation() const;
   void setOrientation(double o);
@@ -68,8 +72,12 @@ public: // Forme canonique :
   pair<double, double> getCoordinates() const;
 
   void setVitesse(double o);
+  double get_vitesse() { return this->vitesse; };
 
   friend bool operator==(const Bestiole &b1, const Bestiole &b2);
+
+  void addAccessoire(double speed_multiplier,double fragility_multiplier,double camouflage_mutliplier);
+  void add_capteur(ICapteur* cap);
 };
 
 bool operator!=(const Bestiole &b1, const Bestiole &b2);

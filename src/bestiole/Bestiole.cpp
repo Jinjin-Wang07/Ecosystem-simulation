@@ -36,7 +36,7 @@ Bestiole::Bestiole(int x, int y, double max_vitesse, int age_limit,
   //  AFF_SIZE=10;
 
   std::vector<IAccessoire> list_accessoire;
-  std::vector<ICapteur> list_capteurs;
+  std::vector<ICapteur*> list_capteurs;
 
   cout << "const PreviousBestiole (" << identite << ") par defaut" << endl;
 
@@ -49,7 +49,6 @@ Bestiole::Bestiole(int x, int y, double max_vitesse, int age_limit,
 }
 
 // TODO move construteur
-
 Bestiole::Bestiole(const Bestiole &b) {
   // TODO : update
   identite = b.identite;
@@ -67,10 +66,7 @@ Bestiole::Bestiole(const Bestiole &b) {
   this->age_limit = b.age_limit;
   this->fragility = b.fragility;
 
-  // affichage
-  //  AFF_SIZE=10;
 
-  list_accessoire = b.list_accessoire;
   list_capteurs = b.list_capteurs;
 
   if (b.comportement) {
@@ -89,13 +85,32 @@ Bestiole::~Bestiole(void) {
   cout << "dest PreviousBestiole" << endl;
 }
 
-// void Bestiole::initCoords( int xLim, int yLim )
-// {
 
-//    x = rand() % xLim;
-//    y = rand() % yLim;
+// Move Constructeur
+Bestiole::Bestiole(Bestiole&& b): identite(b.identite), x(b.x), y(b.y) {
 
-// }
+  cout << "Bestiole (" << identite << ") par Move" << endl;
+  cumulX = cumulY = 0.;
+
+  this->max_vitesse = b.max_vitesse;
+
+  // other variables
+  this->age = b.age;
+  this->age_limit = b.age_limit;
+  this->fragility = b.fragility;
+
+  list_capteurs = b.list_capteurs;
+
+  comportement = std::move(b.comportement);
+
+  orientation = b.orientation;
+  vitesse = b.vitesse;
+  couleur = b.couleur;
+
+  b.list_capteurs = NULL;
+  b.couleur = NULL;
+}
+
 
 void Bestiole::bouge(int xLim, int yLim) {
   // orientation = static_cast<double>( rand() )/RAND_MAX*2.*M_PI;
@@ -175,3 +190,17 @@ void Bestiole::setOrientation(double o) { this->orientation = o; }
 pair<double, double> Bestiole::getCoordinates() const { return {x, y}; }
 void Bestiole::setVitesse(double o) { this->vitesse = max(o, MAX_VITESSE); }
 double Bestiole::get_camouflage_coef() const { return this->camouflage_coef; }
+
+
+/**
+ * Fonction pour modifier les parametre par ajouter les accessoire
+ */
+
+
+
+/**
+ * Fonction for adding the capteurs
+ */
+void Bestiole::add_capteur(ICapteur* cap){
+  list_capteurs.push_back(cap);
+}
