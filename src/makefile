@@ -16,6 +16,8 @@ OBJECTS	= Aquarium.o Milieu.o Bestiole.o main.o BestiolFactory.o Gragaire.o Peur
 # make target
 all:${OBJECTS}
 	${CC} ${CFLAGS} -o ${EXENAME} ${OBJECTS} ${INCLUDES} ${LIBS}
+debug:${OBJECTS}
+	${CC} ${CFLAGS} -o ${EXENAME} ${OBJECTS} ${INCLUDES} ${LIBS} -g 
 	
 # make clean
 clean:
