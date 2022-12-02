@@ -26,7 +26,6 @@ BestiolFactory::BestiolFactory(Milieu milieu) {
     // eye_champ_angulaire_limit =
 
 
-
     eye_champ_angulaire_limit = make_pair(0, 2*M_PI);
     eye_distance_limit = make_pair(20, 30);
     eye_capacite_detection_limit = make_pair(0, 1);
@@ -40,7 +39,7 @@ BestiolFactory::BestiolFactory(Milieu milieu) {
 
     camouflage_coef_max = make_pair(0.1, 0.9);
 
-    this->max_age = 100;
+    this->max_age = 1000; // 1000 = 1s
     this->max_vitesse = 10.0;
 
     birth_rate = 0.1; // 10 step 1 birth
@@ -57,11 +56,12 @@ Bestiole BestiolFactory::create_bestiole() {
     int x, y;
     initCoords(x, y);
 
-    double fragility = (rand() % 100) / 100;
+    double camouflage_coef = 0; // TODO : make it ramdom
+    double fragility = get_ramdom_value(0,1);
+    double orientation = get_ramdom_value(0, 2. * M_PI);
+    double vitesse = get_ramdom_value(1, max_vitesse); 
 
-
-    double camouflage_coef = 1;
-    Bestiole new_bestiole(x, y, max_vitesse, max_age, fragility, camouflage_coef);
+    Bestiole new_bestiole(x, y, vitesse, max_vitesse, max_age, fragility, camouflage_coef, orientation);
 
     IComportement* comportement = get_random_comportement();
 
@@ -142,11 +142,8 @@ void BestiolFactory::add_capteur_yeux(Bestiole &b){
 }
 
 void BestiolFactory::add_capteur_oreille(Bestiole &b){
-    double distance_min = 0;
-    double distance_max = 2;
- 
-    
-    double distance = get_ramdom_value(ear_distance_limit.first, ear_distance_limit.second);
+    double distance_min = ear_distance_limit.first;
+    double distance_max = get_ramdom_value(ear_distance_limit.first, ear_distance_limit.second);
 
     double capacite_detection = get_ramdom_value(ear_capacite_detection_limit.first,
                                                 ear_capacite_detection_limit.second);
@@ -219,7 +216,5 @@ double BestiolFactory::get_ramdom_value(double min, double max){
     std::random_device rd;  // Will be used to obtain a seed for the random number engine
     std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
     std::uniform_real_distribution<> dis(min, max);
-    double v = dis(gen);
-    cout << v << "===================" << endl;
-    return v;
+    return dis(gen);
 }

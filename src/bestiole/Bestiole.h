@@ -40,10 +40,8 @@ private:
   double camouflage_coef;
 
   // affichage
-  // static const double AFF_SIZE;
   double cumulX, cumulY;
   T *couleur;
-  // IAccessoire *list_accessoire;
   std::vector<unique_ptr<ICapteur>> list_capteurs;
 
   unique_ptr<IComportement> comportement;
@@ -52,10 +50,10 @@ private:
   void bouge(int xLim, int yLim);
 
 public: // Forme canonique :
-  Bestiole(int x, int y, double max_vitesse, int age_limit, double fragility,
-           double camouflage_coef); // Constructeur par defaut
+  Bestiole(int x, int y, double vitesse, double max_vitesse, int age_limit, double fragility,
+           double camouflage_coef, double orientation); // Constructeur par defaut
   Bestiole(const Bestiole &b);      // Constructeur de copies
-  // Bestiole(Bestiole &&b);           // Move constructeur
+  Bestiole(Bestiole &&b);           // Move constructeur
 
   ~Bestiole(void); // Destructeur                              // Operateur
                    // d'affectation binaire par defaut

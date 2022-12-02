@@ -4,6 +4,7 @@
 
 #include "Peureuse.h"
 #include "../bestiole/Bestiole.h"
+#include "../../include/LogUtil.h"
 #include "../constants.h"
 #include <cmath>
 #include <iostream>
@@ -11,9 +12,9 @@
 
 using namespace std;
 
-Peureuse::Peureuse() { cout << "Create peureuse behavior" << endl; }
+Peureuse::Peureuse() { LOG_DEBUG("Create peureuse behavior"); }
 
-Peureuse::~Peureuse() { cout << "Destroy peureuse behavior" << endl; }
+Peureuse::~Peureuse() { LOG_DEBUG("Destroy peureuse behavior"); }
 
 void Peureuse::move(Bestiole &b,
                     vector<Bestiole const *> const &seen_neighbors) {

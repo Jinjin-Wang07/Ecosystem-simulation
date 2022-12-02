@@ -4,17 +4,17 @@
 
 #include "Gragaire.h"
 #include "../bestiole/Bestiole.h"
+#include "../../include/LogUtil.h"
+
 #include <cmath>
 #include <iostream>
 #include <vector>
 
-
-
 using namespace std;
 
-Gragaire::Gragaire() { cout << "create a gregaire behavior" << endl; }
+Gragaire::Gragaire() { LOG_DEBUG("Create a gregaire behavior par default"); }
 
-Gragaire::~Gragaire() { cout << "destroying a gregaire behavior" << endl; }
+Gragaire::~Gragaire() { LOG_DEBUG("Destroying a gregaire behavior"); }
 
 void Gragaire::move(Bestiole &b,
                     vector<Bestiole const *> const &seen_neighbors) {
