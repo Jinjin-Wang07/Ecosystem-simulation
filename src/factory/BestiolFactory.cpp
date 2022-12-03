@@ -8,14 +8,12 @@
 #include "../capteur/Yeux.h"
 #include "../capteur/Oreilles.h"
 
-
-
 using namespace std;
 
 /*
  *   Default constructeur
  */
-BestiolFactory::BestiolFactory(Milieu milieu) {
+BestiolFactory::BestiolFactory(Milieu milieu, int index_comportement) {
 
     total_num_bestiole["Basic_Bestiole"] = 50;
     curr_num_bestiole["Basic_Bestiole"] = 0;
@@ -48,6 +46,8 @@ BestiolFactory::BestiolFactory(Milieu milieu) {
     curr_bestiole_comportment_num = {
         {"Gragaire",0}, {"Kamikaze",0}, {"Peureuse",0}, {"Prevoyante", 0}, {"Multiple", 0}
     };
+
+    this->index_comportement = index_comportement;
 }
 
 BestiolFactory::~BestiolFactory() {}
@@ -61,9 +61,15 @@ Bestiole BestiolFactory::create_bestiole() {
     double orientation = get_ramdom_value(0, 2. * M_PI);
     double vitesse = get_ramdom_value(1, max_vitesse); 
 
-    Bestiole new_bestiole(x, y, vitesse, max_vitesse, max_age, fragility, camouflage_coef, orientation);
+    
+    index_comportement = index_comportement != 0  ? index_comportement : get_random_int(1, 3);
+    
+    IComportement* comportement = get_comportement(index_comportement);
+    T* color = get_color(index_comportement);
 
-    IComportement* comportement = get_random_comportement();
+    Bestiole new_bestiole(x, y, vitesse, max_vitesse, max_age, fragility, camouflage_coef, orientation, color);
+
+    
 
     if (true) {
         new_bestiole.setComportement(std::unique_ptr<IComportement>(comportement));
@@ -86,16 +92,52 @@ void BestiolFactory::initCoords(int &x, int &y) {
 }
 
 
+T* BestiolFactory::get_color(int index){
+    T* couleur = new T[3];
+    switch (index)
+    {
+    case 1: // Gragaire orange
+        couleur[0] = 255;
+        couleur[1] = 165;
+        couleur[2] = 0;
+        break;
+    case 2: // Peureuse bleu
+        couleur[0] = 0;
+        couleur[1] = 0;
+        couleur[2] = 255;
+        break;
+    case 3: // kamikaze rouge
+        couleur[0] = 255;
+        couleur[1] = 0;
+        couleur[2] = 0;
+        break;
+    case 4: // prevoiyante vert
+        couleur[0] = 0;
+        couleur[1] = 255;
+        couleur[2] = 0;
+        break;
+    case 5: // multiple TODO Change color  blanc
+        couleur[0] = 255;
+        couleur[1] = 255;
+        couleur[2] = 255;
+        break;
+    default:
+        throw runtime_error("In bestiol factory, no such index");
+        break;
+    }
+    return couleur;
+}
+
 
 /**
  * Get randomly a comportement
  * return : Pointer of a Comportement that implemented IComportement
  *  TODO : Prevoyante and Multiple aren't implemented
  */ 
-IComportement* BestiolFactory::get_random_comportement(){
+IComportement* BestiolFactory::get_comportement(int index_comportement){
     
     // int index_comportement = (rand() % (num_comportement))+ 1;
-    int index_comportement = (rand() % (3))+ 1;
+
     IComportement* comportement;
 
     switch(index_comportement) {
@@ -211,10 +253,23 @@ void BestiolFactory::set_random_accessoire(Bestiole &b){
 }
 
 
-// fonction genere valeure ramdom uniform distribuate between [min, max]
+// fonction genere valeure ramdom double value uniform distribuate between [min, max]
 double BestiolFactory::get_ramdom_value(double min, double max){
+    if(NO_RANDOM) return max;
+
     std::random_device rd;  // Will be used to obtain a seed for the random number engine
     std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
     std::uniform_real_distribution<> dis(min, max);
     return dis(gen);
 }
+
+
+// fonction genere valeure ramdom int value uniform distribuate between [min, max]
+int BestiolFactory::get_random_int(int min, int max){
+    if(NO_RANDOM) return max;
+    std::random_device rd;  // Will be used to obtain a seed for the random number engine
+    std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
+    std::uniform_int_distribution<> dis(min, max);
+    return dis(gen);
+}
+

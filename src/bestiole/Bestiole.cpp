@@ -19,7 +19,7 @@ int Bestiole::next_id = 0;
 
 Bestiole::Bestiole(int x, int y, 
                     double vitesse, double max_vitesse, int age_limit, double fragility,
-                    double camouflage_coef, double orientation){
+                    double camouflage_coef, double orientation, T *color){
 
   identite = ++next_id;
 
@@ -42,10 +42,7 @@ Bestiole::Bestiole(int x, int y,
 
   cumulX = cumulY = 0.;
 
-  couleur = new T[3];
-  couleur[0] = static_cast<int>(static_cast<double>(rand()) / RAND_MAX * 230.);
-  couleur[1] = static_cast<int>(static_cast<double>(rand()) / RAND_MAX * 230.);
-  couleur[2] = static_cast<int>(static_cast<double>(rand()) / RAND_MAX * 230.);
+  this->couleur = color;
 }
 
 // TODO move construteur

@@ -51,7 +51,7 @@ private:
 
 public: // Forme canonique :
   Bestiole(int x, int y, double vitesse, double max_vitesse, int age_limit, double fragility,
-           double camouflage_coef, double orientation); // Constructeur par defaut
+           double camouflage_coef, double orientation, T *color); // Constructeur par defaut
   Bestiole(const Bestiole &b);      // Constructeur de copies
   Bestiole(Bestiole &&b);           // Move constructeur
 
