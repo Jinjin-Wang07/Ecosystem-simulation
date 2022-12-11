@@ -1,6 +1,6 @@
 #include "Kamikaze.h"
-#include "../bestiole/Bestiole.h"
 #include "../../include/LogUtil.h"
+#include "../bestiole/Bestiole.h"
 
 #include <cmath>
 #include <iostream>
@@ -8,7 +8,9 @@
 using namespace std;
 
 Kamikaze::Kamikaze() { LOG_DEBUG("Create a kamikaze behavior par default"); }
-Kamikaze::~Kamikaze() { LOG_DEBUG("Destroying a kamikaze behavior par default"); }
+Kamikaze::~Kamikaze() {
+  LOG_DEBUG("Destroying a kamikaze behavior par default");
+}
 void Kamikaze::move(Bestiole &b,
                     vector<Bestiole const *> const &seen_neighbors) {
   auto attractedNeighbor = getAttractedNeighbor(b, seen_neighbors);

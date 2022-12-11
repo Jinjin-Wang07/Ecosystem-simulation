@@ -15,7 +15,7 @@ public:
   virtual ~IComportement() = default;
 
   virtual void move(Bestiole &b,
-                    std::vector<Bestiole const *> const &seen_neighbors)=0;
+                    std::vector<Bestiole const *> const &seen_neighbors) = 0;
 
   virtual std::unique_ptr<IComportement> clone() const = 0;
 };

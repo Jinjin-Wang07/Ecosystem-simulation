@@ -5,6 +5,7 @@
 #include "../accessoire/IAccessoire.h"
 #include "../capteur/ICapteur.h"
 
+#include <array>
 #include <iostream>
 #include <memory>
 #include <vector>
@@ -13,8 +14,8 @@ using namespace std;
 class IComportement;
 class Milieu;
 
-class Bestiole
-{
+using Couleur = array<T, 3>;
+class Bestiole {
 
 private:
   static int next_id;
@@ -36,30 +37,33 @@ private:
    */
   double fragility;
 
-
   double camouflage_coef;
 
   // affichage
   double cumulX, cumulY;
-  T *couleur;
+  Couleur couleur;
   std::vector<unique_ptr<ICapteur>> list_capteurs;
 
   unique_ptr<IComportement> comportement;
 
-private:
-  void bouge(int xLim, int yLim);
+  bool alive = true;
 
 public: // Forme canonique :
-  Bestiole(int x, int y, double vitesse, double max_vitesse, int age_limit, double fragility,
-           double camouflage_coef, double orientation, T *color); // Constructeur par defaut
-  Bestiole(const Bestiole &b);      // Constructeur de copies
-  Bestiole(Bestiole &&b);           // Move constructeur
+  Bestiole(int x, int y, double vitesse, double max_vitesse, int age_limit,
+           double fragility, double camouflage_coef, double orientation,
+           Couleur color);          // Constructeur par defaut
+  Bestiole(const Bestiole &b); // Constructeur de copies
+  Bestiole(Bestiole &&b);      // Move constructeur
+  
+  Bestiole& operator=(Bestiole const& b);
 
-  ~Bestiole(void); // Destructeur                              // Operateur
+  ~Bestiole(); // Destructeur                              // Operateur
                    // d'affectation binaire par defaut
 
+  void bouge(int xLim, int yLim);
+
   void addAccessoire(IAccessoire acc);
-  void addCapteur(ICapteur* capteur);
+  void addCapteur(ICapteur *capteur);
   void setComportement(unique_ptr<IComportement> comportement);
 
   void action(Milieu &monMilieu);
@@ -68,7 +72,7 @@ public: // Forme canonique :
   void changeState();
   void draw(UImg &support);
   double get_camouflage_coef() const;
-  void set_camouflage_coef(double){this->camouflage_coef = camouflage_coef;};
+  void set_camouflage_coef(double) { this->camouflage_coef = camouflage_coef; };
 
   double getOrientation() const;
   void setOrientation(double o);
@@ -80,14 +84,17 @@ public: // Forme canonique :
 
   friend bool operator==(const Bestiole &b1, const Bestiole &b2);
 
-  void addAccessoire(double speed_multiplier,double fragility_multiplier,double camouflage_mutliplier);
+  void addAccessoire(double speed_multiplier, double fragility_multiplier,
+                     double camouflage_mutliplier);
 
-  void set_fragility(double f){this->fragility = f;};
-  double get_fragility(){return this->fragility;};
+  void set_fragility(double f) { this->fragility = f; };
+  double get_fragility() { return this->fragility; };
 
+  void move_capteur(unique_ptr<ICapteur> &&cap);
 
-  void move_capteur(unique_ptr<ICapteur>&& cap);
-
+  bool isCollidingWith(Bestiole const &b) const;
+  bool isDead() const;
+  void kill();
 };
 
 bool operator!=(const Bestiole &b1, const Bestiole &b2);

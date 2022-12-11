@@ -1,11 +1,10 @@
 #include "Milieu.h"
 #include "../../include/LogUtil.h"
-
+#include <algorithm>
 #include <cstdlib>
 #include <ctime>
+#include <random>
 #include <vector>
-
-
 
 using namespace std;
 
@@ -19,7 +18,7 @@ Milieu::Milieu(int _width, int _height)
   std::srand(time(NULL));
 }
 
-Milieu::~Milieu(void) { LOG_INFO("Destruiction du Milieu");}
+Milieu::~Milieu(void) { LOG_INFO("Destruiction du Milieu"); }
 
 void Milieu::step(void) {
 
@@ -32,16 +31,22 @@ void Milieu::step(void) {
   } // for
   for (std::vector<Bestiole>::iterator it = listeBestioles.begin();
        it != listeBestioles.end(); ++it) {
-        // handle collision
-        
-
+    for (std::vector<Bestiole>::iterator it2 = next(it);
+         it2 != listeBestioles.end(); ++it2) {
+      if (it->isCollidingWith(*it2)) {
+        handleCollision(*it);
+        handleCollision(*it2);
+      }
+    }
   }
   for (std::vector<Bestiole>::iterator it = listeBestioles.begin();
        it != listeBestioles.end(); ++it) {
 
     it->draw(*this);
-
   }
+
+  auto firstBestioleToErase = remove_if(listeBestioles.begin(), listeBestioles.end(), [](Bestiole const& b) { return b.isDead(); });
+  listeBestioles.erase(firstBestioleToErase, listeBestioles.end());
 }
 
 int Milieu::nbVoisins(const Bestiole &b) const {
@@ -65,4 +70,19 @@ vector<Bestiole const *> Milieu::getVoisins(const Bestiole &b) const {
   }
 
   return voisins;
+}
+
+void Milieu::handleCollision(Bestiole &b) {
+  std::random_device
+      rd; // Will be used to obtain a seed for the random number engine
+  std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
+  std::uniform_real_distribution<> dis(0, 1);
+  bool kill = b.get_fragility() > dis(gen);
+  if (kill) {
+    b.kill();
+    return;
+  }
+
+  b.setOrientation(b.getOrientation() + M_PI);
+  b.bouge(getWidth(), getHeight());
 }

@@ -27,6 +27,7 @@ public:
   void addMember(const Bestiole &b) { listeBestioles.push_back(b); }
   std::vector<Bestiole const *> getVoisins(const Bestiole &b) const;
   int nbVoisins(const Bestiole &b) const;
+  void handleCollision(Bestiole &b);
 };
 
 #endif

@@ -3,8 +3,8 @@
 //
 
 #include "Peureuse.h"
-#include "../bestiole/Bestiole.h"
 #include "../../include/LogUtil.h"
+#include "../bestiole/Bestiole.h"
 #include "../constants.h"
 #include <cmath>
 #include <iostream>

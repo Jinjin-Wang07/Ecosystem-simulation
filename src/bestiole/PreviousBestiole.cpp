@@ -39,8 +39,7 @@ Bestiole::Bestiole(const Bestiole &b) {
   cumulX = cumulY = 0.;
   orientation = b.orientation;
   vitesse = b.vitesse;
-  couleur = new T[3];
-  memcpy(couleur, b.couleur, 3 * sizeof(T));
+  couleur = b.couleur;
 }
 
 Bestiole::~Bestiole(void) {
