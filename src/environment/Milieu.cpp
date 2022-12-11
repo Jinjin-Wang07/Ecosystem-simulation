@@ -28,9 +28,20 @@ void Milieu::step(void) {
        it != listeBestioles.end(); ++it) {
 
     it->action(*this);
+
+  } // for
+  for (std::vector<Bestiole>::iterator it = listeBestioles.begin();
+       it != listeBestioles.end(); ++it) {
+        // handle collision
+        
+
+  }
+  for (std::vector<Bestiole>::iterator it = listeBestioles.begin();
+       it != listeBestioles.end(); ++it) {
+
     it->draw(*this);
 
-  } 
+  }
 }
 
 int Milieu::nbVoisins(const Bestiole &b) const {
