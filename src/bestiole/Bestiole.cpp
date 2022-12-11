@@ -3,6 +3,8 @@
 #include "../comportement/IComportement.h"
 #include "../constants.h"
 #include "../environment/Milieu.h"
+#include "../../include/LogUtil.h"
+
 
 #include <cmath>
 #include <cstdlib>
@@ -13,47 +15,34 @@
 
 using namespace std;
 
-
-// const double Bestiole::AFF_SIZE = 8.;
-//  const double      Bestiole::MAX_VITESSE = 10.;
-//  const double      Bestiole::LIMITE_VUE = 30.;
-
 int Bestiole::next_id = 0;
 
-Bestiole::Bestiole(int x, int y, double max_vitesse, int age_limit,
-                   double fragility, double camouflage_coef) {
+Bestiole::Bestiole(int x, int y, 
+                    double vitesse, double max_vitesse, int age_limit, double fragility,
+                    double camouflage_coef, double orientation, T *color){
 
   identite = ++next_id;
-  // position variables
+
+  // Initialization
   this->x = x;
   this->y = y;
 
-  orientation = static_cast<double>(rand()) / RAND_MAX * 2. * M_PI;
-  vitesse = static_cast<double>(rand()) / RAND_MAX * max_vitesse;
-  camouflage_coef = 1;
-
+  this->vitesse = vitesse;
   this->max_vitesse = max_vitesse;
-
-  // other variables
-  age = 0;
   this->age_limit = age_limit;
   this->fragility = fragility;
+  this->camouflage_coef = camouflage_coef;
+  this->orientation = orientation;
+  
+  this->age = 0;
 
-  // affichage
-  //  AFF_SIZE=10;
-
-
-  //std::vector<std::unique_ptr<IAccessoire>> list_accessoire;
   std::vector<std::unique_ptr<ICapteur>> list_capteurs;
 
-  cout << "const PreviousBestiole (" << identite << ") par defaut" << endl;
+  LOG_DEBUG("Construire Bestiole[%d] par default", this->identite);
 
   cumulX = cumulY = 0.;
 
-  couleur = new T[3];
-  couleur[0] = static_cast<int>(static_cast<double>(rand()) / RAND_MAX * 230.);
-  couleur[1] = static_cast<int>(static_cast<double>(rand()) / RAND_MAX * 230.);
-  couleur[2] = static_cast<int>(static_cast<double>(rand()) / RAND_MAX * 230.);
+  this->couleur = color;
 }
 
 // TODO move construteur
@@ -61,13 +50,13 @@ Bestiole::Bestiole(const Bestiole &b) {
   // TODO : update
   identite = b.identite;
 
-  cout << "const PreviousBestiole (" << identite << ") par copie" << endl;
+  LOG_DEBUG("Construire Bestiole[%d] par copy", this->identite);
 
   x = b.x;
   y = b.y;
   cumulX = cumulY = 0.;
 
-  this->max_vitesse = b.max_vitesse;
+  this->vitesse = b.vitesse;
 
   // other variables
   this->age = b.age;
@@ -78,9 +67,9 @@ Bestiole::Bestiole(const Bestiole &b) {
    //TODO : copy list_accesoire
    //list_accessoire = b.list_accessoire;
    
-   vector<std::unique_ptr<ICapteur>> new_capteurs;
-   for (auto const& capteur : list_capteurs) {
-      new_capteurs.push_back(move(capteur->clone()));
+  //  vector<std::unique_ptr<ICapteur>> new_capteurs;
+   for (auto const& capteur : b.list_capteurs) {
+      list_capteurs.push_back(move(capteur->clone()));
    }//clone all the capteurs
 
   if (b.comportement) {
@@ -94,44 +83,45 @@ Bestiole::Bestiole(const Bestiole &b) {
 }
 
 Bestiole::~Bestiole(void) {
-
   delete[] couleur;
-  cout << "dest PreviousBestiole" << endl;
+  LOG_DEBUG("Destruire Bestiole[%d]", this->identite);
 }
 
 
 // Move Constructeur
-// Bestiole::Bestiole(Bestiole&& b): identite(b.identite), x(b.x), y(b.y),max_vitesse(b.max_vitesse) {
+Bestiole::Bestiole(Bestiole&& b): identite(b.identite), x(b.x), y(b.y),vitesse(b.vitesse) {
 
-//   cout << "Bestiole (" << identite << ") par Move" << endl;
-//   cumulX = cumulY = 0.;
+  LOG_DEBUG("Construire Bestiole[%d] par move", this->identite);
+  
+  cumulX = cumulY = 0.;
 
   
 
-//   // other variables
-//   this->age = b.age;
-//   this->age_limit = b.age_limit;
-//   this->fragility = b.fragility;
+  // other variables
+  this->age = b.age;
+  this->age_limit = b.age_limit;
+  this->fragility = b.fragility;
 
-//   vector<std::unique_ptr<ICapteur>> new_capteurs;
-//   for (auto const& capteur : list_capteurs) {
-//       new_capteurs.push_back(move(capteur));
-//    }//clone all the capteurs
+  // vector<std::unique_ptr<ICapteur>> new_capteurs;
+  // for (auto const& capteur : b.list_capteurs) {
+  //     list_capteurs.push_back(move(capteur));
+      
+  //  }//clone all the capteurs
 
-//   comportement = std::move(b.comportement);
+  list_capteurs = move(b.list_capteurs);
 
-//   orientation = b.orientation;
-//   vitesse = b.vitesse;
-//   couleur = b.couleur;
+  comportement = std::move(b.comportement);
+
+  orientation = b.orientation;
+  vitesse = b.vitesse;
+  couleur = b.couleur;
 
 
-//   b.couleur = NULL;
-// }
+  b.couleur = NULL;
+}
 
 
 void Bestiole::bouge(int xLim, int yLim) {
-  // orientation = static_cast<double>( rand() )/RAND_MAX*2.*M_PI;
-  // vitesse = static_cast<double>( rand() )/RAND_MAX*max_vitesse;
 
   double nx, ny;
   double dx = cos(orientation) * vitesse;
@@ -216,7 +206,9 @@ double Bestiole::getOrientation() const { return this->orientation; }
 void Bestiole::setOrientation(double o) { this->orientation = o; }
 
 pair<double, double> Bestiole::getCoordinates() const { return {x, y}; }
-void Bestiole::setVitesse(double o) { this->vitesse = max(o, MAX_VITESSE); }
+
+void Bestiole::setVitesse(double v) { this->vitesse = v; }
+
 double Bestiole::get_camouflage_coef() const { return this->camouflage_coef; }
 
 

@@ -1,6 +1,7 @@
 #include "Aquarium.h"
 
 #include "Milieu.h"
+#include "../../include/LogUtil.h"
 
 Aquarium::Aquarium(int width, int height, int _delay)
     : CImgDisplay(), delay(_delay) {
@@ -8,7 +9,7 @@ Aquarium::Aquarium(int width, int height, int _delay)
   int screenWidth = 1280;  // screen_width();
   int screenHeight = 1024; // screen_height();
 
-  cout << "const Aquarium" << endl;
+  LOG_INFO("Construiction de l'Aquarium");
 
   flotte = new Milieu(width, height);
   assign(*flotte, "Simulation d'ecosysteme");
@@ -18,15 +19,12 @@ Aquarium::Aquarium(int width, int height, int _delay)
 }
 
 Aquarium::~Aquarium(void) {
-
   delete flotte;
-
-  cout << "dest Aquarium" << endl;
+  LOG_INFO("Destruiction de l'Aquarium");
 }
 
 void Aquarium::run(void) {
-
-  cout << "running Aquarium" << endl;
+  LOG_INFO("Running l'Aquarium");
 
   while (!is_closed()) {
 

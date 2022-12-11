@@ -8,14 +8,12 @@
 #include "../capteur/Yeux.h"
 #include "../capteur/Oreilles.h"
 
-
-
 using namespace std;
 
 /*
  *   Default constructeur
  */
-BestiolFactory::BestiolFactory(Milieu milieu) {
+BestiolFactory::BestiolFactory(Milieu milieu, int index_comportement) {
 
     total_num_bestiole["Basic_Bestiole"] = 50;
     curr_num_bestiole["Basic_Bestiole"] = 0;
@@ -24,7 +22,6 @@ BestiolFactory::BestiolFactory(Milieu milieu) {
     this->height = milieu.getHeight();
 
     // eye_champ_angulaire_limit =
-
 
 
     eye_champ_angulaire_limit = make_pair(0, 2*M_PI);
@@ -40,7 +37,7 @@ BestiolFactory::BestiolFactory(Milieu milieu) {
 
     camouflage_coef_max = make_pair(0.1, 0.9);
 
-    this->max_age = 100;
+    this->max_age = 1000; // 1000 = 1s
     this->max_vitesse = 10.0;
 
     birth_rate = 0.1; // 10 step 1 birth
@@ -49,6 +46,8 @@ BestiolFactory::BestiolFactory(Milieu milieu) {
     curr_bestiole_comportment_num = {
         {"Gragaire",0}, {"Kamikaze",0}, {"Peureuse",0}, {"Prevoyante", 0}, {"Multiple", 0}
     };
+
+    this->index_comportement = index_comportement;
 }
 
 BestiolFactory::~BestiolFactory() {}
@@ -57,13 +56,20 @@ Bestiole BestiolFactory::create_bestiole() {
     int x, y;
     initCoords(x, y);
 
-    double fragility = (rand() % 100) / 100;
+    double camouflage_coef = 0; // TODO : make it ramdom
+    double fragility = get_ramdom_value(0,1);
+    double orientation = get_ramdom_value(0, 2. * M_PI);
+    double vitesse = get_ramdom_value(1, max_vitesse); 
 
+    
+    index_comportement = index_comportement != 0  ? index_comportement : get_random_int(1, 3);
+    
+    IComportement* comportement = get_comportement(index_comportement);
+    T* color = get_color(index_comportement);
 
-    double camouflage_coef = 1;
-    Bestiole new_bestiole(x, y, max_vitesse, max_age, fragility, camouflage_coef);
+    Bestiole new_bestiole(x, y, vitesse, max_vitesse, max_age, fragility, camouflage_coef, orientation, color);
 
-    IComportement* comportement = get_random_comportement();
+    
 
     if (true) {
         new_bestiole.setComportement(std::unique_ptr<IComportement>(comportement));
@@ -86,16 +92,52 @@ void BestiolFactory::initCoords(int &x, int &y) {
 }
 
 
+T* BestiolFactory::get_color(int index){
+    T* couleur = new T[3];
+    switch (index)
+    {
+    case 1: // Gragaire orange
+        couleur[0] = 255;
+        couleur[1] = 165;
+        couleur[2] = 0;
+        break;
+    case 2: // Peureuse bleu
+        couleur[0] = 0;
+        couleur[1] = 0;
+        couleur[2] = 255;
+        break;
+    case 3: // kamikaze rouge
+        couleur[0] = 255;
+        couleur[1] = 0;
+        couleur[2] = 0;
+        break;
+    case 4: // prevoiyante vert
+        couleur[0] = 0;
+        couleur[1] = 255;
+        couleur[2] = 0;
+        break;
+    case 5: // multiple TODO Change color  blanc
+        couleur[0] = 255;
+        couleur[1] = 255;
+        couleur[2] = 255;
+        break;
+    default:
+        throw runtime_error("In bestiol factory, no such index");
+        break;
+    }
+    return couleur;
+}
+
 
 /**
  * Get randomly a comportement
  * return : Pointer of a Comportement that implemented IComportement
  *  TODO : Prevoyante and Multiple aren't implemented
  */ 
-IComportement* BestiolFactory::get_random_comportement(){
+IComportement* BestiolFactory::get_comportement(int index_comportement){
     
     // int index_comportement = (rand() % (num_comportement))+ 1;
-    int index_comportement = (rand() % (3))+ 1;
+
     IComportement* comportement;
 
     switch(index_comportement) {
@@ -137,16 +179,13 @@ void BestiolFactory::add_capteur_yeux(Bestiole &b){
 
     double capacite = get_ramdom_value(eye_capacite_detection_limit.first , eye_capacite_detection_limit.second);
 
-    //Yeux* yeux = new Yeux(0, distance, champ_vision, capacite);
-    //b.addCapteur(yeux);
+    Yeux* yeux = new Yeux(0, distance, champ_vision, capacite);
+    b.move_capteur(move(unique_ptr<ICapteur>(yeux)));
 }
 
 void BestiolFactory::add_capteur_oreille(Bestiole &b){
-    double distance_min = 0;
-    double distance_max = 2;
- 
-    
-    double distance = get_ramdom_value(ear_distance_limit.first, ear_distance_limit.second);
+    double distance_min = ear_distance_limit.first;
+    double distance_max = get_ramdom_value(ear_distance_limit.first, ear_distance_limit.second);
 
     double capacite_detection = get_ramdom_value(ear_capacite_detection_limit.first,
                                                 ear_capacite_detection_limit.second);
@@ -214,11 +253,23 @@ void BestiolFactory::set_random_accessoire(Bestiole &b){
 }
 
 
-// fonction genere valeure ramdom uniform distribuate between [min, max]
+// fonction genere valeure ramdom double value uniform distribuate between [min, max]
 double BestiolFactory::get_ramdom_value(double min, double max){
-    std::uniform_real_distribution<double> unif(min, max);
-    std::default_random_engine seed;
-    double v = unif(seed);
-    cout << v << "=====================" << endl;
-    return v;
+    if(NO_RANDOM) return max;
+
+    std::random_device rd;  // Will be used to obtain a seed for the random number engine
+    std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
+    std::uniform_real_distribution<> dis(min, max);
+    return dis(gen);
 }
+
+
+// fonction genere valeure ramdom int value uniform distribuate between [min, max]
+int BestiolFactory::get_random_int(int min, int max){
+    if(NO_RANDOM) return max;
+    std::random_device rd;  // Will be used to obtain a seed for the random number engine
+    std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
+    std::uniform_int_distribution<> dis(min, max);
+    return dis(gen);
+}
+

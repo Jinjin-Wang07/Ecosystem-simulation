@@ -1,5 +1,6 @@
 #include "Yeux.h"
 #include "../bestiole/Bestiole.h"
+#include "../../include/LogUtil.h"
 Yeux::Yeux(double distance_min, double distance_max, double champ_vision,
            float capacite) {
   this->distance_min = distance_min;
