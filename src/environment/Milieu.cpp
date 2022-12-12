@@ -23,29 +23,37 @@ Milieu::~Milieu(void) { LOG_INFO("Destruiction du Milieu"); }
 void Milieu::step(void) {
 
   cimg_forXY(*this, x, y) fillC(x, y, 0, white[0], white[1], white[2]);
-  for (std::vector<Bestiole>::iterator it = listeBestioles.begin();
-       it != listeBestioles.end(); ++it) {
+  std::vector<Bestiole> clones;
+  for (auto it = listeBestioles.begin(); it != listeBestioles.end(); ++it) {
 
     it->action(*this);
-
+    if (it->shouldClone()) {
+      auto clone = it->clone();
+      while (clone.isCollidingWith(*it)) {
+        clone.bouge(getWidth(), getHeight());
+      }
+      clones.push_back(move(clone));
+    }
   } // for
-  for (std::vector<Bestiole>::iterator it = listeBestioles.begin();
-       it != listeBestioles.end(); ++it) {
-    for (std::vector<Bestiole>::iterator it2 = next(it);
-         it2 != listeBestioles.end(); ++it2) {
+  for (auto it = listeBestioles.begin(); it != listeBestioles.end(); ++it) {
+    for (auto it2 = next(it); it2 != listeBestioles.end(); ++it2) {
       if (it->isCollidingWith(*it2)) {
         handleCollision(*it);
         handleCollision(*it2);
       }
     }
   }
-  for (std::vector<Bestiole>::iterator it = listeBestioles.begin();
-       it != listeBestioles.end(); ++it) {
+  for (auto it = listeBestioles.begin(); it != listeBestioles.end(); ++it) {
 
     it->draw(*this);
   }
 
-  auto firstBestioleToErase = remove_if(listeBestioles.begin(), listeBestioles.end(), [](Bestiole const& b) { return b.isDead(); });
+  listeBestioles.insert(listeBestioles.end(), make_move_iterator(clones.begin()),
+                        make_move_iterator(clones.end()));
+
+  auto firstBestioleToErase =
+      remove_if(listeBestioles.begin(), listeBestioles.end(),
+                [](Bestiole const &b) { return b.isDead(); });
   listeBestioles.erase(firstBestioleToErase, listeBestioles.end());
 }
 

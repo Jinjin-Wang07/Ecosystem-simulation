@@ -8,6 +8,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
+#include <random>
 #include <vector>
 
 using namespace std;
@@ -50,7 +51,6 @@ Bestiole::Bestiole(const Bestiole &b) {
   *this = b;
 }
 
-
 // Move Constructeur
 Bestiole::Bestiole(Bestiole &&b)
     : identite(b.identite), x(b.x), y(b.y), vitesse(b.vitesse) {
@@ -80,13 +80,12 @@ Bestiole::Bestiole(Bestiole &&b)
   alive = b.alive;
 }
 
-
 Bestiole::~Bestiole(void) {
   LOG_DEBUG("Destruire Bestiole[%d]", this->identite);
 }
 
-Bestiole& Bestiole::operator=(Bestiole const& b) {
- identite = b.identite;
+Bestiole &Bestiole::operator=(Bestiole const &b) {
+  identite = b.identite;
   x = b.x;
   y = b.y;
   cumulX = cumulY = 0.;
@@ -222,3 +221,21 @@ bool Bestiole::isCollidingWith(Bestiole const &b) const {
 
 bool Bestiole::isDead() const { return !alive; }
 void Bestiole::kill() { alive = false; }
+
+bool Bestiole::shouldClone() const {
+  float cloning_probability = 0.001;
+
+  // clone of a bestiole
+  std::random_device
+      rd; // Will be used to obtain a seed for the random number engine
+  std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
+  std::uniform_real_distribution<> dis(0, 1);
+  return cloning_probability > dis(gen);
+}
+
+Bestiole Bestiole::clone() const {
+  auto clone = *this;
+  // clone has a different identite
+  clone.identite = ++next_id;
+  return clone;
+}

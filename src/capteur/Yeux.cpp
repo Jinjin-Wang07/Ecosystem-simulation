@@ -30,8 +30,8 @@ bool Yeux::JeTePercoit(int x, int y, double orientation,
   double angle = std::atan2(dy, dx);
   double dangle = angle - b.getOrientation();
   double dist = std::sqrt((x - bx) * (x - bx) + (y - by) * (y - by));
-  return ((abs(dangle) < this->champ_vision / 2) &
-          (dist <= this->distance_max) & (dist >= this->distance_min) &
+  return ((abs(dangle) < this->champ_vision / 2) &&
+          (dist <= this->distance_max) && (dist >= this->distance_min) &&
           (this->capacite_detection > b.get_camouflage_coef()));
 }
 

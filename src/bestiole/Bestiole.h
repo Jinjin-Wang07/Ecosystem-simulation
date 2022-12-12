@@ -51,14 +51,14 @@ private:
 public: // Forme canonique :
   Bestiole(int x, int y, double vitesse, double max_vitesse, int age_limit,
            double fragility, double camouflage_coef, double orientation,
-           Couleur color);          // Constructeur par defaut
+           Couleur color);     // Constructeur par defaut
   Bestiole(const Bestiole &b); // Constructeur de copies
   Bestiole(Bestiole &&b);      // Move constructeur
-  
-  Bestiole& operator=(Bestiole const& b);
+
+  Bestiole &operator=(Bestiole const &b);
 
   ~Bestiole(); // Destructeur                              // Operateur
-                   // d'affectation binaire par defaut
+               // d'affectation binaire par defaut
 
   void bouge(int xLim, int yLim);
 
@@ -95,6 +95,9 @@ public: // Forme canonique :
   bool isCollidingWith(Bestiole const &b) const;
   bool isDead() const;
   void kill();
+
+  bool shouldClone() const;
+  Bestiole clone() const;
 };
 
 bool operator!=(const Bestiole &b1, const Bestiole &b2);
