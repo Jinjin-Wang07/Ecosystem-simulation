@@ -16,13 +16,14 @@
 #include "../comportement/Multiple.h"
 #include "../comportement/Peureuse.h"
 #include "../comportement/Prevoyante.h"
-#include "../environment/Milieu.h"
 
 // Desactivate les random functions
 #define NO_RANDOM true
 
 class BestiolFactory {
 private:
+  static int next_id;
+
 public:
   map<string, double> total_num_bestiole;
   map<string, double> curr_num_bestiole; // {specie_name : number}
@@ -77,13 +78,14 @@ public:
   /*
    * Create a bestiolFactory with all default value
    */
-  BestiolFactory(Milieu milieu, int index_comportement);
+  BestiolFactory(int width, int height, int index_comportement);
   ~BestiolFactory();
 
   /*
    *   create a default bestiole
    */
   Bestiole create_bestiole();
+  Bestiole clone_bestiole(Bestiole const &b) const;
 
   /*
    *   Reset the factory variables to default

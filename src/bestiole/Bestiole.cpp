@@ -13,13 +13,9 @@
 
 using namespace std;
 
-int Bestiole::next_id = 0;
-
 Bestiole::Bestiole(int x, int y, double vitesse, double max_vitesse,
                    int age_limit, double fragility, double camouflage_coef,
                    double orientation, Couleur color) {
-
-  identite = ++next_id;
 
   // Initialization
   this->x = x;
@@ -231,11 +227,4 @@ bool Bestiole::shouldClone() const {
   std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
   std::uniform_real_distribution<> dis(0, 1);
   return cloning_probability > dis(gen);
-}
-
-Bestiole Bestiole::clone() const {
-  auto clone = *this;
-  // clone has a different identite
-  clone.identite = ++next_id;
-  return clone;
 }

@@ -7,6 +7,8 @@
 #include <iostream>
 #include <vector>
 
+class BestiolFactory;
+
 class Milieu : public UImg {
 
 private:
@@ -14,6 +16,8 @@ private:
 
   int width, height;
   std::vector<Bestiole> listeBestioles;
+
+  BestiolFactory *bestioleFac;
 
 public:
   Milieu(int _width, int _height);
@@ -28,6 +32,8 @@ public:
   std::vector<Bestiole const *> getVoisins(const Bestiole &b) const;
   int nbVoisins(const Bestiole &b) const;
   void handleCollision(Bestiole &b);
+
+  void setBestioleFactory(BestiolFactory *bf);
 };
 
 #endif

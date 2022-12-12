@@ -1,5 +1,6 @@
 #include "Milieu.h"
 #include "../../include/LogUtil.h"
+#include "../factory/BestiolFactory.h"
 #include <algorithm>
 #include <cstdlib>
 #include <ctime>
@@ -27,8 +28,8 @@ void Milieu::step(void) {
   for (auto it = listeBestioles.begin(); it != listeBestioles.end(); ++it) {
 
     it->action(*this);
-    if (it->shouldClone()) {
-      auto clone = it->clone();
+    if (it->shouldClone() && bestioleFac) {
+      auto clone = bestioleFac->clone_bestiole(*it);
       while (clone.isCollidingWith(*it)) {
         clone.bouge(getWidth(), getHeight());
       }
@@ -48,7 +49,8 @@ void Milieu::step(void) {
     it->draw(*this);
   }
 
-  listeBestioles.insert(listeBestioles.end(), make_move_iterator(clones.begin()),
+  listeBestioles.insert(listeBestioles.end(),
+                        make_move_iterator(clones.begin()),
                         make_move_iterator(clones.end()));
 
   auto firstBestioleToErase =
@@ -94,3 +96,5 @@ void Milieu::handleCollision(Bestiole &b) {
   b.setOrientation(b.getOrientation() + M_PI);
   b.bouge(getWidth(), getHeight());
 }
+
+void Milieu::setBestioleFactory(BestiolFactory *bf) { this->bestioleFac = bf; }

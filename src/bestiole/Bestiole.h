@@ -18,9 +18,6 @@ using Couleur = array<T, 3>;
 class Bestiole {
 
 private:
-  static int next_id;
-  int identite;
-
   // position variables
   int x;
   int y;
@@ -49,6 +46,7 @@ private:
   bool alive = true;
 
 public: // Forme canonique :
+  int identite;
   Bestiole(int x, int y, double vitesse, double max_vitesse, int age_limit,
            double fragility, double camouflage_coef, double orientation,
            Couleur color);     // Constructeur par defaut
@@ -97,7 +95,6 @@ public: // Forme canonique :
   void kill();
 
   bool shouldClone() const;
-  Bestiole clone() const;
 };
 
 bool operator!=(const Bestiole &b1, const Bestiole &b2);

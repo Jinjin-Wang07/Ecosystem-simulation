@@ -14,7 +14,10 @@ int main() {
   int index_comportement = get_user_comportement_choose();
 
   Aquarium ecosysteme(640, 480, 30);
-  BestiolFactory bestiole_factory(ecosysteme.getMilieu(), index_comportement);
+  auto &milieu = ecosysteme.getMilieu();
+  BestiolFactory bestiole_factory(milieu.getWidth(), milieu.getHeight(),
+                                  index_comportement);
+  milieu.setBestioleFactory(&bestiole_factory);
 
   for (int i = 1; i <= total_num_bestiole; ++i)
     ecosysteme.getMilieu().addMember(bestiole_factory.create_bestiole());

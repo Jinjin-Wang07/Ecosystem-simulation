@@ -9,17 +9,17 @@
 #include "../capteur/Yeux.h"
 
 using namespace std;
-
+int BestiolFactory::next_id = 0;
 /*
  *   Default constructeur
  */
-BestiolFactory::BestiolFactory(Milieu milieu, int index_comportement) {
+BestiolFactory::BestiolFactory(int width, int height, int index_comportement) {
 
   total_num_bestiole["Basic_Bestiole"] = 50;
   curr_num_bestiole["Basic_Bestiole"] = 0;
 
-  this->width = milieu.getWidth();
-  this->height = milieu.getHeight();
+  this->width = width;
+  this->height = height;
 
   // eye_champ_angulaire_limit =
 
@@ -70,6 +70,7 @@ Bestiole BestiolFactory::create_bestiole() {
 
   Bestiole new_bestiole(x, y, vitesse, max_vitesse, max_age, fragility,
                         camouflage_coef, orientation, color);
+  new_bestiole.identite = ++next_id;
 
   if (true) {
     new_bestiole.setComportement(std::unique_ptr<IComportement>(comportement));
@@ -281,4 +282,11 @@ int BestiolFactory::get_random_int(int min, int max) {
   std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
   std::uniform_int_distribution<> dis(min, max);
   return dis(gen);
+}
+
+Bestiole BestiolFactory::clone_bestiole(Bestiole const &b) const {
+  auto clone = b;
+  // clone has a different identite
+  clone.identite = ++next_id;
+  return clone;
 }
