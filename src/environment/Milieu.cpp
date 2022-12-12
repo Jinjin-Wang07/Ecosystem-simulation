@@ -25,11 +25,12 @@ void Milieu::step(void) {
 
   cimg_forXY(*this, x, y) fillC(x, y, 0, white[0], white[1], white[2]);
   std::vector<Bestiole> clones;
+  bool doCloning = bestioleFac && bestioleFac->birth_rate > bestioleFac->get_ramdom_value(0, 1);
   for (auto it = listeBestioles.begin(); it != listeBestioles.end(); ++it) {
-
     it->action(*this);
-    if (it->shouldClone() && bestioleFac) {
+    if (doCloning && bestioleFac && bestioleFac->clone_probability > bestioleFac->get_ramdom_value(0, 1)) {
       auto clone = bestioleFac->clone_bestiole(*it);
+      clone.setOrientation(clone.getOrientation() + M_PI);
       while (clone.isCollidingWith(*it)) {
         clone.bouge(getWidth(), getHeight());
       }

@@ -18,7 +18,7 @@
 #include "../comportement/Prevoyante.h"
 
 // Desactivate les random functions
-#define NO_RANDOM true
+#define NO_RANDOM false
 
 class BestiolFactory {
 private:
@@ -52,20 +52,17 @@ public:
   double clone_probability;
 
   map<string, int> curr_bestiole_comportment_num;
-  double bestioles_comportement_distribution[5];
+  array<double, 5> bestioles_comportement_distribution = {0.2, 0.2, 0.2, 0.2, 0.2};
 
-  int index_comportement;
+  int force_comportement = 0;
 
 private:
-  double get_ramdom_value(double, double);
-  int get_random_int(int, int);
 
   void initCoords(int &, int &);
 
-  Couleur get_color(int index_comportement);
   Couleur get_random_color();
 
-  IComportement *get_comportement(int index_comportement);
+  unique_ptr<IComportement> get_comportement();
 
   // function for adding capteurs and accessoires
   void add_capteur_yeux(Bestiole &b);
@@ -74,12 +71,18 @@ private:
   void add_accessoire_carapace(Bestiole &b);
   void add_accessoire_negeoire(Bestiole &b);
 
+  std::random_device rd;
+  std::mt19937 gen;
+
 public:
   /*
    * Create a bestiolFactory with all default value
    */
-  BestiolFactory(int width, int height, int index_comportement);
+  BestiolFactory(int width, int height);
   ~BestiolFactory();
+
+  double get_ramdom_value(double, double);
+  int get_random_int(int, int);
 
   /*
    *   create a default bestiole

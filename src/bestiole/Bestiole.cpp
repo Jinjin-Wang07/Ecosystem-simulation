@@ -150,6 +150,11 @@ void Bestiole::setComportement(unique_ptr<IComportement> comportement) {
 }
 
 void Bestiole::action(Milieu &monMilieu) {
+  age++;
+  if (age > age_limit) {
+    kill();
+  }
+  
   const auto seen_neighbors = monMilieu.getVoisins(*this);
 
   if (comportement) {
@@ -217,14 +222,3 @@ bool Bestiole::isCollidingWith(Bestiole const &b) const {
 
 bool Bestiole::isDead() const { return !alive; }
 void Bestiole::kill() { alive = false; }
-
-bool Bestiole::shouldClone() const {
-  float cloning_probability = 0.001;
-
-  // clone of a bestiole
-  std::random_device
-      rd; // Will be used to obtain a seed for the random number engine
-  std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
-  std::uniform_real_distribution<> dis(0, 1);
-  return cloning_probability > dis(gen);
-}

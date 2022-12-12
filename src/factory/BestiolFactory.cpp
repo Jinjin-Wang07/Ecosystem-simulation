@@ -13,7 +13,7 @@ int BestiolFactory::next_id = 0;
 /*
  *   Default constructeur
  */
-BestiolFactory::BestiolFactory(int width, int height, int index_comportement) {
+BestiolFactory::BestiolFactory(int width, int height) : gen(rd()) {
 
   total_num_bestiole["Basic_Bestiole"] = 50;
   curr_num_bestiole["Basic_Bestiole"] = 0;
@@ -24,10 +24,10 @@ BestiolFactory::BestiolFactory(int width, int height, int index_comportement) {
   // eye_champ_angulaire_limit =
 
   eye_champ_angulaire_limit = make_pair(0, 2 * M_PI);
-  eye_distance_limit = make_pair(20, 30);
+  eye_distance_limit = make_pair(20, 80);
   eye_capacite_detection_limit = make_pair(0, 1);
 
-  ear_distance_limit = make_pair(20, 30);
+  ear_distance_limit = make_pair(20, 100);
   ear_capacite_detection_limit = make_pair(0, 1);
 
   nageoire_speed_coef_max = 10;
@@ -37,18 +37,16 @@ BestiolFactory::BestiolFactory(int width, int height, int index_comportement) {
   camouflage_coef_max = make_pair(0.1, 0.9);
 
   this->max_age = 1000; // 1000 = 1s
-  this->max_vitesse = 10.0;
+  this->max_vitesse = 6.0;
 
   birth_rate = 0.1; // 10 step 1 birth
-  clone_probability = 0.5;
+  clone_probability = 0.05;
 
   curr_bestiole_comportment_num = {{"Gragaire", 0},
                                    {"Kamikaze", 0},
                                    {"Peureuse", 0},
                                    {"Prevoyante", 0},
                                    {"Multiple", 0}};
-
-  this->index_comportement = index_comportement;
 }
 
 BestiolFactory::~BestiolFactory() {}
@@ -60,20 +58,17 @@ Bestiole BestiolFactory::create_bestiole() {
   double camouflage_coef = 0; // TODO : make it ramdom
   double fragility = get_ramdom_value(0, 1);
   double orientation = get_ramdom_value(0, 2. * M_PI);
-  double vitesse = get_ramdom_value(1, max_vitesse);
+  double vitesse = get_ramdom_value(max_vitesse / 2, max_vitesse);
 
-  index_comportement =
-      index_comportement != 0 ? index_comportement : get_random_int(1, 3);
-
-  IComportement *comportement = get_comportement(index_comportement);
-  Couleur color = get_color(index_comportement);
+  unique_ptr<IComportement> comportement = get_comportement();
+  Couleur color = comportement->get_color();
 
   Bestiole new_bestiole(x, y, vitesse, max_vitesse, max_age, fragility,
                         camouflage_coef, orientation, color);
   new_bestiole.identite = ++next_id;
 
   if (true) {
-    new_bestiole.setComportement(std::unique_ptr<IComportement>(comportement));
+    new_bestiole.setComportement(move(comportement));
   }
 
   // Add ramdomly the yeux / oreille
@@ -92,65 +87,24 @@ void BestiolFactory::initCoords(int &x, int &y) {
   y = rand() % height;
 }
 
-Couleur BestiolFactory::get_color(int index) {
-  Couleur couleur;
-  switch (index) {
-  case 1: // Gragaire orange
-    couleur[0] = 255;
-    couleur[1] = 165;
-    couleur[2] = 0;
-    break;
-  case 2: // Peureuse bleu
-    couleur[0] = 0;
-    couleur[1] = 0;
-    couleur[2] = 255;
-    break;
-  case 3: // kamikaze rouge
-    couleur[0] = 255;
-    couleur[1] = 0;
-    couleur[2] = 0;
-    break;
-  case 4: // prevoiyante vert
-    couleur[0] = 0;
-    couleur[1] = 255;
-    couleur[2] = 0;
-    break;
-  case 5: // multiple TODO Change color  blanc
-    couleur[0] = 255;
-    couleur[1] = 255;
-    couleur[2] = 255;
-    break;
-  default:
-    throw runtime_error("In bestiol factory, no such index");
-    break;
-  }
-  return couleur;
-}
-
 /**
  * Get randomly a comportement
  * return : Pointer of a Comportement that implemented IComportement
  *  TODO : Prevoyante and Multiple aren't implemented
  */
-IComportement *BestiolFactory::get_comportement(int index_comportement) {
+unique_ptr<IComportement> BestiolFactory::get_comportement() {
 
   // int index_comportement = (rand() % (num_comportement))+ 1;
-
-  IComportement *comportement;
-
-  switch (index_comportement) {
-  case 1:
-    comportement = new Gragaire();
+  switch (force_comportement) {
+  case 1: 
     curr_bestiole_comportment_num["Gragaire"]++;
-    break;
+    return unique_ptr<Gragaire>(new Gragaire());
   case 2:
-    comportement = new Peureuse();
     curr_bestiole_comportment_num["Peureuse"]++;
-    break;
+    return unique_ptr<Peureuse>(new Peureuse());
   case 3:
-    comportement = new Kamikaze();
     curr_bestiole_comportment_num["Kamikaze"]++;
-    break;
+    return unique_ptr<Kamikaze>(new Kamikaze());
   // case 4:
   //     comportement = new Prevoyante();
   // curr_bestiole_comportment_num["Prevoyante"]++;
@@ -160,9 +114,27 @@ IComportement *BestiolFactory::get_comportement(int index_comportement) {
   // curr_bestiole_comportment_num["Multiple"]++;
   //     break;
   default:
-    throw std::runtime_error("get_random_comportement error");
+    // generate random based on distribution
+    double distribution_cumul[5];
+    double sum = 0;
+    for (int i = 0; i < 5; ++i) {
+      sum += bestioles_comportement_distribution[i];
+      distribution_cumul[i] = sum;
+    }
+    auto randomV = get_ramdom_value(0, sum);
+    if (randomV <= distribution_cumul[0]) {
+    curr_bestiole_comportment_num["Gragaire"]++;
+      return unique_ptr<Gragaire>(new Gragaire());
+    } else if (randomV <= distribution_cumul[1]) {
+    curr_bestiole_comportment_num["Peureuse"]++;
+      return unique_ptr<Peureuse>(new Peureuse());
+    } else if (randomV <= distribution_cumul[2]) {
+    curr_bestiole_comportment_num["Kamikaze"]++;
+      return unique_ptr<Kamikaze>(new Kamikaze());
+    } else {
+      throw std::runtime_error{"Bad bestiole distribution"};
+    }
   }
-  return comportement;
 }
 
 /**
@@ -264,10 +236,8 @@ void BestiolFactory::set_random_accessoire(Bestiole &b) {
 double BestiolFactory::get_ramdom_value(double min, double max) {
   if (NO_RANDOM)
     return max;
-
-  std::random_device
-      rd; // Will be used to obtain a seed for the random number engine
-  std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
+ // Will be used to obtain a seed for the random number engine
+   // Standard mersenne_twister_engine seeded with rd()
   std::uniform_real_distribution<> dis(min, max);
   return dis(gen);
 }
@@ -288,5 +258,6 @@ Bestiole BestiolFactory::clone_bestiole(Bestiole const &b) const {
   auto clone = b;
   // clone has a different identite
   clone.identite = ++next_id;
+  clone.age = 0;
   return clone;
 }

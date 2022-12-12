@@ -1,6 +1,6 @@
 # compile macro
 CC		= g++
-CFLAGS	= -std=c++11 -Wall -O2 # -g
+CFLAGS	= -std=c++11 -Wall -g
 INCX11 = /opt/homebrew/include
 LIBX11 = /opt/homebrew/lib
 # LDFLAGS	= -lm

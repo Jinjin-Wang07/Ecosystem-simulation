@@ -14,6 +14,10 @@ private:
 public:
   Multiple();
   ~Multiple();
+
+   Couleur get_color() const override {
+    return {255, 255, 255};
+   }
   void move(const Bestiole &b, vector<Bestiole> const &seen_neighbors);
 };
 #endif

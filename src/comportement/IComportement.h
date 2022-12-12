@@ -5,10 +5,15 @@
 #ifndef ECOSYSTEM_SIMULATION_ICOMPORTEMENT_H
 #define ECOSYSTEM_SIMULATION_ICOMPORTEMENT_H
 
+#include "UImg.h"
+
+#include <array>
 #include <memory>
 #include <vector>
 
 class Bestiole;
+
+using Couleur = std::array<T, 3>;
 class IComportement {
 
 public:
@@ -16,6 +21,8 @@ public:
 
   virtual void move(Bestiole &b,
                     std::vector<Bestiole const *> const &seen_neighbors) = 0;
+
+  virtual Couleur get_color() const = 0;
 
   virtual std::unique_ptr<IComportement> clone() const = 0;
 };

@@ -11,12 +11,15 @@ int get_user_comportement_choose();
 
 int main() {
   int total_num_bestiole = 20;
-  int index_comportement = get_user_comportement_choose();
+  int force_comportement = get_user_comportement_choose();
 
   Aquarium ecosysteme(640, 480, 30);
   auto &milieu = ecosysteme.getMilieu();
-  BestiolFactory bestiole_factory(milieu.getWidth(), milieu.getHeight(),
-                                  index_comportement);
+  BestiolFactory bestiole_factory(milieu.getWidth(), milieu.getHeight());
+  bestiole_factory.force_comportement = force_comportement;
+  bestiole_factory.bestioles_comportement_distribution = {
+    0.33, 0.33, 0.33, 0, 0
+  };
   milieu.setBestioleFactory(&bestiole_factory);
 
   for (int i = 1; i <= total_num_bestiole; ++i)

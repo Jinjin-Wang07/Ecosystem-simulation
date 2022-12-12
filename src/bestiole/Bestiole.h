@@ -25,9 +25,6 @@ private:
   double orientation;
   double max_vitesse;
 
-  // other variables
-  int age;
-  int age_limit;
 
   /**
    * fragility = [0, 1] (Probabilite de mort)
@@ -47,6 +44,10 @@ private:
 
 public: // Forme canonique :
   int identite;
+// other variables
+  int age;
+  int age_limit;
+  
   Bestiole(int x, int y, double vitesse, double max_vitesse, int age_limit,
            double fragility, double camouflage_coef, double orientation,
            Couleur color);     // Constructeur par defaut
@@ -93,8 +94,6 @@ public: // Forme canonique :
   bool isCollidingWith(Bestiole const &b) const;
   bool isDead() const;
   void kill();
-
-  bool shouldClone() const;
 };
 
 bool operator!=(const Bestiole &b1, const Bestiole &b2);

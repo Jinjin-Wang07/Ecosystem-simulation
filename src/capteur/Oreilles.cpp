@@ -32,5 +32,5 @@ void Oreilles::draw(UImg &support, double xt, double yt, double orientation) {
   couleur[1] = 0;
   couleur[2] = 0;
 
-  support.draw_circle(xt, yt, this->distance_max / 2., couleur, 0.7);
+  support.draw_circle(xt, yt, this->distance_max / 2., couleur, 0.05);
 }
