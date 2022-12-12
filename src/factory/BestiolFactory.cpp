@@ -37,7 +37,7 @@ BestiolFactory::BestiolFactory(int width, int height) : gen(rd()) {
   camouflage_coef_max = make_pair(0.1, 0.9);
 
   this->max_age = 1000; // 1000 = 1s
-  this->max_vitesse = 6.0;
+  this->max_vitesse = 5.0;
 
   birth_rate = 0.1; // 10 step 1 birth
   clone_probability = 0.05;

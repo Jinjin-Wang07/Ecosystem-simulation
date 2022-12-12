@@ -27,7 +27,7 @@ void Kamikaze::move(Bestiole &b,
   auto direction = b.getOrientation();
   direction -= sin(direction - newDirection) * 0.1;
   b.setOrientation(direction);
-  b.setVitesse(1 + distance * 0.1);
+  b.setVitesse(max(1 + distance * 0.1, b.get_max_vitesse()));
 }
 Bestiole const *
 Kamikaze::getAttractedNeighbor(const Bestiole &b,

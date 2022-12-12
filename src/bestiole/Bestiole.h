@@ -79,7 +79,8 @@ public: // Forme canonique :
   pair<double, double> getCoordinates() const;
 
   void setVitesse(double o);
-  double get_vitesse() { return this->vitesse; };
+  double get_vitesse()const { return this->vitesse; };
+  double get_max_vitesse()const { return this->max_vitesse; };
 
   friend bool operator==(const Bestiole &b1, const Bestiole &b2);
 

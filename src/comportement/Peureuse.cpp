@@ -23,11 +23,11 @@ void Peureuse::move(Bestiole &b,
   auto should_flee = neighbor_number > 2;
   if (fleeing && !should_flee) {
     fleeing = false;
-    b.setVitesse(3.0);
+    b.setVitesse(b.get_max_vitesse() / 2);
   } else if (!fleeing && should_flee) {
     fleeing = true;
     b.setOrientation(orientation + M_PI);
-    b.setVitesse(MAX_VITESSE);
+    b.setVitesse(b.get_max_vitesse());
   }
 }
 

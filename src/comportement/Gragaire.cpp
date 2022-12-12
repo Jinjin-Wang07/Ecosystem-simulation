@@ -31,7 +31,7 @@ void Gragaire::move(Bestiole &b,
       calculateAverageDirection(orientation, seen_neighbors);
   orientation -= sin(orientation - averageOrientation) * 0.1;
 
-  b.setVitesse(5);
+  b.setVitesse(0.6 * b.get_max_vitesse());
   b.setOrientation(orientation);
 }
 

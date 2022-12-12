@@ -49,7 +49,7 @@ Bestiole::Bestiole(const Bestiole &b) {
 
 // Move Constructeur
 Bestiole::Bestiole(Bestiole &&b)
-    : identite(b.identite), x(b.x), y(b.y), vitesse(b.vitesse) {
+    : identite(b.identite), x(b.x), y(b.y), vitesse(b.vitesse), max_vitesse(b.max_vitesse) {
 
   LOG_DEBUG("Construire Bestiole[%d] par move", this->identite);
 
@@ -108,6 +108,7 @@ Bestiole &Bestiole::operator=(Bestiole const &b) {
 
   orientation = b.orientation;
   vitesse = b.vitesse;
+  max_vitesse = b.max_vitesse;
   couleur = b.couleur;
   alive = b.alive;
   return *this;
