@@ -4,7 +4,9 @@
 using namespace std;
 
 class Milieu; // ??? why not aquarium...
-
+/*
+ * Interface of accessories
+ */
 class IAccessoire
 {
 private:

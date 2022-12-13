@@ -6,7 +6,9 @@
 #define ECOSYSTEM_SIMULATION_ICOMPORTEMENT_H
 
 #include "bestiole/Bestiole.h"
-
+/*
+ * the interface for bug's behaviors
+ */
 class IComportement {
 
 public:
