@@ -1,3 +1,7 @@
 src/*.o
 src/main
-./vscode
+./*.o
+./main
+./.vscode
+*.txt
+.vscode/settings.json

@@ -33,5 +33,4 @@ public:
     float get_facteur_vitesse();
 };
 
-
 #endif // _CARAPACE_H_

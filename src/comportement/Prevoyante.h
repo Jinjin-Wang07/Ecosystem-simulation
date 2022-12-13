@@ -1,12 +1,19 @@
-#include "Comportement.h"
-#include <vector>
+#ifndef PREVOYANTE
+#define PREVOYANTE
+#include "IComportement.h"
 using namespace std;
-typedef vector<float> Path;
-class Prevoyante : public IComportement{
-private:
-vector<Path> getNeighborPaths(vector<Bestiole> const& neighbors);
+class Prevoyante : public IComportement {
+
 public:
-Prevoyante();
-~Prevoyante();
-void move();
+  Prevoyante();
+
+  ~Prevoyante() override;
+  void move(Bestiole &b,
+            std::vector<Bestiole const *> const &seen_neighbors) override;
+  
+   Couleur get_color() const override {
+    return {0, 255, 0};
+   }
+  std::unique_ptr<IComportement> clone() const override;
 };
+#endif

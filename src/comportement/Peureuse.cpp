@@ -3,9 +3,34 @@
 //
 
 #include "Peureuse.h"
+#include "../../include/LogUtil.h"
+#include "../bestiole/Bestiole.h"
+#include "../constants.h"
+#include <cmath>
+#include <iostream>
+#include <vector>
 
-Peureuse::Peureuse() {}
+using namespace std;
 
-Peureuse::~Peureuse() {}
+Peureuse::Peureuse() { LOG_DEBUG("Create peureuse behavior"); }
 
-void Peureuse::move(const int &b, int seen_neighbors) {}
+Peureuse::~Peureuse() { LOG_DEBUG("Destroy peureuse behavior"); }
+
+void Peureuse::move(Bestiole &b,
+                    vector<Bestiole const *> const &seen_neighbors) {
+  int neighbor_number = seen_neighbors.size();
+  auto orientation = b.getOrientation();
+  auto should_flee = neighbor_number > 2;
+  if (fleeing && !should_flee) {
+    fleeing = false;
+    b.setVitesse(b.get_max_vitesse() / 2);
+  } else if (!fleeing && should_flee) {
+    fleeing = true;
+    b.setOrientation(orientation + M_PI);
+    b.setVitesse(b.get_max_vitesse());
+  }
+}
+
+unique_ptr<IComportement> Peureuse::clone() const {
+  return unique_ptr<IComportement>(new Peureuse());
+}

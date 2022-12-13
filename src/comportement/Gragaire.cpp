@@ -3,32 +3,58 @@
 //
 
 #include "Gragaire.h"
-#include <vector>
+#include "../../include/LogUtil.h"
+#include "../bestiole/Bestiole.h"
+
+#include <cmath>
 #include <iostream>
+#include <vector>
+
 using namespace std;
-Gragaire::Gragaire() {
-    cout << "create a gregaire behavior" << endl;
+
+Gragaire::Gragaire() { LOG_DEBUG("Create a gregaire behavior par default"); }
+
+Gragaire::~Gragaire() { LOG_DEBUG("Destroying a gregaire behavior"); }
+
+void Gragaire::move(Bestiole &b,
+                    vector<Bestiole const *> const &seen_neighbors) {
+  double orientation = b.getOrientation();
+  while (orientation < 0.0) {
+    orientation += 2 * M_PI;
+  }
+
+  while (orientation >= 2 * M_PI) {
+    orientation -= 2 * M_PI;
+  }
+
+  auto averageOrientation =
+      calculateAverageDirection(orientation, seen_neighbors);
+  orientation -= sin(orientation - averageOrientation) * 0.1;
+
+  b.setVitesse(0.6 * b.get_max_vitesse());
+  b.setOrientation(orientation);
 }
 
-Gragaire::~Gragaire() {
-    cout << "destroying a gregaire behavior" << endl;
+unique_ptr<IComportement> Gragaire::clone() const {
+  return unique_ptr<IComportement>(new Gragaire());
 }
-/*
- * set the bug's direction to be the average direction of its neighbors
- */
-void Gragaire::move(Bestiole& b, vector<Bestiole> const& seen_neighbors) {
-    auto averageDirection = calculateAverageDirection(seen_neighbors);
-    b.setOrientation(averageDirection);
-}
-/*
- * calculateAverageDirection calculates the average directions of its neighbors bugs
- */
-double Gragaire::calculateAverageDirection(vector<Bestiole> const& seen_neighbors) {
-    double averageDirection = 0.0;
-    for (auto const& neighbor : seen_neighbors) {
-        auto orientation = neighbor->getOrientation();
-        averageDirection += orientation;
+double Gragaire::calculateAverageDirection(
+    double orientation, vector<Bestiole const *> const &seen_neighbors) {
+  double averageDirection = 0.0;
+  for (auto const &neighbor : seen_neighbors) {
+    auto orientation = neighbor->getOrientation();
+    while (orientation < 0.0) {
+      orientation += 2 * M_PI;
     }
-    averageDirection /= seen_neighbors.size();
-    return averageDirection;
+
+    while (orientation >= 2 * M_PI) {
+      orientation -= 2 * M_PI;
+    }
+    averageDirection += orientation;
+  }
+  // std::cout << "computing avg of " << (1 + seen_neighbors.size()) << "
+  // values" << std::endl;
+  averageDirection =
+      ((averageDirection + orientation) / (1 + seen_neighbors.size()));
+  return averageDirection;
 }

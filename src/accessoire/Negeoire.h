@@ -28,7 +28,4 @@ public:
     void set_coef_vitesse(float coef_vitesse);
 };
 
-
 #endif // _NEGEOIRE_H_
-
-

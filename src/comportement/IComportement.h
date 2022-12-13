@@ -5,17 +5,25 @@
 #ifndef ECOSYSTEM_SIMULATION_ICOMPORTEMENT_H
 #define ECOSYSTEM_SIMULATION_ICOMPORTEMENT_H
 
-#include "bestiole/Bestiole.h"
-/*
- * the interface for bug's behaviors
- */
+#include "UImg.h"
+
+#include <array>
+#include <memory>
+#include <vector>
+
+class Bestiole;
+
+using Couleur = std::array<T, 3>;
 class IComportement {
 
 public:
+  virtual ~IComportement() = default;
 
-    virtual ~IComportement(){};
+  virtual void move(Bestiole &b,
+                    std::vector<Bestiole const *> const &seen_neighbors) = 0;
 
-    virtual void move(const Bestiole & b, vector<Bestiole> seen_neighbors) = 0;
+  virtual Couleur get_color() const = 0;
 
+  virtual std::unique_ptr<IComportement> clone() const = 0;
 };
-#endif //ECOSYSTEM_SIMULATION_ICOMPORTEMENT_H
+#endif // ECOSYSTEM_SIMULATION_ICOMPORTEMENT_H
