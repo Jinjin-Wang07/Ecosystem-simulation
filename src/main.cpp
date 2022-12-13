@@ -17,6 +17,7 @@ int main() {
   auto &milieu = ecosysteme.getMilieu();
   BestiolFactory bestiole_factory(milieu.getWidth(), milieu.getHeight());
   bestiole_factory.force_comportement = force_comportement;
+  // we use this random distribution for bestioles's comportement when force_comportement is 0
   bestiole_factory.bestioles_comportement_distribution = {
     0.33, 0.33, 0.33, 0, 0
   };
@@ -28,7 +29,9 @@ int main() {
 
   return 0;
 }
-
+/*
+ * we can choose a behavior for all the bugs, which 0 represents the random, 1 for the Gragaire, 2 for the Peureuse, 3 for the Kamikaze, 4 for the Prevoiyante, 5 for the Multiple
+ */
 int get_user_comportement_choose() {
   int index_comportement = 0;
   cout << "============================================" << endl;

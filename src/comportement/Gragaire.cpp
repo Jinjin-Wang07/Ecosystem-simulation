@@ -15,7 +15,10 @@ using namespace std;
 Gragaire::Gragaire() { LOG_DEBUG("Create a gregaire behavior par default"); }
 
 Gragaire::~Gragaire() { LOG_DEBUG("Destroying a gregaire behavior"); }
-
+/*
+ * the bug adjusts its direction to the average direction of its neighbors, and it sets the speed
+ * 0.6 times its original value
+ */
 void Gragaire::move(Bestiole &b,
                     vector<Bestiole const *> const &seen_neighbors) {
   double orientation = b.getOrientation();
@@ -38,6 +41,9 @@ void Gragaire::move(Bestiole &b,
 unique_ptr<IComportement> Gragaire::clone() const {
   return unique_ptr<IComportement>(new Gragaire());
 }
+/*
+ * calculate the average direction of its neighbors
+ */
 double Gragaire::calculateAverageDirection(
     double orientation, vector<Bestiole const *> const &seen_neighbors) {
   double averageDirection = 0.0;

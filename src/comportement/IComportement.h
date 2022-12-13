@@ -14,6 +14,9 @@
 class Bestiole;
 
 using Couleur = std::array<T, 3>;
+/*
+ * Interface for bug's behaviors
+ */
 class IComportement {
 
 public:

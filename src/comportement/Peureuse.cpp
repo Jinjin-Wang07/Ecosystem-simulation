@@ -16,6 +16,10 @@ Peureuse::Peureuse() { LOG_DEBUG("Create peureuse behavior"); }
 
 Peureuse::~Peureuse() { LOG_DEBUG("Destroy peureuse behavior"); }
 
+/*
+ * the bug adjusts his direction to the opposite and adjusts his speed to the maximum
+ * when the number of his neighbor are more than 2.
+ */
 void Peureuse::move(Bestiole &b,
                     vector<Bestiole const *> const &seen_neighbors) {
   int neighbor_number = seen_neighbors.size();

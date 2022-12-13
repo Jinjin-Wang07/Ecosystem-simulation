@@ -11,7 +11,7 @@
 using namespace std;
 int BestiolFactory::next_id = 0;
 /*
- *   Default constructeur
+ *   Default constructor
  */
 BestiolFactory::BestiolFactory(int width, int height) : gen(rd()) {
 
@@ -51,6 +51,9 @@ BestiolFactory::BestiolFactory(int width, int height) : gen(rd()) {
 
 BestiolFactory::~BestiolFactory() {}
 
+/*
+ * crete a bug with random parameter which doesn't exceed the max setting
+ */
 Bestiole BestiolFactory::create_bestiole() {
   int x, y;
   initCoords(x, y);
@@ -81,7 +84,9 @@ Bestiole BestiolFactory::create_bestiole() {
 
   return new_bestiole;
 }
-
+/*
+ * initialize a bug's coordination
+ */
 void BestiolFactory::initCoords(int &x, int &y) {
   x = rand() % width;
   y = rand() % height;
@@ -92,6 +97,9 @@ void BestiolFactory::initCoords(int &x, int &y) {
  * return : Pointer of a Comportement that implemented IComportement
  *  TODO : Prevoyante and Multiple aren't implemented
  */
+ /*
+  * choose a bug's behavior by the force_comportement parameter, if the parameter is default, choose a behavior randomly
+  */
 unique_ptr<IComportement> BestiolFactory::get_comportement() {
 
   // int index_comportement = (rand() % (num_comportement))+ 1;
@@ -137,8 +145,8 @@ unique_ptr<IComportement> BestiolFactory::get_comportement() {
   }
 }
 
-/**
- *  Simple functions for adding eye for a bestiole
+/*
+ *  add an eye captor to a bug and set the random value of distance, champ_vision, capacity parameters for the eye captor
  */
 void BestiolFactory::add_capteur_yeux(Bestiole &b) {
   // eye_distance_limit
@@ -154,7 +162,9 @@ void BestiolFactory::add_capteur_yeux(Bestiole &b) {
   Yeux *yeux = new Yeux(0, distance, champ_vision, capacite);
   b.move_capteur(move(unique_ptr<ICapteur>(yeux)));
 }
-
+/*
+ *  add an ear captor to a bug and set the random value of capacite_detection, distance_min, distance_max parameters for the ear captor
+ */
 void BestiolFactory::add_capteur_oreille(Bestiole &b) {
   double distance_min = ear_distance_limit.first;
   double distance_max =
@@ -170,17 +180,17 @@ void BestiolFactory::add_capteur_oreille(Bestiole &b) {
   b.move_capteur(move(oreille));
 }
 
-/**
- * Une bestiole disposant d’un camouflage sera plus difficile a detecter par les
- * autres. Camouflage_coef = 0 signifie pas de camouflage Camouflage_coef = 1
- * signifie il ne peut pas etre detecter
+/*
+ *  add a camouflage accessory to a bug and set the random value of camouflage_coef for the camouflage accessory
  */
 void BestiolFactory::add_accessoire_camouflage(Bestiole &b) {
   double coef =
       get_ramdom_value(camouflage_coef_max.first, camouflage_coef_max.second);
   b.set_camouflage_coef(coef);
 }
-
+/*
+ *  add a carapace accessory to a bug and set the random value of fragility_coef and new_vitesse for the carapace accessory
+ */
 void BestiolFactory::add_accessoire_carapace(Bestiole &b) {
   double coef_fra = get_ramdom_value(0, carapace_resistance_coef_max);
   double new_fra = b.get_fragility() / coef_fra;
@@ -191,17 +201,17 @@ void BestiolFactory::add_accessoire_carapace(Bestiole &b) {
   b.setVitesse(new_vitesse);
 }
 
-/**
- *  Here we suposse that bestiol can only have one negeoire
- */
+/*
+*  add a negeoire accessory to a bug and set the random value of new_vitesse for the negeoire accessory.Here we suposse that bug can only have one negeoire
+*/
 void BestiolFactory::add_accessoire_negeoire(Bestiole &b) {
   double coef_v = get_ramdom_value(1, nageoire_speed_coef_max);
   double new_vitesse = b.get_vitesse() * coef_v;
   b.setVitesse(new_vitesse);
 }
 
-/**
- * Set randomly capteurs
+/*
+ * Set random capteurs for a bug
  * Probablility(get_ramdom_value(0,1)>0.5) == 50%
  */
 void BestiolFactory::set_ramdom_capteur(Bestiole &b) {
@@ -214,8 +224,8 @@ void BestiolFactory::set_ramdom_capteur(Bestiole &b) {
     add_capteur_oreille(b);
 }
 
-/**
- * Set randomly accessoires
+/*
+ * Set random accessoires  for a bug
  * Probablility(get_ramdom_value(0,1)>0.5) == 50%
  */
 void BestiolFactory::set_random_accessoire(Bestiole &b) {
@@ -231,8 +241,9 @@ void BestiolFactory::set_random_accessoire(Bestiole &b) {
     add_accessoire_negeoire(b);
 }
 
-// fonction genere valeure ramdom double value uniform distribuate between [min,
-// max]
+/*
+ * get a uniform random double value between the min and max
+ */
 double BestiolFactory::get_ramdom_value(double min, double max) {
   if (NO_RANDOM)
     return max;
@@ -242,8 +253,9 @@ double BestiolFactory::get_ramdom_value(double min, double max) {
   return dis(gen);
 }
 
-// fonction genere valeure ramdom int value uniform distribuate between [min,
-// max]
+/*
+ * get a uniform random int value between the min and max
+ */
 int BestiolFactory::get_random_int(int min, int max) {
   if (NO_RANDOM)
     return max;
@@ -254,6 +266,9 @@ int BestiolFactory::get_random_int(int min, int max) {
   return dis(gen);
 }
 
+/*
+ * clone a bug with a different id
+ */
 Bestiole BestiolFactory::clone_bestiole(Bestiole const &b) const {
   auto clone = b;
   // clone has a different identite

@@ -11,6 +11,9 @@ Kamikaze::Kamikaze() { LOG_DEBUG("Create a kamikaze behavior par default"); }
 Kamikaze::~Kamikaze() {
   LOG_DEBUG("Destroying a kamikaze behavior par default");
 }
+/*
+ * the bug adjusts its direction to its nearest neighbor.
+ */
 void Kamikaze::move(Bestiole &b,
                     vector<Bestiole const *> const &seen_neighbors) {
   auto attractedNeighbor = getAttractedNeighbor(b, seen_neighbors);
@@ -29,6 +32,9 @@ void Kamikaze::move(Bestiole &b,
   b.setOrientation(direction);
   b.setVitesse(max(1 + distance * 0.1, b.get_max_vitesse()));
 }
+/*
+ * calculate the distance between the bug and its neighbors and return the nearest bug
+ */
 Bestiole const *
 Kamikaze::getAttractedNeighbor(const Bestiole &b,
                                vector<Bestiole const *> const &seen_neighbors) {
