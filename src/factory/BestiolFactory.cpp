@@ -39,7 +39,7 @@ BestiolFactory::BestiolFactory(int width, int height) : gen(rd()) {
   this->max_age = 1000; // 1000 = 1s
   this->max_vitesse = 5.0;
 
-  birth_rate = 0.1; // 10 step 1 birth
+  birth_rate = 0.05; // 100 step 1 birth
   clone_probability = 0.05;
 
   curr_bestiole_comportment_num = {{"Gragaire", 0},
@@ -269,9 +269,10 @@ int BestiolFactory::get_random_int(int min, int max) {
 /*
  * clone a bug with a different id
  */
-Bestiole BestiolFactory::clone_bestiole(Bestiole const &b) const {
+Bestiole BestiolFactory::clone_bestiole(Bestiole const &b) {
   auto clone = b;
   // clone has a different identite
+  clone.setOrientation(get_ramdom_value(0, 2*M_PI));
   clone.identite = ++next_id;
   clone.age = 0;
   return clone;

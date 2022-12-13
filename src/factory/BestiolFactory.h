@@ -88,7 +88,7 @@ public:
    *   create a default bestiole
    */
   Bestiole create_bestiole();
-  Bestiole clone_bestiole(Bestiole const &b) const;
+  Bestiole clone_bestiole(Bestiole const &b);
 
   /*
    *   Reset the factory variables to default
