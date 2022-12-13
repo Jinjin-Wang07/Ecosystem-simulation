@@ -15,7 +15,7 @@ using namespace std;
 
 Bestiole::Bestiole(int x, int y, double vitesse, double max_vitesse,
                    int age_limit, double fragility, double camouflage_coef,
-                   double orientation, Couleur color) {
+                   double orientation) {
 
   // Initialization
   this->x = x;
@@ -35,8 +35,6 @@ Bestiole::Bestiole(int x, int y, double vitesse, double max_vitesse,
   LOG_DEBUG("Construire Bestiole[%d] par default", this->identite);
 
   cumulX = cumulY = 0.;
-
-  this->couleur = color;
 }
 
 // TODO move construteur
@@ -49,7 +47,8 @@ Bestiole::Bestiole(const Bestiole &b) {
 
 // Move Constructeur
 Bestiole::Bestiole(Bestiole &&b)
-    : identite(b.identite), x(b.x), y(b.y), vitesse(b.vitesse), max_vitesse(b.max_vitesse) {
+    : identite(b.identite), x(b.x), y(b.y), vitesse(b.vitesse),
+      max_vitesse(b.max_vitesse) {
 
   LOG_DEBUG("Construire Bestiole[%d] par move", this->identite);
 
@@ -72,7 +71,6 @@ Bestiole::Bestiole(Bestiole &&b)
 
   orientation = b.orientation;
   vitesse = b.vitesse;
-  couleur = b.couleur;
   alive = b.alive;
 }
 
@@ -109,7 +107,6 @@ Bestiole &Bestiole::operator=(Bestiole const &b) {
   orientation = b.orientation;
   vitesse = b.vitesse;
   max_vitesse = b.max_vitesse;
-  couleur = b.couleur;
   alive = b.alive;
   return *this;
 }
@@ -155,7 +152,7 @@ void Bestiole::action(Milieu &monMilieu) {
   if (age > age_limit) {
     kill();
   }
-  
+
   const auto seen_neighbors = monMilieu.getVoisins(*this);
 
   if (comportement) {
@@ -173,7 +170,7 @@ void Bestiole::draw(UImg &support) {
   for (auto const &capteur : list_capteurs) {
     capteur->draw(support, xt, yt, orientation);
   }
-
+  const auto couleur = comportement->get_color();
   support.draw_ellipse(x, y, AFF_SIZE, AFF_SIZE / 5.,
                        -orientation / M_PI * 180., couleur.data());
   support.draw_circle(xt, yt, AFF_SIZE / 2., couleur.data());

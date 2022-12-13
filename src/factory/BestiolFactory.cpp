@@ -2,6 +2,7 @@
 
 #include "../comportement/Gragaire.h"
 #include "../comportement/Kamikaze.h"
+#include "../comportement/Multiple.h"
 #include "../comportement/Peureuse.h"
 
 #include "../capteur/ICapteur.h"
@@ -40,7 +41,7 @@ BestiolFactory::BestiolFactory(int width, int height) : gen(rd()) {
   this->max_vitesse = 5.0;
 
   birth_rate = 0.05; // 100 step 1 birth
-  clone_probability = 0.05;
+  clone_probability = 0.02;
 
   curr_bestiole_comportment_num = {{"Gragaire", 0},
                                    {"Kamikaze", 0},
@@ -67,7 +68,7 @@ Bestiole BestiolFactory::create_bestiole() {
   Couleur color = comportement->get_color();
 
   Bestiole new_bestiole(x, y, vitesse, max_vitesse, max_age, fragility,
-                        camouflage_coef, orientation, color);
+                        camouflage_coef, orientation);
   new_bestiole.identite = ++next_id;
 
   if (true) {
@@ -97,14 +98,15 @@ void BestiolFactory::initCoords(int &x, int &y) {
  * return : Pointer of a Comportement that implemented IComportement
  *  TODO : Prevoyante and Multiple aren't implemented
  */
- /*
-  * choose a bug's behavior by the force_comportement parameter, if the parameter is default, choose a behavior randomly
-  */
+/*
+ * choose a bug's behavior by the force_comportement parameter, if the parameter
+ * is default, choose a behavior randomly
+ */
 unique_ptr<IComportement> BestiolFactory::get_comportement() {
 
   // int index_comportement = (rand() % (num_comportement))+ 1;
   switch (force_comportement) {
-  case 1: 
+  case 1:
     curr_bestiole_comportment_num["Gragaire"]++;
     return unique_ptr<Gragaire>(new Gragaire());
   case 2:
@@ -113,6 +115,9 @@ unique_ptr<IComportement> BestiolFactory::get_comportement() {
   case 3:
     curr_bestiole_comportment_num["Kamikaze"]++;
     return unique_ptr<Kamikaze>(new Kamikaze());
+  case 4:
+    curr_bestiole_comportment_num["Multiple"]++;
+    return unique_ptr<Multiple>(new Multiple());
   // case 4:
   //     comportement = new Prevoyante();
   // curr_bestiole_comportment_num["Prevoyante"]++;
@@ -131,14 +136,17 @@ unique_ptr<IComportement> BestiolFactory::get_comportement() {
     }
     auto randomV = get_ramdom_value(0, sum);
     if (randomV <= distribution_cumul[0]) {
-    curr_bestiole_comportment_num["Gragaire"]++;
+      curr_bestiole_comportment_num["Gragaire"]++;
       return unique_ptr<Gragaire>(new Gragaire());
     } else if (randomV <= distribution_cumul[1]) {
-    curr_bestiole_comportment_num["Peureuse"]++;
+      curr_bestiole_comportment_num["Peureuse"]++;
       return unique_ptr<Peureuse>(new Peureuse());
     } else if (randomV <= distribution_cumul[2]) {
-    curr_bestiole_comportment_num["Kamikaze"]++;
+      curr_bestiole_comportment_num["Kamikaze"]++;
       return unique_ptr<Kamikaze>(new Kamikaze());
+    } else if (randomV <= distribution_cumul[3]) {
+      curr_bestiole_comportment_num["Multiple"]++;
+      return unique_ptr<Multiple>(new Multiple());
     } else {
       throw std::runtime_error{"Bad bestiole distribution"};
     }
@@ -146,7 +154,8 @@ unique_ptr<IComportement> BestiolFactory::get_comportement() {
 }
 
 /*
- *  add an eye captor to a bug and set the random value of distance, champ_vision, capacity parameters for the eye captor
+ *  add an eye captor to a bug and set the random value of distance,
+ * champ_vision, capacity parameters for the eye captor
  */
 void BestiolFactory::add_capteur_yeux(Bestiole &b) {
   // eye_distance_limit
@@ -163,7 +172,8 @@ void BestiolFactory::add_capteur_yeux(Bestiole &b) {
   b.move_capteur(move(unique_ptr<ICapteur>(yeux)));
 }
 /*
- *  add an ear captor to a bug and set the random value of capacite_detection, distance_min, distance_max parameters for the ear captor
+ *  add an ear captor to a bug and set the random value of capacite_detection,
+ * distance_min, distance_max parameters for the ear captor
  */
 void BestiolFactory::add_capteur_oreille(Bestiole &b) {
   double distance_min = ear_distance_limit.first;
@@ -181,7 +191,8 @@ void BestiolFactory::add_capteur_oreille(Bestiole &b) {
 }
 
 /*
- *  add a camouflage accessory to a bug and set the random value of camouflage_coef for the camouflage accessory
+ *  add a camouflage accessory to a bug and set the random value of
+ * camouflage_coef for the camouflage accessory
  */
 void BestiolFactory::add_accessoire_camouflage(Bestiole &b) {
   double coef =
@@ -189,7 +200,8 @@ void BestiolFactory::add_accessoire_camouflage(Bestiole &b) {
   b.set_camouflage_coef(coef);
 }
 /*
- *  add a carapace accessory to a bug and set the random value of fragility_coef and new_vitesse for the carapace accessory
+ *  add a carapace accessory to a bug and set the random value of fragility_coef
+ * and new_vitesse for the carapace accessory
  */
 void BestiolFactory::add_accessoire_carapace(Bestiole &b) {
   double coef_fra = get_ramdom_value(0, carapace_resistance_coef_max);
@@ -202,8 +214,10 @@ void BestiolFactory::add_accessoire_carapace(Bestiole &b) {
 }
 
 /*
-*  add a negeoire accessory to a bug and set the random value of new_vitesse for the negeoire accessory.Here we suposse that bug can only have one negeoire
-*/
+ *  add a negeoire accessory to a bug and set the random value of new_vitesse
+ * for the negeoire accessory.Here we suposse that bug can only have one
+ * negeoire
+ */
 void BestiolFactory::add_accessoire_negeoire(Bestiole &b) {
   double coef_v = get_ramdom_value(1, nageoire_speed_coef_max);
   double new_vitesse = b.get_vitesse() * coef_v;
@@ -247,8 +261,8 @@ void BestiolFactory::set_random_accessoire(Bestiole &b) {
 double BestiolFactory::get_ramdom_value(double min, double max) {
   if (NO_RANDOM)
     return max;
- // Will be used to obtain a seed for the random number engine
-   // Standard mersenne_twister_engine seeded with rd()
+  // Will be used to obtain a seed for the random number engine
+  // Standard mersenne_twister_engine seeded with rd()
   std::uniform_real_distribution<> dis(min, max);
   return dis(gen);
 }
@@ -272,7 +286,7 @@ int BestiolFactory::get_random_int(int min, int max) {
 Bestiole BestiolFactory::clone_bestiole(Bestiole const &b) {
   auto clone = b;
   // clone has a different identite
-  clone.setOrientation(get_ramdom_value(0, 2*M_PI));
+  clone.setOrientation(get_ramdom_value(0, 2 * M_PI));
   clone.identite = ++next_id;
   clone.age = 0;
   return clone;

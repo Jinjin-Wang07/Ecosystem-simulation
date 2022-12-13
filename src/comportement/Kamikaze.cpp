@@ -33,7 +33,8 @@ void Kamikaze::move(Bestiole &b,
   b.setVitesse(max(1 + distance * 0.1, b.get_max_vitesse()));
 }
 /*
- * calculate the distance between the bug and its neighbors and return the nearest bug
+ * calculate the distance between the bug and its neighbors and return the
+ * nearest bug
  */
 Bestiole const *
 Kamikaze::getAttractedNeighbor(const Bestiole &b,

@@ -10,7 +10,7 @@ LIBS = -L $(LIBX11) -lX11 -lpthread
 # user modify: subdir, target and objects
 VPATH 	= ./bestiole ./environment ./factory ./comportement ./capteur
 EXENAME = main
-OBJECTS	= Aquarium.o Milieu.o Bestiole.o main.o BestiolFactory.o Gragaire.o Peureuse.o Kamikaze.o Oreilles.o Yeux.o
+OBJECTS	= Aquarium.o Milieu.o Bestiole.o main.o BestiolFactory.o Gragaire.o Peureuse.o Kamikaze.o Multiple.o Oreilles.o Yeux.o
 
 
 # make target

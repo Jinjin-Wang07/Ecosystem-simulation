@@ -17,10 +17,7 @@ public:
   void move(Bestiole &b,
             std::vector<Bestiole const *> const &seen_neighbors) override;
 
-
-   Couleur get_color() const override {
-    return {255, 165, 0};
-   }
+  Couleur get_color() const override { return {255, 165, 0}; }
   std::unique_ptr<IComportement> clone() const override;
 
 private:

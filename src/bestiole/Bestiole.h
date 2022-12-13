@@ -25,7 +25,6 @@ private:
   double orientation;
   double max_vitesse;
 
-
   /**
    * fragility = [0, 1] (Probabilite de mort)
    */
@@ -35,7 +34,6 @@ private:
 
   // affichage
   double cumulX, cumulY;
-  Couleur couleur;
   std::vector<unique_ptr<ICapteur>> list_capteurs;
 
   unique_ptr<IComportement> comportement;
@@ -44,15 +42,15 @@ private:
 
 public: // Forme canonique :
   int identite;
-// other variables
+  // other variables
   int age;
   int age_limit;
-  
+
   Bestiole(int x, int y, double vitesse, double max_vitesse, int age_limit,
-           double fragility, double camouflage_coef, double orientation,
-           Couleur color);     // Constructeur par defaut
-  Bestiole(const Bestiole &b); // Constructeur de copies
-  Bestiole(Bestiole &&b);      // Move constructeur
+           double fragility, double camouflage_coef,
+           double orientation); // Constructeur par defaut
+  Bestiole(const Bestiole &b);  // Constructeur de copies
+  Bestiole(Bestiole &&b);       // Move constructeur
 
   Bestiole &operator=(Bestiole const &b);
 
@@ -79,8 +77,8 @@ public: // Forme canonique :
   pair<double, double> getCoordinates() const;
 
   void setVitesse(double o);
-  double get_vitesse()const { return this->vitesse; };
-  double get_max_vitesse()const { return this->max_vitesse; };
+  double get_vitesse() const { return this->vitesse; };
+  double get_max_vitesse() const { return this->max_vitesse; };
 
   friend bool operator==(const Bestiole &b1, const Bestiole &b2);
 

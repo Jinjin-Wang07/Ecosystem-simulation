@@ -16,8 +16,8 @@ Gragaire::Gragaire() { LOG_DEBUG("Create a gregaire behavior par default"); }
 
 Gragaire::~Gragaire() { LOG_DEBUG("Destroying a gregaire behavior"); }
 /*
- * the bug adjusts its direction to the average direction of its neighbors, and it sets the speed
- * 0.6 times its original value
+ * the bug adjusts its direction to the average direction of its neighbors, and
+ * it sets the speed 0.6 times its original value
  */
 void Gragaire::move(Bestiole &b,
                     vector<Bestiole const *> const &seen_neighbors) {

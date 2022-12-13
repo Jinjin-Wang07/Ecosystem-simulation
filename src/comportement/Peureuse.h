@@ -14,9 +14,7 @@ public:
 
   ~Peureuse() override;
 
-   Couleur get_color() const override {
-    return {0, 0, 255};
-   }
+  Couleur get_color() const override { return {0, 0, 255}; }
 
   void move(Bestiole &b,
             std::vector<Bestiole const *> const &seen_neighbors) override;

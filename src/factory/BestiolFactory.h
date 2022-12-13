@@ -52,12 +52,12 @@ public:
   double clone_probability;
 
   map<string, int> curr_bestiole_comportment_num;
-  array<double, 5> bestioles_comportement_distribution = {0.2, 0.2, 0.2, 0.2, 0.2};
+  array<double, 5> bestioles_comportement_distribution = {0.25, 0.25, 0.25,
+                                                          0.25, 0};
 
   int force_comportement = 0;
 
 private:
-
   void initCoords(int &, int &);
 
   Couleur get_random_color();

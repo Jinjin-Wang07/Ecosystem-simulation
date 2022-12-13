@@ -1,23 +1,26 @@
 #ifndef MULTIPLE
 #define MULTIPLE
-#include "Gragaire.h"
 #include "IComportement.h"
-#include "Kamikaze.h"
-#include "Peureuse.h"
-#include "Prevoyante.h"
 #include <vector>
-using namespace std;
 class Multiple : public IComportement {
 private:
-  vector<IComportement> comportements;
+  std::unique_ptr<IComportement> currentComportement;
+  int stepsSinceLastComportementChange = 0;
+  std::unique_ptr<IComportement> updateComportement() const;
 
 public:
   Multiple();
-  ~Multiple();
+  ~Multiple() override;
 
-   Couleur get_color() const override {
-    return {255, 255, 255};
-   }
-  void move(const Bestiole &b, vector<Bestiole> const &seen_neighbors);
+  Couleur get_color() const override {
+    return currentComportement->get_color();
+  }
+
+  void move(Bestiole &b,
+            std::vector<Bestiole const *> const &seen_neighbors) override;
+
+  std::unique_ptr<IComportement> clone() const override {
+    return std::unique_ptr<Multiple>(new Multiple());
+  }
 };
 #endif
