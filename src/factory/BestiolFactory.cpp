@@ -292,5 +292,5 @@ Bestiole BestiolFactory::clone_bestiole(Bestiole const &b) {
 }
 
 bool BestiolFactory::can_add_bestiole(){
-  return curr_num_bestiole["Basic_Bestiole"] <= total_num_bestiole["Basic_Bestiole"];
+  return curr_num_bestiole["Basic_Bestiole"] < total_num_bestiole["Basic_Bestiole"];
 }

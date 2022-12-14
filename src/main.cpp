@@ -14,7 +14,7 @@ int get_user_comportement_choose();
 int main() {
 
 	while (1) {
-    // system("clear");
+    system("clear");
     int total_num_bestiole = INIT_BESTIOLE_NUM;
     int force_comportement = get_user_comportement_choose();
 

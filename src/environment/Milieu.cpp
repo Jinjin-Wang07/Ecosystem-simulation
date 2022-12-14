@@ -69,6 +69,7 @@ void Milieu::step(void) {
 
   for(auto it = firstBestioleToErase; it!=listeBestioles.end(); ++it){
     num_death++;
+    LOG_INFO("==================%s died", it->get_comportement_name().c_str());
     bestioleFac->curr_num_bestiole["Basic_Bestiole"]--;
     bestioleFac->curr_bestiole_comportment_num[it->get_comportement_name()]--;
   }

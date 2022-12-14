@@ -28,7 +28,7 @@ public:
 
   virtual Couleur get_color() const = 0;
 
-  virtual std::string get_name() = 0;
+  virtual std::string get_name() const = 0;
 
   virtual std::unique_ptr<IComportement> clone() const = 0;
 };
