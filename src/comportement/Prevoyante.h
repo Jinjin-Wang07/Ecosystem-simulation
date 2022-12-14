@@ -12,7 +12,7 @@ public:
   void move(Bestiole &b,
             std::vector<Bestiole const *> const &seen_neighbors) override;
 
-  std::string get_name() override {return "Prevoyante";}
+  std::string get_name() const override {return "Prevoyante";}
 
   Couleur get_color() const override { return {0, 255, 0}; }
   std::unique_ptr<IComportement> clone() const override;

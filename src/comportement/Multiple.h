@@ -17,7 +17,7 @@ public:
     return currentComportement->get_color();
   }
 
-  std::string get_name() override {return "Multiple";}
+  std::string get_name() const override {return "Multiple";}
 
   void move(Bestiole &b,
             std::vector<Bestiole const *> const &seen_neighbors) override;
