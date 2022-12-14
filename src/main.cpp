@@ -10,18 +10,23 @@ using namespace std;
 int get_user_comportement_choose();
 
 int main() {
-  int total_num_bestiole = 20;
-  int force_comportement = get_user_comportement_choose();
 
-  Aquarium ecosysteme(640, 480, 30);
-  auto &milieu = ecosysteme.getMilieu();
-  BestiolFactory bestiole_factory(milieu.getWidth(), milieu.getHeight());
-  bestiole_factory.force_comportement = force_comportement;
-  milieu.setBestioleFactory(&bestiole_factory);
+	while (1) {
+    system("clear");
+    int total_num_bestiole = 1;
+    int force_comportement = get_user_comportement_choose();
 
-  for (int i = 1; i <= total_num_bestiole; ++i)
-    ecosysteme.getMilieu().addMember(bestiole_factory.create_bestiole());
-  ecosysteme.run();
+    Aquarium ecosysteme(640, 480, 30);
+    auto &milieu = ecosysteme.getMilieu();
+    BestiolFactory bestiole_factory(milieu.getWidth(), milieu.getHeight());
+    bestiole_factory.force_comportement = force_comportement;
+    milieu.setBestioleFactory(&bestiole_factory);
+
+    for (int i = 1; i <= total_num_bestiole; ++i)
+      ecosysteme.getMilieu().addMember(bestiole_factory.create_bestiole());
+
+    ecosysteme.run();
+  }
 
   return 0;
 }
@@ -31,7 +36,8 @@ int main() {
  * Prevoiyante, 5 for the Multiple
  */
 int get_user_comportement_choose() {
-  int index_comportement = 0;
+  char index_comportement = 0;
+
   cout << "============================================" << endl;
   cout << "============================================" << endl;
   cout << "[Default 0] : Random" << endl;
@@ -41,11 +47,21 @@ int get_user_comportement_choose() {
   cout << "[4] : Prevoyante - Green " << endl;
   // cout << "[4] : Prevoiyante - Green" << endl;
   cout << "[5] : Multiple" << endl;
-  cout << "Please choose a comportement ： " << endl;
-  cin >> index_comportement; // if wrong num, index will be 0;
-  cout << "Your choose is:  " << index_comportement << endl;
-  cout << "============================================" << endl;
-  cout << "============================================" << endl;
+  cout << "Please choose a comportement (Press q to exit)： " << endl;
+  index_comportement = getchar();
 
-  return index_comportement;
+  if(index_comportement == 'q'){
+    exit(0);
+  }
+  if(isdigit(index_comportement) == 0){
+    index_comportement = 0;
+  }
+  index_comportement -= '0';
+  cout << "Your choose is:  " << int(index_comportement) << endl;
+  cout << "============================================" << endl;
+  cout << "============================================" << endl;
+    // cin.clear();
+  cin.ignore();
+
+  return int(index_comportement);
 }

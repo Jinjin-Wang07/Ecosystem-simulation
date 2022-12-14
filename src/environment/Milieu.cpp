@@ -42,6 +42,7 @@ void Milieu::step(void) {
   for (auto it = listeBestioles.begin(); it != listeBestioles.end(); ++it) {
     for (auto it2 = next(it); it2 != listeBestioles.end(); ++it2) {
       if (it->isCollidingWith(*it2)) {
+        show_collision(*it);
         handleCollision(*it);
         handleCollision(*it2);
       }
@@ -95,6 +96,7 @@ void Milieu::handleCollision(Bestiole &b) {
   std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
   std::uniform_real_distribution<> dis(0, 1);
   bool kill = b.get_fragility() > dis(gen);
+
   if (kill) {
     b.kill();
     return;
@@ -105,3 +107,8 @@ void Milieu::handleCollision(Bestiole &b) {
 }
 
 void Milieu::setBestioleFactory(BestiolFactory *bf) { this->bestioleFac = bf; }
+
+void Milieu::show_collision(Bestiole &b){
+  Couleur color = {139, 0, 0};
+  draw_circle(b.getCoordinates().first, b.getCoordinates().second,  10, color.data());
+}

@@ -15,7 +15,7 @@
  * Source : https://blog.csdn.net/afei__/article/details/82682857
  */
 
-#define __DEBUG__ // if u don't want debug log, comment this line
+// #define __DEBUG__ // if u don't want debug log, comment this line
 #define __INFO__
 
 #define __FILENAME__ (strrchr(__FILE__, '/') + 1)
@@ -24,6 +24,9 @@
 #define LOG_DEBUG(format, ...)                                                 \
   printf("[DEBUG][%s][%s][%d]: " format "\n", __FILENAME__, __FUNCTION__,      \
          __LINE__, ##__VA_ARGS__)
+#else
+#define LOG_DEBUG(format, ...)                                       
+  
 #endif
 
 #ifdef __INFO__
@@ -33,5 +36,8 @@
 
 // #define LOG_INFO(format, ...)
 #endif
+
+
+
 
 #endif // _LOG_UTILS_H_

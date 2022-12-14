@@ -19,6 +19,8 @@ private:
 
   BestiolFactory *bestioleFac;
 
+  void show_collision(Bestiole &b);
+
 public:
   Milieu(int _width, int _height);
   ~Milieu(void);
