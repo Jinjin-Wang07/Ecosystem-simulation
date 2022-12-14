@@ -1,5 +1,7 @@
 #include "BestiolFactory.h"
 
+#include "../../include/LogUtil.h"
+
 #include "../comportement/Gragaire.h"
 #include "../comportement/Kamikaze.h"
 #include "../comportement/Multiple.h"
@@ -39,7 +41,7 @@ BestiolFactory::BestiolFactory(int width, int height) : gen(rd()) {
   camouflage_coef_max = make_pair(0.1, 0.9);
 
   this->max_age = 1000; // 1000 = 1s
-  this->max_vitesse = 5.0;
+  this->max_vitesse = 10.0;
 
   birth_rate = 0.05; // 100 step 1 birth
   clone_probability = 0.02;
@@ -66,9 +68,11 @@ Bestiole BestiolFactory::create_bestiole() {
   double vitesse = get_ramdom_value(max_vitesse / 2, max_vitesse);
 
   unique_ptr<IComportement> comportement = get_comportement();
-  Couleur color = comportement->get_color();
 
-  Bestiole new_bestiole(x, y, vitesse, max_vitesse, max_age, fragility,
+  // Couleur color = comportement->get_color();
+
+  int individu_max_age = get_ramdom_value(100, max_age);
+  Bestiole new_bestiole(x, y, vitesse, max_vitesse, individu_max_age, fragility,
                         camouflage_coef, orientation);
   new_bestiole.identite = ++next_id;
 
@@ -82,7 +86,9 @@ Bestiole BestiolFactory::create_bestiole() {
   // Add ramdomly the accessoires
   set_random_accessoire(new_bestiole);
 
+
   curr_num_bestiole["Basic_Bestiole"]++;
+  curr_bestiole_comportment_num[new_bestiole.get_comportement_name()]++;
 
   return new_bestiole;
 }
@@ -108,29 +114,15 @@ unique_ptr<IComportement> BestiolFactory::get_comportement() {
   // int index_comportement = (rand() % (num_comportement))+ 1;
   switch (force_comportement) {
   case 1:
-    curr_bestiole_comportment_num["Gragaire"]++;
     return unique_ptr<Gragaire>(new Gragaire());
   case 2:
-    curr_bestiole_comportment_num["Peureuse"]++;
     return unique_ptr<Peureuse>(new Peureuse());
   case 3:
-    curr_bestiole_comportment_num["Kamikaze"]++;
     return unique_ptr<Kamikaze>(new Kamikaze());
   case 4:
-    curr_bestiole_comportment_num["Prevoyante"]++;
     return unique_ptr<Prevoyante>(new Prevoyante());
   case 5:
-    curr_bestiole_comportment_num["Multiple"]++;
     return unique_ptr<Multiple>(new Multiple());
-
-  // case 4:
-  //     comportement = new Prevoyante();
-  // curr_bestiole_comportment_num["Prevoyante"]++;
-  //     break;
-  // case 5:
-  //     comportement = new Multiple();
-  // curr_bestiole_comportment_num["Multiple"]++;
-  //     break;
   default:
     // generate random based on distribution
     double distribution_cumul[5];
@@ -141,19 +133,14 @@ unique_ptr<IComportement> BestiolFactory::get_comportement() {
     }
     auto randomV = get_ramdom_value(0, sum);
     if (randomV <= distribution_cumul[0]) {
-      curr_bestiole_comportment_num["Gragaire"]++;
       return unique_ptr<Gragaire>(new Gragaire());
     } else if (randomV <= distribution_cumul[1]) {
-      curr_bestiole_comportment_num["Peureuse"]++;
       return unique_ptr<Peureuse>(new Peureuse());
     } else if (randomV <= distribution_cumul[2]) {
-      curr_bestiole_comportment_num["Kamikaze"]++;
       return unique_ptr<Kamikaze>(new Kamikaze());
     } else if (randomV <= distribution_cumul[3]) {
-      curr_bestiole_comportment_num["Prevoyante"]++;
       return unique_ptr<Prevoyante>(new Prevoyante());
     } else if (randomV <= distribution_cumul[4]) {
-      curr_bestiole_comportment_num["Multiple"]++;
       return unique_ptr<Multiple>(new Multiple());
     } else {
       throw std::runtime_error{"Bad bestiole distribution"};
@@ -179,6 +166,8 @@ void BestiolFactory::add_capteur_yeux(Bestiole &b) {
   Yeux *yeux = new Yeux(0, distance, champ_vision, capacite);
   b.move_capteur(move(unique_ptr<ICapteur>(yeux)));
 }
+
+
 /*
  *  add an ear captor to a bug and set the random value of capacite_detection,
  * distance_min, distance_max parameters for the ear captor
@@ -193,8 +182,6 @@ void BestiolFactory::add_capteur_oreille(Bestiole &b) {
 
   unique_ptr<ICapteur> oreille = unique_ptr<ICapteur>(
       new Oreilles(distance_min, distance_max, capacite_detection));
-  // Oreilles* oreilles = new Oreilles(distance_min, distance_max,
-  // capacite_detection);
   b.move_capteur(move(oreille));
 }
 
@@ -293,9 +280,17 @@ int BestiolFactory::get_random_int(int min, int max) {
  */
 Bestiole BestiolFactory::clone_bestiole(Bestiole const &b) {
   auto clone = b;
+
+  curr_num_bestiole["Basic_Bestiole"]++;
+  curr_bestiole_comportment_num[clone.get_comportement_name()]++;
+
   // clone has a different identite
   clone.setOrientation(get_ramdom_value(0, 2 * M_PI));
   clone.identite = ++next_id;
   clone.age = 0;
   return clone;
+}
+
+bool BestiolFactory::can_add_bestiole(){
+  return curr_num_bestiole["Basic_Bestiole"] <= total_num_bestiole["Basic_Bestiole"];
 }

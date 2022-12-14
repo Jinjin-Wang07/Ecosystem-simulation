@@ -93,6 +93,8 @@ public: // Forme canonique :
   bool isCollidingWith(Bestiole const &b) const;
   bool isDead() const;
   void kill();
+
+  string get_comportement_name();
 };
 
 bool operator!=(const Bestiole &b1, const Bestiole &b2);

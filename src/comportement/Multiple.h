@@ -2,6 +2,7 @@
 #define MULTIPLE
 #include "IComportement.h"
 #include <vector>
+#include <string>
 class Multiple : public IComportement {
 private:
   std::unique_ptr<IComportement> currentComportement;
@@ -15,6 +16,8 @@ public:
   Couleur get_color() const override {
     return currentComportement->get_color();
   }
+
+  std::string get_name() override {return "Multiple";}
 
   void move(Bestiole &b,
             std::vector<Bestiole const *> const &seen_neighbors) override;

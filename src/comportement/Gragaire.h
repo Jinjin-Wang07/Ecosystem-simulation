@@ -6,6 +6,7 @@
 #define ECOSYSTEM_SIMULATION_GRAGAIRE_H
 
 #include "IComportement.h"
+#include <string>
 
 class Gragaire : public IComportement {
 
@@ -18,6 +19,9 @@ public:
             std::vector<Bestiole const *> const &seen_neighbors) override;
 
   Couleur get_color() const override { return {255, 165, 0}; }
+
+  std::string get_name() override {return "Gragaire";}
+
   std::unique_ptr<IComportement> clone() const override;
 
 private:

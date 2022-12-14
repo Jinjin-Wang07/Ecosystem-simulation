@@ -197,7 +197,7 @@ void Bestiole::setOrientation(double o) { this->orientation = o; }
 
 pair<double, double> Bestiole::getCoordinates() const { return {x, y}; }
 
-void Bestiole::setVitesse(double v) { this->vitesse = v; }
+void Bestiole::setVitesse(double v) { this->vitesse = v <= max_vitesse ? v : max_vitesse;}
 
 double Bestiole::get_camouflage_coef() const { return this->camouflage_coef; }
 
@@ -220,3 +220,7 @@ bool Bestiole::isCollidingWith(Bestiole const &b) const {
 
 bool Bestiole::isDead() const { return !alive; }
 void Bestiole::kill() { alive = false; }
+
+string Bestiole::get_comportement_name(){
+  return comportement->get_name();
+}
