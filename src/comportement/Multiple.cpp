@@ -2,6 +2,7 @@
 #include "Gragaire.h"
 #include "Kamikaze.h"
 #include "Peureuse.h"
+#include "Prevoyante.h"
 #include <iostream>
 #include <random>
 using namespace std;
@@ -24,6 +25,8 @@ std::unique_ptr<IComportement> Multiple::updateComportement() const {
     return unique_ptr<Peureuse>(new Peureuse());
   case 2:
     return unique_ptr<Kamikaze>(new Kamikaze());
+  case 3:
+    return unique_ptr<Prevoyante>(new Prevoyante());
   default:
     throw std::runtime_error{"Should not reach there"};
   }

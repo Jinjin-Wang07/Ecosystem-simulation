@@ -38,9 +38,9 @@ int get_user_comportement_choose() {
   cout << "[1] : Gragaire - Orange" << endl;
   cout << "[2] : Peureuse - Blue" << endl;
   cout << "[3] : Kamikaze - Red" << endl;
-  cout << "[4] : Multiple " << endl;
+  cout << "[4] : Prevoyante - Green " << endl;
   // cout << "[4] : Prevoiyante - Green" << endl;
-  // cout << "[5] : Multiple - White" << endl;
+  cout << "[5] : Multiple" << endl;
   cout << "Please choose a comportement ： " << endl;
   cin >> index_comportement; // if wrong num, index will be 0;
   cout << "Your choose is:  " << index_comportement << endl;

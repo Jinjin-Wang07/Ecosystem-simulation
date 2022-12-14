@@ -4,6 +4,7 @@
 #include "../comportement/Kamikaze.h"
 #include "../comportement/Multiple.h"
 #include "../comportement/Peureuse.h"
+#include "../comportement/Prevoyante.h"
 
 #include "../capteur/ICapteur.h"
 #include "../capteur/Oreilles.h"
@@ -116,8 +117,12 @@ unique_ptr<IComportement> BestiolFactory::get_comportement() {
     curr_bestiole_comportment_num["Kamikaze"]++;
     return unique_ptr<Kamikaze>(new Kamikaze());
   case 4:
+    curr_bestiole_comportment_num["Prevoyante"]++;
+    return unique_ptr<Prevoyante>(new Prevoyante());
+  case 5:
     curr_bestiole_comportment_num["Multiple"]++;
     return unique_ptr<Multiple>(new Multiple());
+
   // case 4:
   //     comportement = new Prevoyante();
   // curr_bestiole_comportment_num["Prevoyante"]++;
@@ -145,6 +150,9 @@ unique_ptr<IComportement> BestiolFactory::get_comportement() {
       curr_bestiole_comportment_num["Kamikaze"]++;
       return unique_ptr<Kamikaze>(new Kamikaze());
     } else if (randomV <= distribution_cumul[3]) {
+      curr_bestiole_comportment_num["Prevoyante"]++;
+      return unique_ptr<Prevoyante>(new Prevoyante());
+    } else if (randomV <= distribution_cumul[4]) {
       curr_bestiole_comportment_num["Multiple"]++;
       return unique_ptr<Multiple>(new Multiple());
     } else {
