@@ -16,6 +16,8 @@ class Aquarium : public CImgDisplay {
 private:
   Milieu *flotte;
 
+  unsigned int sleep_time;
+
   int delay;
 
 public:
