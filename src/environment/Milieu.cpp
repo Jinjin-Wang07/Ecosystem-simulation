@@ -6,6 +6,7 @@
 #include <ctime>
 #include <random>
 #include <vector>
+#include <string>
 
 using namespace std;
 
@@ -27,6 +28,7 @@ void Milieu::step(void) {
   std::vector<Bestiole> clones;
   bool createNewBestioles =
       bestioleFac &&
+      bestioleFac->can_add_bestiole() &&
       bestioleFac->birth_rate > bestioleFac->get_ramdom_value(0, 1);
   for (auto it = listeBestioles.begin(); it != listeBestioles.end(); ++it) {
     it->action(*this);
@@ -43,13 +45,13 @@ void Milieu::step(void) {
     for (auto it2 = next(it); it2 != listeBestioles.end(); ++it2) {
       if (it->isCollidingWith(*it2)) {
         show_collision(*it);
+        num_collision++;
         handleCollision(*it);
         handleCollision(*it2);
       }
     }
   }
   for (auto it = listeBestioles.begin(); it != listeBestioles.end(); ++it) {
-
     it->draw(*this);
   }
 
@@ -64,7 +66,16 @@ void Milieu::step(void) {
   auto firstBestioleToErase =
       remove_if(listeBestioles.begin(), listeBestioles.end(),
                 [](Bestiole const &b) { return b.isDead(); });
+
+  for(auto it = firstBestioleToErase; it!=listeBestioles.end(); ++it){
+    num_death++;
+    bestioleFac->curr_num_bestiole["Basic_Bestiole"]--;
+    bestioleFac->curr_bestiole_comportment_num[it->get_comportement_name()]--;
+  }
+  
   listeBestioles.erase(firstBestioleToErase, listeBestioles.end());
+
+  show_statistic_info();
 }
 
 int Milieu::nbVoisins(const Bestiole &b) const {
@@ -111,4 +122,28 @@ void Milieu::setBestioleFactory(BestiolFactory *bf) { this->bestioleFac = bf; }
 void Milieu::show_collision(Bestiole &b){
   Couleur color = {139, 0, 0};
   draw_circle(b.getCoordinates().first, b.getCoordinates().second,  10, color.data());
+}
+
+void Milieu::show_statistic_info(){
+  int h = 30;
+  Couleur color = {0, 0, 0};
+  // draw_text(0, INFO_BAR_HEIGHT, "Hello", 0, 0, 1);
+  if(bestioleFac != nullptr){
+    std::string c = "Numer of bestiole : " + to_string(int(bestioleFac->curr_num_bestiole["Basic_Bestiole"]));
+    draw_text(0,MILIEU_HEIGHT+h, c.c_str() , color.data(),0,1,24);
+    h+=30;
+    // show the number of bestiole of each comportement
+    for(auto& elem : bestioleFac->curr_bestiole_comportment_num)
+    {
+      std::string info = elem.first + " : " + to_string(elem.second);
+      draw_text(0, MILIEU_HEIGHT+h, info.c_str(), color.data(),0,1,24);
+      h+=30;
+    }
+    // show the number of death and collision
+    std::string n_death = "Number of death : " + to_string(num_death);
+    std::string n_collision = "Number of collision : " + to_string(num_collision);
+    draw_text(350, MILIEU_HEIGHT+30, n_death.c_str() , color.data(),0,1,24);
+    draw_text(350, MILIEU_HEIGHT+60, n_collision.c_str() , color.data(),0,1,24);
+
+  }
 }

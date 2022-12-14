@@ -1,6 +1,7 @@
 #ifndef KAMIKAZE
 #define KAMIKAZE
 #include "IComportement.h"
+#include <string>
 
 class Kamikaze : public IComportement {
 private:
@@ -15,6 +16,8 @@ public:
             std::vector<Bestiole const *> const &seen_neighbors) override;
 
   Couleur get_color() const override { return {255, 0, 0}; }
+  std::string get_name() override {return "Kamikaze";}
+
   std::unique_ptr<IComportement> clone() const override;
 };
 #endif

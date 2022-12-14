@@ -97,6 +97,9 @@ public:
 
   void set_ramdom_capteur(Bestiole &b);
   void set_random_accessoire(Bestiole &b);
+
+  // Check if the current number of bestiole smaller than limit
+  bool can_add_bestiole();
 };
 
 #endif // _BESTIOL_FACTORY_H_

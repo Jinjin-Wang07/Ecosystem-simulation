@@ -3,6 +3,7 @@
 
 #include "../../include/HMI/UImg.h"
 #include "../bestiole/Bestiole.h"
+#include "../constants.h"
 
 #include <iostream>
 #include <vector>
@@ -20,13 +21,18 @@ private:
   BestiolFactory *bestioleFac;
 
   void show_collision(Bestiole &b);
+  void show_statistic_info();
 
 public:
+  int num_death = 0;
+  int num_collision = 0;
+
+
   Milieu(int _width, int _height);
   ~Milieu(void);
 
   int getWidth(void) const { return width; };
-  int getHeight(void) const { return height; };
+  int getHeight(void) const { return (height - INFO_BAR_HEIGHT) ;};
 
   void step(void);
 

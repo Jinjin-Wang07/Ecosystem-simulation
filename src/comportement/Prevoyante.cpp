@@ -11,6 +11,10 @@ Prevoyante::~Prevoyante() { cout << "Destroy prevoyante behavior" << endl; }
 
 void Prevoyante::move(Bestiole &b,
                       vector<Bestiole const *> const &seen_neighbors) {
+
+  // This method isn't finished.
+  return;
+
   auto b_ori = b.getOrientation();
   auto b_vitesse = b.get_vitesse();
   auto b_coord = b.getCoordinates();

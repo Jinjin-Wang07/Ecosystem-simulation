@@ -10,6 +10,7 @@
 #include <array>
 #include <memory>
 #include <vector>
+#include <string>
 
 class Bestiole;
 
@@ -26,6 +27,8 @@ public:
                     std::vector<Bestiole const *> const &seen_neighbors) = 0;
 
   virtual Couleur get_color() const = 0;
+
+  virtual std::string get_name() = 0;
 
   virtual std::unique_ptr<IComportement> clone() const = 0;
 };

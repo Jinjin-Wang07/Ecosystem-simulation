@@ -6,6 +6,7 @@
 #define ECOSYSTEM_SIMULATION_PEUREUSE_H
 
 #include "IComportement.h"
+#include <string>
 
 class Peureuse : public IComportement {
 
@@ -15,6 +16,7 @@ public:
   ~Peureuse() override;
 
   Couleur get_color() const override { return {0, 0, 255}; }
+  std::string get_name() override {printf("in peureuse=============\n"); return "Peureuse";}
 
   void move(Bestiole &b,
             std::vector<Bestiole const *> const &seen_neighbors) override;

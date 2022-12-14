@@ -30,6 +30,7 @@ Aquarium::~Aquarium(void) {
 
 void Aquarium::run(void) {
   LOG_INFO("Running l'Aquarium");
+  bool stop = false;
 
 
   while (!is_closed()) {
@@ -37,11 +38,21 @@ void Aquarium::run(void) {
     // cout << "iteration de la simulation" << endl;
 
     if (is_key()) {
-      cout << "Vous avez presse la touche "
-           << static_cast<unsigned char>(key());
-      cout << " (" << key() << ")" << endl;
-      if (is_keyESC())
+      if(is_keyS()){
+        stop = true;
+        continue;
+      }
+      if(is_keyC()){
+        stop = false;
+        continue;
+      }
+
+      // cout << "Vous avez presse la touche "
+          //  << static_cast<unsigned char>(key());
+      // cout << " (" << key() << ")" << endl;
+      if (is_keyESC()){
         close();
+      }
 
       if(is_keyARROWDOWN() && sleep_time<=60000){
           this->sleep_time += 500; 
@@ -51,12 +62,16 @@ void Aquarium::run(void) {
           LOG_INFO("Speed up the simulation speed : %d", sleep_time);
       }
     }
+    if(stop){
+      usleep(10000);
+      continue;
+    }
 
     flotte->step();
-
     display(*flotte);
-    usleep(sleep_time);
 
+    // same effet...
+    usleep(sleep_time);
     wait(delay);
 
   } // while
