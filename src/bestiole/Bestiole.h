@@ -94,7 +94,7 @@ public: // Forme canonique :
   bool isDead() const;
   void kill();
 
-  string get_comportement_name();
+  string get_comportement_name() const;
 };
 
 bool operator!=(const Bestiole &b1, const Bestiole &b2);

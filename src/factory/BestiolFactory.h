@@ -26,7 +26,6 @@ private:
 
 public:
   map<string, double> total_num_bestiole;
-  map<string, double> curr_num_bestiole; // {specie_name : number}
 
   int const num_comportement = 5;
 
@@ -51,7 +50,6 @@ public:
   double birth_rate;
   double clone_probability;
 
-  map<string, int> curr_bestiole_comportment_num;
   array<double, 5> bestioles_comportement_distribution = {0.2, 0.2, 0.2,
                                                           0.2, 0.2};
 
@@ -99,7 +97,7 @@ public:
   void set_random_accessoire(Bestiole &b);
 
   // Check if the current number of bestiole smaller than limit
-  bool can_add_bestiole();
+  bool can_add_bestiole(int nbBestioles);
 };
 
 #endif // _BESTIOL_FACTORY_H_

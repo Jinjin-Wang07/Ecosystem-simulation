@@ -221,6 +221,6 @@ bool Bestiole::isCollidingWith(Bestiole const &b) const {
 bool Bestiole::isDead() const { return !alive; }
 void Bestiole::kill() { alive = false; }
 
-string Bestiole::get_comportement_name(){
+string Bestiole::get_comportement_name() const {
   return comportement->get_name();
 }

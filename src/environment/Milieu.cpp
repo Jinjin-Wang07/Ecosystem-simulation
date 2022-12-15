@@ -7,6 +7,7 @@
 #include <random>
 #include <vector>
 #include <string>
+#include <unordered_map>
 
 using namespace std;
 
@@ -28,7 +29,7 @@ void Milieu::step(void) {
   std::vector<Bestiole> clones;
   bool createNewBestioles =
       bestioleFac &&
-      bestioleFac->can_add_bestiole() &&
+      bestioleFac->can_add_bestiole(listeBestioles.size()) &&
       bestioleFac->birth_rate > bestioleFac->get_ramdom_value(0, 1);
   for (auto it = listeBestioles.begin(); it != listeBestioles.end(); ++it) {
     it->action(*this);
@@ -55,13 +56,6 @@ void Milieu::step(void) {
     it->draw(*this);
   }
 
-  listeBestioles.insert(listeBestioles.end(),
-                        make_move_iterator(clones.begin()),
-                        make_move_iterator(clones.end()));
-
-  if (createNewBestioles) {
-    listeBestioles.emplace_back(bestioleFac->create_bestiole());
-  }
 
   auto firstBestioleToErase =
       remove_if(listeBestioles.begin(), listeBestioles.end(),
@@ -69,12 +63,18 @@ void Milieu::step(void) {
 
   for(auto it = firstBestioleToErase; it!=listeBestioles.end(); ++it){
     num_death++;
-    LOG_INFO("==================%s died", it->get_comportement_name().c_str());
-    bestioleFac->curr_num_bestiole["Basic_Bestiole"]--;
-    bestioleFac->curr_bestiole_comportment_num[it->get_comportement_name()]--;
   }
   
   listeBestioles.erase(firstBestioleToErase, listeBestioles.end());
+
+
+  listeBestioles.insert(listeBestioles.end(),
+                        make_move_iterator(clones.begin()),
+                        make_move_iterator(clones.end()));
+
+  if (createNewBestioles) {
+    listeBestioles.emplace_back(bestioleFac->create_bestiole());
+  }
 
   show_statistic_info();
 }
@@ -130,11 +130,15 @@ void Milieu::show_statistic_info(){
   Couleur color = {0, 0, 0};
   // draw_text(0, INFO_BAR_HEIGHT, "Hello", 0, 0, 1);
   if(bestioleFac != nullptr){
-    std::string c = "Numer of bestiole : " + to_string(int(bestioleFac->curr_num_bestiole["Basic_Bestiole"]));
+    std::string c = "Number of bestiole : " + to_string(listeBestioles.size());
     draw_text(0,MILIEU_HEIGHT+h, c.c_str() , color.data(),0,1,24);
     h+=30;
     // show the number of bestiole of each comportement
-    for(auto& elem : bestioleFac->curr_bestiole_comportment_num)
+    std::unordered_map<std::string, int> countComportement;
+    for (auto const& b : listeBestioles) {
+      countComportement[b.get_comportement_name()]++;
+    }
+    for(auto const& elem : countComportement)
     {
       std::string info = elem.first + " : " + to_string(elem.second);
       draw_text(0, MILIEU_HEIGHT+h, info.c_str(), color.data(),0,1,24);

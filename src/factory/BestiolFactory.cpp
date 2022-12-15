@@ -20,7 +20,6 @@ int BestiolFactory::next_id = 0;
 BestiolFactory::BestiolFactory(int width, int height) : gen(rd()) {
 
   total_num_bestiole["Basic_Bestiole"] = 50;
-  curr_num_bestiole["Basic_Bestiole"] = 0;
 
   this->width = width;
   this->height = height;
@@ -45,12 +44,6 @@ BestiolFactory::BestiolFactory(int width, int height) : gen(rd()) {
 
   birth_rate = 0.05; // 100 step 1 birth
   clone_probability = 0.02;
-
-  curr_bestiole_comportment_num = {{"Gragaire", 0},
-                                   {"Kamikaze", 0},
-                                   {"Peureuse", 0},
-                                   {"Prevoyante", 0},
-                                   {"Multiple", 0}};
 }
 
 BestiolFactory::~BestiolFactory() {}
@@ -85,10 +78,6 @@ Bestiole BestiolFactory::create_bestiole() {
 
   // Add ramdomly the accessoires
   set_random_accessoire(new_bestiole);
-
-
-  curr_num_bestiole["Basic_Bestiole"]++;
-  curr_bestiole_comportment_num[new_bestiole.get_comportement_name()]++;
 
   return new_bestiole;
 }
@@ -281,9 +270,6 @@ int BestiolFactory::get_random_int(int min, int max) {
 Bestiole BestiolFactory::clone_bestiole(Bestiole const &b) {
   auto clone = b;
 
-  curr_num_bestiole["Basic_Bestiole"]++;
-  curr_bestiole_comportment_num[clone.get_comportement_name()]++;
-
   // clone has a different identite
   clone.setOrientation(get_ramdom_value(0, 2 * M_PI));
   clone.identite = ++next_id;
@@ -291,6 +277,6 @@ Bestiole BestiolFactory::clone_bestiole(Bestiole const &b) {
   return clone;
 }
 
-bool BestiolFactory::can_add_bestiole(){
-  return curr_num_bestiole["Basic_Bestiole"] < total_num_bestiole["Basic_Bestiole"];
+bool BestiolFactory::can_add_bestiole(int nbBestioles){
+  return nbBestioles <= total_num_bestiole["Basic_Bestiole"];
 }
