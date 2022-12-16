@@ -5,6 +5,7 @@
 
 #include "constants.h"
 
+
 #include <iostream>
 
 using namespace std;
@@ -44,7 +45,7 @@ int get_user_comportement_choose() {
   cout << "============================================" << endl;
   cout << "============================================" << endl;
   cout << "[Default 0] : Random" << endl;
-  cout << "[1] : Gragaire - Orange" << endl;
+  cout << "[1] : Gregaire - Orange" << endl;
   cout << "[2] : Peureuse - Blue" << endl;
   cout << "[3] : Kamikaze - Red" << endl;
   cout << "[4] : Prevoyante - Green " << endl;

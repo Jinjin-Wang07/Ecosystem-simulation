@@ -15,7 +15,7 @@
  * Source : https://blog.csdn.net/afei__/article/details/82682857
  */
 
-// #define __DEBUG__ // if u don't want debug log, comment this line
+#define __DEBUG__ // if u don't want debug log, comment this line
 #define __INFO__
 
 #define __FILENAME__ (strrchr(__FILE__, '/') + 1)

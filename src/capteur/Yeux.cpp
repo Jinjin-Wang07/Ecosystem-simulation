@@ -43,15 +43,22 @@ unique_ptr<ICapteur> Yeux::clone() const {
 
 void Yeux::draw(UImg &support, double xt, double yt, double orientation) {
   T *couleur = new T[3];
-  couleur[0] = 223;
+  couleur[0] = 0;
   couleur[1] = 0;
   couleur[2] = 0;
 
-  double xt2 = xt + champ_vision * std::cos(orientation / 2);
-  double yt2 = yt + champ_vision * std::sin(orientation / 2);
+  //double c = floor(orientation - champ_vision/2 / (M_PI/2));
+  double ang1 = (orientation - champ_vision/2); //- c*(M_PI/2);
 
-  double xt3 = xt - champ_vision * std::cos(orientation / 2);
-  double yt3 = yt - champ_vision * std::sin(orientation / 2);
+  //c = floor(orientation + champ_vision/2 / (M_PI/2));
+  double ang2 = (orientation + champ_vision/2);// - c*(M_PI/2);
 
-  support.draw_triangle(xt, yt, xt2, yt2, xt3, yt3, couleur, 0.2);
+  double xt2 = xt + distance_max * std::cos(ang1);
+  double yt2 = yt - distance_max * std::sin(ang1);
+  // double xt2 = xt+5*cos(distance+/-champsvision/2);
+
+  double xt3 = xt + distance_max * std::cos(ang2);
+  double yt3 = yt - distance_max * std::sin(ang2);
+
+  support.draw_triangle(xt, yt, xt2, yt2, xt3, yt3, couleur, 0.05);
 }

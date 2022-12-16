@@ -41,9 +41,32 @@ void Gragaire::move(Bestiole &b,
 unique_ptr<IComportement> Gragaire::clone() const {
   return unique_ptr<IComportement>(new Gragaire());
 }
-/*
- * calculate the average direction of its neighbors
- */
+// /*
+//  * calculate the average direction of its neighbors
+//  */
+// double Gragaire::calculateAverageDirection(
+//     double orientation, vector<Bestiole const *> const &seen_neighbors) {
+//   double averageDirection = 0.0;
+//   for (auto const &neighbor : seen_neighbors) {
+//     auto orientation = neighbor->getOrientation();
+//     while (orientation < 0.0) {
+//       orientation += 2 * M_PI;
+//     }
+
+//     while (orientation >= 2 * M_PI) {
+//       orientation -= 2 * M_PI;
+//     }
+//     return orientation;
+//     averageDirection += orientation;
+//   }
+//   // std::cout << "computing avg of " << (1 + seen_neighbors.size()) << "
+//   // values" << std::endl;
+//   averageDirection =
+//       ((averageDirection + orientation) / (1 + seen_neighbors.size()));
+//   return averageDirection;
+// }
+
+
 double Gragaire::calculateAverageDirection(
     double orientation, vector<Bestiole const *> const &seen_neighbors) {
   double averageDirection = 0.0;

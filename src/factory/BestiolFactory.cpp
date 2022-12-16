@@ -19,31 +19,31 @@ int BestiolFactory::next_id = 0;
  */
 BestiolFactory::BestiolFactory(int width, int height) : gen(rd()) {
 
-  total_num_bestiole["Basic_Bestiole"] = 50;
+  total_num_bestiole["Basic_Bestiole"] = 200;
 
   this->width = width;
   this->height = height;
 
   // eye_champ_angulaire_limit =
 
-  eye_champ_angulaire_limit = make_pair(0, 2 * M_PI);
+  eye_champ_angulaire_limit = make_pair(0, M_PI/2);
   eye_distance_limit = make_pair(20, 80);
-  eye_capacite_detection_limit = make_pair(0, 1);
+  eye_capacite_detection_limit = make_pair(0.3, 1);
 
   ear_distance_limit = make_pair(20, 100);
-  ear_capacite_detection_limit = make_pair(0, 1);
+  ear_capacite_detection_limit = make_pair(0.3, 1);
 
   nageoire_speed_coef_max = 10;
   carapace_resistance_coef_max = 10;
   carapace_speed_coef_max = 10;
 
-  camouflage_coef_max = make_pair(0.1, 0.9);
+  camouflage_coef_max = make_pair(0, 0.3);
 
   this->max_age = 1000; // 1000 = 1s
   this->max_vitesse = 10.0;
 
-  birth_rate = 0.05; // 100 step 1 birth
-  clone_probability = 0.02;
+  birth_rate = 0.05;
+  clone_probability = 0.01;
 }
 
 BestiolFactory::~BestiolFactory() {}
@@ -56,7 +56,7 @@ Bestiole BestiolFactory::create_bestiole() {
   initCoords(x, y);
 
   double camouflage_coef = 0; // TODO : make it ramdom
-  double fragility = get_ramdom_value(0, 1);
+  double fragility = get_ramdom_value(0, 0.5);
   double orientation = get_ramdom_value(0, 2. * M_PI);
   double vitesse = get_ramdom_value(max_vitesse / 2, max_vitesse);
 

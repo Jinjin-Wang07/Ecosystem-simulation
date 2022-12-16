@@ -1,7 +1,7 @@
 #ifndef _BESTIOLES_H_
 #define _BESTIOLES_H_
 
-#include "../../include/HMI/UImg.h"
+// #include "../../include/HMI/UImg.h"
 #include "../accessoire/IAccessoire.h"
 #include "../capteur/ICapteur.h"
 
@@ -54,7 +54,7 @@ public: // Forme canonique :
 
   Bestiole &operator=(Bestiole const &b);
 
-  ~Bestiole(); // Destructeur                              // Operateur
+  virtual ~Bestiole(); // Destructeur                              // Operateur
                // d'affectation binaire par defaut
 
   void bouge(int xLim, int yLim);
@@ -68,13 +68,13 @@ public: // Forme canonique :
   bool jeTePercoit(const Bestiole &b) const;
   void changeState();
   void draw(UImg &support);
-  double get_camouflage_coef() const;
+  virtual double get_camouflage_coef() const;
   void set_camouflage_coef(double) { this->camouflage_coef = camouflage_coef; };
 
-  double getOrientation() const;
+  virtual double getOrientation() const;
   void setOrientation(double o);
 
-  pair<double, double> getCoordinates() const;
+  virtual pair<double, double> getCoordinates() const;
 
   void setVitesse(double o);
   double get_vitesse() const { return this->vitesse; };
